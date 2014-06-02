@@ -1,6 +1,7 @@
 <?php
 $loginreq=0;
 include('all.header.php');
+echo "prout";
 ?>
             <h1>Bienvenue sur la plateforme de Stage de l'UNC</h1>
         	<div class="col col_23">
