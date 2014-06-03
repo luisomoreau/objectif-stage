@@ -1,0 +1,17 @@
+ajouter un x au début de la ligne lorsque la tâche a été réalisée.
+exemple :
+x Créer le dépôt git
+- finir le design
+
+---------------------------------------------------------------------------------
+
+- Créer settings.php pour fichier
+- Créer la base du design avec zurb + theme existant sur l'ent
+  - Header
+  - Footer
+  - White body
+- Créer le sous-domaine
+- Inclure la library CAS
+- Rendre l'application accessible via le CAS
+- Remplacer les liens / par ./ ou rien
+- Modifier le htaccess pour enlever le .php
