@@ -70,7 +70,7 @@ function checkPatern(mdp) {
     var message = document.getElementById('confirmPatern');
     var goodColor = "#66cc66";
     var badColor = "#ff6666";
-    var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/;
+    var re = /^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/;
     var tester = re.test(pass1.value);
     if(tester) {
         pass1.style.backgroundColor = goodColor;

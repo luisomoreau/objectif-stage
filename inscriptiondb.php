@@ -78,7 +78,7 @@ if($_POST[typeinscription] == "etud") {
             header('Location: index');
             die(); 
     } else { //mdp bonne taille
-        if (!preg_match('/[A-Z]+[a-z]+[0-9]+/', $mdpEtud)) {
+        if (!preg_match('/^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/', $mdpEtud)) {
             header('Location: index');
             die(); 
         } else { //mdp valide et bonne taille
@@ -234,7 +234,7 @@ if($_POST[typeinscription] == "etud") {
             header('Location: index');
             die();
     } else { //mdp bonne taille
-        if (!preg_match('/[A-Z]+[a-z]+[0-9]+/', $mdpEnt)) {
+        if (!preg_match('/^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/', $mdpEnt)) {
             header('Location: index');
             die(); 
         } else { //mdp valide et bonne taille

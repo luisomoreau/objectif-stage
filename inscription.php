@@ -1,11 +1,11 @@
 <?php
-if(!isset($_POST[typeinscription])) {
+if(!isset($_POST['typeinscription'])) {
     header('Location: index');
     die(); 
 }
 $loginreq=0;
 include('all.header.php');
-if($_POST[typeinscription] == "etud") {
+if($_POST['typeinscription'] == "etud") {
 ?>
 <h1>Inscription étudiant</h1>
     <form action="inscriptiondb" method="POST" id="inscEtudiants" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEtud') && checkPass('mdpEtud','mdpEtud2'))">
@@ -100,7 +100,7 @@ if($_POST[typeinscription] == "etud") {
 		<div class="centrer"><button id="envoyer" type="submit">S'inscrire</button></div>
     </form>
 <?php
-} else if($_POST[typeinscription] == "ent") {
+} else if($_POST['typeinscription'] == "ent") {
 ?>
 <h1>Inscription entreprise</h1>
 <form action="inscriptiondb" method="POST" id="inscEntreprise" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
