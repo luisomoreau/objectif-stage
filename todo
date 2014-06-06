@@ -14,6 +14,5 @@ x Créer le dépôt git
 - Inclure la library CAS
 - Rendre l'application accessible via le CAS
 - Remplacer les liens / par ./ ou rien
-- Modifier le htaccess pour enlever le .php
-
-Ok chef !
+x Modifier le htaccess pour enlever le .php
+- problème des accents
