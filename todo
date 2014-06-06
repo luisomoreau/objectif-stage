@@ -16,3 +16,6 @@ x Créer le dépôt git
 - Remplacer les liens / par ./ ou rien
 x Modifier le htaccess pour enlever le .php
 - problème des accents
+
+- captcha inscription
+- requetes en objet
