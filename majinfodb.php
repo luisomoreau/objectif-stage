@@ -1,28 +1,28 @@
 <?php
 include('all.header.php');
-if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POST[mailEtud]))) {
+if($_SESSION['type'] == "etudiants" || ($_SESSION['type'] === "admin" && isset($_POST['mailEtud']))) {
     /** MAJ ETUDIANT **/ 
     
-    if (!isset($_POST[mailPersoEtud]) or !isset($_POST[nomEtud]) or !isset($_POST[prenomEtud]) or !isset($_POST[licenceEtud]) or !isset($_POST[sexeEtud]) or !isset($_POST[naissanceJour]) or !isset($_POST[naissanceMois]) or !isset($_POST[naissanceAnnee]) or !isset($_POST[telEtud])) {
+    if (!isset($_POST['mailPersoEtud']) or !isset($_POST['nomEtud']) or !isset($_POST['prenomEtud']) or !isset($_POST['licenceEtud']) or !isset($_POST['sexeEtud']) or !isset($_POST['naissanceJour']) or !isset($_POST['naissanceMois']) or !isset($_POST['naissanceAnnee']) or !isset($_POST['telEtud'])) {
             header('Location: /');
             die(); 
     }
     
     // On concatène la date de naissance à partir des 3 POST + verification
-    if (($_POST[naissanceAnnee]>2005) || $_POST[naissanceAnnee]<1900) {
+    if (($_POST['naissanceAnnee']>2005) || $_POST['naissanceAnnee']<1900) {
             header('Location: /');
             die(); 
     }
-    if (($_POST[naissanceMois]>12) || $_POST[naissanceMois]<1) {
+    if (($_POST['naissanceMois']>12) || $_POST['naissanceMois']<1) {
             header('Location: /');
             die(); 
     }
-    if (($_POST[naissanceJour]>31) || $_POST[naissanceJour]<1) {
+    if (($_POST['naissanceJour']>31) || $_POST['naissanceJour']<1) {
             header('Location: /');
             die(); 
     }
         
-    $naissanceEtud = "$_POST[naissanceAnnee]-$_POST[naissanceMois]-$_POST[naissanceJour]";
+    $naissanceEtud = $_POST['naissanceAnnee'].'-'.$_POST['naissanceMois'].'-'.$_POST['naissanceJour'];
     
     // On prépare les variables à insérer dans la BDD, on remplace par NULL si vide. (Entre simples quotes sinon)
     foreach($_POST as $col=>$val) {
@@ -122,13 +122,13 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
     }
     
     // Upload et check logo 
-    if ( $_FILES[profilpic]['error'] <= 0 ) {
-        if ( exif_imagetype($_FILES[profilpic]['tmp_name']) != false ) {           
-            if ( $_FILES[profilpic]['size'] <= 2097152 ) { 
-                if ($_SESSION[type] === "admin") {
-                    imageToPng($_FILES[profilpic]['tmp_name'], 250, "fichiers/profile/".md5($_POST[mailEtud]).".png");
+    if ( $_FILES['profilpic']['error'] <= 0 ) {
+        if ( exif_imagetype($_FILES['profilpic']['tmp_name']) != false ) {
+            if ( $_FILES['profilpic']['size'] <= 2097152 ) {
+                if ($_SESSION['type'] === "admin") {
+                    imageToPng($_FILES['profilpic']['tmp_name'], 250, "fichiers/profile/".md5($_POST['mailEtud']).".png");
                 } else {
-                    imageToPng($_FILES[profilpic]['tmp_name'], 250, "fichiers/profile/".md5($_SESSION[identifiant]).".png");
+                    imageToPng($_FILES['profilpic']['tmp_name'], 250, "fichiers/profile/".md5($_SESSION['identifiant']).".png");
                 }
             }
         }
@@ -147,7 +147,7 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
     $telSecEtud=str_replace("'","\'",$telSecEtud);
     
     if ($mdpEtud==="Defaut123") { 
-        if ($_SESSION[type] === "admin") {
+        if ($_SESSION['type'] === "admin") {
             $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
              mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_POST[mailEtud]'";
         } else {
@@ -155,14 +155,14 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
              mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_SESSION[identifiant]'";
         }
     } else {
-        if ($_SESSION[type] === "admin") {
+        if ($_SESSION['type'] === "admin") {
             $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
              mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, mdpEtud='$mdpEtud', trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_POST[mailEtud]'";
         } else {
             $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
              mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, mdpEtud='$mdpEtud', trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_SESSION[identifiant]'";
         }    
-        if ($_SESSION[type] != "admin") $_SESSION[mdp]=$mdpEtud;
+        if ($_SESSION['type'] != "admin") $_SESSION['mdp']=$mdpEtud;
     }
     //echo "<br />".$query."<br />";  
     // Exécution de la requète
@@ -175,10 +175,10 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
     header('Location: compte');
     die();
  
-} else if ($_SESSION[type] == "entreprises" || ($_SESSION[type] === "admin" && isset($_POST[mailEnt]))) {
+} else if ($_SESSION['type'] == "entreprises" || ($_SESSION['type'] === "admin" && isset($_POST[mailEnt]))) {
     /** MAJ ENTREPRISE **/ 
 
-    if (!isset($_POST[mdpEnt]) or !isset($_POST[mdpEnt2]) or !isset($_POST[latEnt]) or !isset($_POST[lngEnt]) or !isset($_POST[nomEnt]) or !isset($_POST[mailEnt]) or !isset($_POST[nomContactEnt]) or !isset($_POST[prenomContactEnt]) or !isset($_POST[telEnt]) or !isset($_POST[adresseEnt]) ) {
+    if (!isset($_POST['mdpEnt']) or !isset($_POST['mdpEnt2']) or !isset($_POST['latEnt']) or !isset($_POST['lngEnt']) or !isset($_POST['nomEnt']) or !isset($_POST['mailEnt']) or !isset($_POST['nomContactEnt']) or !isset($_POST['prenomContactEnt']) or !isset($_POST['telEnt']) or !isset($_POST['adresseEnt']) ) {
             header('Location: /');
             die();
     }
@@ -290,13 +290,13 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
     }
     
     // Upload et check logo 
-    if ( $_FILES[profilpic]['error'] <= 0 ) {
-        if ( exif_imagetype($_FILES[profilpic]['tmp_name']) != false ) {
-            if ( $_FILES[profilpic]['size'] <= 2097152 ) {  
-                if ($_SESSION[type] === "admin") {
-                    imageToPng($_FILES[profilpic]['tmp_name'], 200, "fichiers/profile/".md5($_POST[mailEnt]).".png");    
+    if ( $_FILES['profilpic']['error'] <= 0 ) {
+        if ( exif_imagetype($_FILES['profilpic']['tmp_name']) != false ) {
+            if ( $_FILES['profilpic']['size'] <= 2097152 ) {
+                if ($_SESSION['type'] === "admin") {
+                    imageToPng($_FILES['profilpic']['tmp_name'], 200, "fichiers/profile/".md5($_POST['mailEnt']).".png");
                 } else {
-                    imageToPng($_FILES[profilpic]['tmp_name'], 200, "fichiers/profile/".md5($_SESSION[identifiant]).".png");  
+                    imageToPng($_FILES['profilpic']['tmp_name'], 200, "fichiers/profile/".md5($_SESSION['identifiant']).".png");
                 }
             }
         }
@@ -321,7 +321,7 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
     $dblink = mysqli_connect($sqlserver,$sqlid,$sqlpwd,$sqldb) or die("Erreur de connection au server SQL: ".mysqli_error($dblink));  
     // Requète SQL
     if ($mdpEnt==="Defaut123") {
-        if ($_SESSION[type] === "admin") {
+        if ($_SESSION['type'] === "admin") {
             $query = "UPDATE entreprises SET nomEnt = '$nomEnt', mailEnt='$mailEnt', nomContactEnt='$nomContactEnt', prenomContactEnt='$prenomContactEnt',
              telEnt='$telEnt', telSecEnt=$telSecEnt, adresseEnt='$adresseEnt', latEnt='$latEnt', lngEnt='$lngEnt' WHERE mailEnt='$_POST[mailEnt]'"; 
         } else {
@@ -330,14 +330,14 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
         }
         
     } else {
-        if ($_SESSION[type] === "admin") {
+        if ($_SESSION['type'] === "admin") {
             $query = "UPDATE entreprises SET nomEnt = '$nomEnt', mailEnt='$mailEnt', nomContactEnt='$nomContactEnt', prenomContactEnt='$prenomContactEnt',
              telEnt='$telEnt', telSecEnt=$telSecEnt, adresseEnt='$adresseEnt', latEnt='$latEnt', lngEnt='$lngEnt', mdpEnt='$mdpEnt' WHERE mailEnt='$_POST[mailEnt]'";
         } else {
             $query = "UPDATE entreprises SET nomEnt = '$nomEnt', mailEnt='$mailEnt', nomContactEnt='$nomContactEnt', prenomContactEnt='$prenomContactEnt',
              telEnt='$telEnt', telSecEnt=$telSecEnt, adresseEnt='$adresseEnt', latEnt='$latEnt', lngEnt='$lngEnt', mdpEnt='$mdpEnt' WHERE mailEnt='$_SESSION[identifiant]'";
         }
-        if ($_SESSION[type] != "admin") $_SESSION[mdp]=$mdpEnt;
+        if ($_SESSION['type'] != "admin") $_SESSION['mdp']=$mdpEnt;
     }
     
     //echo "<br />".$query."<br />";  
@@ -348,13 +348,13 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
         include('all.footer.php');
         die();
     }   
-    if ($_SESSION[type] != "admin") $_SESSION[identifiant]=$mailEnt;
+    if ($_SESSION['type'] != "admin") $_SESSION['identifiant']=$mailEnt;
     header('Location: compte');
     die();
     
-    } else if ($_SESSION[type] === "admin") { 
+    } else if ($_SESSION['type'] === "admin") {
         /** MAJ ADMIN **/        
-        if (!isset($_POST[nomAdmin]) or !isset($_POST[prenomAdmin]) or !isset($_POST[mdpAdmin])) {
+        if (!isset($_POST['nomAdmin']) or !isset($_POST['prenomAdmin']) or !isset($_POST['mdpAdmin'])) {
                 header('Location: /');
                 die(); 
         }
@@ -400,10 +400,10 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
     
     
         // Upload et check logo 
-        if ( $_FILES[profilpic]['error'] <= 0 ) {
-            if ( exif_imagetype($_FILES[profilpic]['tmp_name']) != false ) {           
-                if ( $_FILES[profilpic]['size'] <= 2097152 ) { 
-                    imageToPng($_FILES[profilpic]['tmp_name'], 250, "fichiers/profile/".md5($_SESSION[identifiant]).".png");
+        if ( $_FILES['profilpic']['error'] <= 0 ) {
+            if ( exif_imagetype($_FILES['profilpic']['tmp_name']) != false ) {
+                if ( $_FILES['profilpic']['size'] <= 2097152 ) {
+                    imageToPng($_FILES['profilpic']['tmp_name'], 250, "fichiers/profile/".md5($_SESSION['identifiant']).".png");
                 }
             }
         }
@@ -414,7 +414,7 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
             $query = "UPDATE administrateurs SET nomAdmin='$nomAdmin', prenomAdmin='$prenomAdmin' WHERE mailAdmin='$_SESSION[identifiant]'";
         } else {
             $query = "UPDATE administrateurs SET nomAdmin='$nomAdmin', prenomAdmin='$prenomAdmin', mdpAdmin='mdpAdmin' WHERE mailAdmin='$_SESSION[identifiant]'";   
-            $_SESSION[mdp]=$mdpAdmin;
+            $_SESSION['mdp']=$mdpAdmin;
         } 
         // Exécution de la requète
         $result = mysqli_query($dblink, $query);
@@ -427,7 +427,7 @@ if($_SESSION[type] == "etudiants" || ($_SESSION[type] === "admin" && isset($_POS
         die();
         
     } else {
-        header('Location: /');
+        header('Location: ./');
         die();
     }
 include('all.footer.php');

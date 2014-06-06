@@ -1,6 +1,6 @@
-<?php 
+<?php
     include('all.header.php');
-    if ($_SESSION[type]==="etudiants") {
+    if ($_SESSION['type']==="etudiants") {
 ?>
         <div class="col_23 float_l">
         <h1>Services</h1>
@@ -14,7 +14,7 @@
         </div>
         
 <?php
-    } else if ($_SESSION[type]==="entreprises") {               
+    } else if ($_SESSION['type']==="entreprises") {
 ?>
         <div class="col_23 float_l">
             <h1>Services</h1>
@@ -30,7 +30,7 @@
         </div>
         <div class="cleaner h10"></div>
 <?php
-        } else if ($_SESSION[type] === "admin") {
+        } else if ($_SESSION['type'] === "admin") {
 ?>
         <div class="col_23 float_l">
             <h1>Services</h1>

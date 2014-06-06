@@ -2,9 +2,9 @@
     include('all.header.php');
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date dans le passé
-    if ($_SESSION[type] === "etudiants" || (isset($_GET[idEtud]) && $_SESSION[type] === "admin")) {
+    if ($_SESSION['type'] === "etudiants" || (isset($_GET['idEtud']) && $_SESSION['type'] === "admin")) {
         // Requète SQL
-        if ($_SESSION[type] === "admin") {
+        if ($_SESSION['type'] === "admin") {
             $query = "SELECT * FROM Etudiants WHERE idEtud='$_GET[idEtud]'";
         } else {
             $query = "SELECT * FROM Etudiants WHERE mailEtud='$_SESSION[identifiant]'";
@@ -16,24 +16,24 @@
         // Affichage des resultats
         $data = mysqli_fetch_assoc($result);
         
-        $mailEtud=$data[mailEtud];
-        $mailPersoEtud=$data[mailPersoEtud];
-        $nomEtud=$data[nomEtud];
-        $trouveStageEtud=$data[trouveStageEtud];
-        $prenomEtud=$data[prenomEtud];
-        $licenceEtud=$data[licenceEtud];
-        $sexeEtud=$data[sexeEtud];
-        $naissanceEtud=$data[naissanceEtud];
+        $mailEtud=$data['mailEtud'];
+        $mailPersoEtud=$data['mailPersoEtud'];
+        $nomEtud=$data['nomEtud'];
+        $trouveStageEtud=$data['trouveStageEtud'];
+        $prenomEtud=$data['prenomEtud'];
+        $licenceEtud=$data['licenceEtud'];
+        $sexeEtud=$data['sexeEtud'];
+        $naissanceEtud=$data['naissanceEtud'];
         $jourEtud=substr($naissanceEtud, -2);
         $moisEtud=substr($naissanceEtud,-5,2);
         $anneeEtud=substr($naissanceEtud,-10,4);
-        $telEtud=$data[telEtud];
-        $telSecEtud=$data[telSecEtud];   
+        $telEtud=$data['telEtud'];
+        $telSecEtud=$data['telSecEtud'];
         ?> 
-    <h1>Profil Etudiant <?php if ($_SESSION[type] === "admin") echo '<a href="supprimercompte?idEtud='.$_GET[idEtud].'"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>'?></h1> 
+    <h1>Profil Etudiant <?php if ($_SESSION['type'] === "admin") echo '<a href="supprimercompte?idEtud='.$_GET['idEtud'].'"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>'?></h1>
     <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEtud') && checkPass('mdpEtud','mdpEtud2'))"> 
         <div class="col_23 float_l">
-            <?php if ($_SESSION[type] === "admin") echo '<input type="hidden" name="mailEtud" value="'.$mailEtud.'" />'; ?>	
+            <?php if ($_SESSION['type'] === "admin") echo '<input type="hidden" name="mailEtud" value="'.$mailEtud.'" />'; ?>
     		<label for="mailEtud">Identifiant (Non modifiable)</label>
     		<input placeholder="<?php echo $mailEtud;?>" type="text" name="mailEtud" id="mailEtud" maxlength="100" required="required" disabled="disabled"/>
         	<div class="cleaner h10"></div>

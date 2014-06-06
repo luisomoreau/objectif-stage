@@ -1,7 +1,6 @@
 <?php
 $loginreq=0;
 include('all.header.php');
-echo "test";
 ?>
             <h1>Bienvenue sur la plateforme de Stage de l'UNC</h1>
         	<div class="col col_23">
@@ -32,13 +31,13 @@ if ($logged === 0) {
                 </form>
 <?php
 } else {
-    if ($_SESSION[type]== "entreprises") {
+    if ($_SESSION['type']== "entreprises") {
 ?>			
                 <h3>Accès rapide</h3>
                 <a href="depotstage"><button class="big_button" >Déposer un stage</button></a>
                 <a href="messtages"><button class="big_button" >Mes stages</button></a>
 <?php
-    } else if ($_SESSION[type] == "etudiants") {
+    } else if ($_SESSION['type'] == "etudiants") {
 ?>
                 <h3>Accès rapide</h3>
                 <a href="listestages"><button class="big_button" >Liste des stages</button></a>

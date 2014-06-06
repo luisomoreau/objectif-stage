@@ -2,7 +2,7 @@
 $loginreq=0;
 include('all.header.php');
 
-if (isset($_POST[nomContact]) && isset($_POST[mailContact]) && isset($_POST[sujetContact]) && isset($_POST[messageContact]) ) {
+if (isset($_POST['nomContact']) && isset($_POST['mailContact']) && isset($_POST['sujetContact']) && isset($_POST['messageContact']) ) {
     
     foreach($_POST as $col=>$val) {
             if(empty($val)) {
@@ -18,12 +18,12 @@ if (isset($_POST[nomContact]) && isset($_POST[mailContact]) && isset($_POST[suje
     $result = mysqli_query($dblink, $query); 
     $data = mysqli_fetch_assoc($result);
     
-    $query2 = "SELECT idEtud FROM Etudiants WHERE mailEtud ='$_SESSION[identifiant]'"; 
+    $query2 = "SELECT idEtud FROM Etudiants WHERE mailEtud ='$_SESSION[identifiant]'";
     $result2 = mysqli_query($dblink, $query2); 
     $data2 = mysqli_fetch_assoc($result2);
     
-    $idEtud=(int)$data[idEtud];
-    $idEnt=(int)$data2[idEnt];
+    $idEtud=(int)$data['idEtud'];
+    $idEnt=(int)$data2['idEnt'];
     
     // Requète SQL
     $query3 = "INSERT INTO Contact (nomContact, mailContact, sujetContact, messageContact, IP, idEtud, idEnt)
@@ -51,11 +51,11 @@ if (isset($_POST[nomContact]) && isset($_POST[mailContact]) && isset($_POST[suje
             <h4>Contactez-nous</h4>
             <form method="post" name="contact" action="contact">
                 <label for="nomContact">Nom:</label>
-                <input type="text" id="nomContact" name="nomContact" maxlength="50" required="required" value="<?php echo $nom_disp." ".$nom_disp2; ?>" />
+                <input type="text" id="nomContact" name="nomContact" maxlength="50" required="required" value="<?php if (isset($nom_disp) and isset($nom_disp2)) { echo $nom_disp." ".$nom_disp2; }?>" />
                 <div class="cleaner h10"></div>
                 
                 <label for="mailContact">E-mail:</label>
-                <input type="email" id="mailContact" name="mailContact" maxlength="100" required="required" value="<?php echo $_SESSION[identifiant]; ?>" />
+                <input type="email" id="mailContact" name="mailContact" maxlength="100" required="required" value="<?php if (isset($_SESSION['identifiant'])) { $_SESSION['identifiant']; }?>" />
                 <div class="cleaner h10"></div>
 				
 				<label for="sujetContact">Sujet:</label>

@@ -6,7 +6,7 @@ require('fonctions.php');
 <html lang="fr">
 <head>
 	<title>Objectif Stage</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="Description" content="Plateforme de gestion des stages de l'UNC." />
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -37,7 +37,7 @@ require('fonctions.php');
                 $redirect = basename($_SERVER["SCRIPT_FILENAME"], '.php');
                 echo '<div id="login_link" >Veuillez vous connecter<br/><a href="#" onclick="document.getElementById(\'login_form\').style.display=\'\'; document.getElementById(\'login_link\').style.display=\'none\';">Connexion</a></div>
                 <div id="login_form" style="display:none"><form action="login';
-                if (isset($_GET[redirect])) echo "?redirect=".$_GET[redirect];
+                if (isset($_GET['redirect'])) echo "?redirect=".$_GET['redirect'];
                 echo '" method="POST" id="login">
                 <input type="hidden" name="login" value=""/>
                 <input style="width: 220px;" placeholder="Votre e-mail" type="email" name="identifiant" id="identifiant" maxlength="100" required="required" /><br />
@@ -51,11 +51,11 @@ require('fonctions.php');
     
     <div id="menu">
     	<ul>
-        	<li><a href="/" class="accueil"><span></span></a></li>
-            <li><a href="/services" class="services"><span></span></a></li>
-            <li><a href="/documents" class="documents"><span></span></a></li>
-            <li><a href="/compte" class="compte"><span></span></a></li>
-            <li><a href="/contact" class="contact"><span></span></a></li>
+        	<li><a href="./" class="accueil"><span></span></a></li>
+            <li><a href="./services" class="services"><span></span></a></li>
+            <li><a href="./documents" class="documents"><span></span></a></li>
+            <li><a href="./compte" class="compte"><span></span></a></li>
+            <li><a href="./contact" class="contact"><span></span></a></li>
 		</ul>
     </div>
     

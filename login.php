@@ -1,36 +1,36 @@
 <?php 
 $loginreq=0;
 include('all.header.php'); 
-if (isset($_POST[login])) {
-    // Chargement des paramètres de la DB
+if (isset($_POST['login'])) {
+    // Chargement des paramï¿½tres de la DB
     require('sqlconf.php');
     
     // Connection SQL
     $dblink = mysqli_connect($sqlserver,$sqlid,$sqlpwd,$sqldb) or die("Erreur de connection au server SQL: ".mysqli_error($dblink));
     
-    // Requète SQL
-    $login=$_POST[identifiant];
+    // Requï¿½te SQL
+    $login=$_POST['identifiant'];
     $login=str_replace("'","\'",$login);
     $salt="756f13fba8e472eff61c673d3df596d9";
-    $mdp=md5($_POST[mdp].$salt);
+    $mdp=md5($_POST['mdp'].$salt);
     $query = "SELECT COUNT(*) as 'existant', valideEtud, dateInscriptionEtud, idEtud FROM etudiants WHERE ((mailEtud = '".$login."' AND  mdpEtud = '".$mdp."') OR (mailPersoEtud = '".$login."' AND  mdpEtud = '".$mdp."'))";
     $query2 = "SELECT COUNT(*) as 'existant', idEnt, valideEnt FROM entreprises WHERE (mailEnt = '".$login."' AND  mdpEnt = '".$mdp."')";
     $query3 = "SELECT COUNT(*) as 'existant' FROM administrateurs WHERE (mailAdmin = '".$login."' AND  mdpAdmin = '".$mdp."')";
     
     
-    // Exécution de la requète
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-    $result2 = mysqli_query($dblink, $query2) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-    $result3 = mysqli_query($dblink, $query3) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
+    // Exï¿½cution de la requï¿½te
+    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requï¿½te SQL: ".mysqli_error($dblink));
+    $result2 = mysqli_query($dblink, $query2) or die("Erreur lors de la requï¿½te SQL: ".mysqli_error($dblink));
+    $result3 = mysqli_query($dblink, $query3) or die("Erreur lors de la requï¿½te SQL: ".mysqli_error($dblink));
     $data = mysqli_fetch_assoc($result);
     $data2 = mysqli_fetch_assoc($result2);
     $data3 = mysqli_fetch_assoc($result3);
     
-    //check validité compte étudiant - expiration date 
-    if ((strtotime("now")-strtotime($data[dateInscriptionEtud])>(31556926*2)) && (isset($data[dateInscriptionEtud]))) {
-        //cas ou inscription expirée 
+    //check validitï¿½ compte ï¿½tudiant - expiration date 
+    if ((strtotime("now")-strtotime($data['dateInscriptionEtud'])>(31556926*2)) && (isset($data['dateInscriptionEtud']))) {
+        //cas ou inscription expirï¿½e 
         $setvalide ="DELETE FROM Etudiants WHERE mailEtud = '".$login."' AND  mdpEtud = '".$mdp."'";
-        $setvalideresult = mysqli_query($dblink, $setvalide) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
+        $setvalideresult = mysqli_query($dblink, $setvalide) or die("Erreur lors de la requï¿½te SQL: ".mysqli_error($dblink));
         include('all.footer.php'); 
         ?>
         <script> 
@@ -40,23 +40,23 @@ if (isset($_POST[login])) {
          <?php
          die();
     }
-    if ($data[existant]==1 || $data2[existant]==1 || $data3[existant]==1) {
-        if (($data[valideEtud]==1) || ($data2[valideEnt]==1 || $data3[existant]==1)) { //mettre à 1 dès que valide
-            $_SESSION[identifiant] = $login;
-            $_SESSION[mdp] = $mdp;
+    if ($data['existant']==1 || $data2['existant']==1 || $data3['existant']==1) {
+        if (($data['valideEtud']==1) || ($data2['valideEnt']==1 || $data3['existant']==1)) { //mettre ï¿½ 1 dï¿½s que valide
+            $_SESSION['identifiant'] = $login;
+            $_SESSION['mdp'] = $mdp;
             if (strpos($login, "etudiant.univ-nc.nc")) {
-                $_SESSION[type] = "etudiants";
-                $_SESSION[idEtud] = $data[idEtud];
-            } else if ($data2[existant]==1) {
-                $_SESSION[type] = "entreprises";
-                $_SESSION[idEnt] = $data2[idEnt];
+                $_SESSION['type'] = "etudiants";
+                $_SESSION['idEtud'] = $data['idEtud'];
+            } else if ($data2['existant']==1) {
+                $_SESSION['type'] = "entreprises";
+                $_SESSION['idEnt'] = $data2['idEnt'];
                 } else {
-                    $_SESSION[type]= "admin";
+                    $_SESSION['type']= "admin";
                 }
-            if (isset($_GET[redirect])) {
-                $redirect = $_GET[redirect];
+            if (isset($_GET['redirect'])) {
+                $redirect = $_GET['redirect'];
             } else {
-                $redirect = "/";
+                $redirect = "./";
             }
             header('Location: '.$redirect);
             die();
@@ -82,7 +82,7 @@ if (isset($_POST[login])) {
     ?>
 <h1>Connexion</h1>
 <div class="centrer">
-    <form action="login<?php if (isset($_GET[redirect])) echo "?redirect=".$_GET[redirect]; ?>" method="POST" id="login">
+    <form action="login<?php if (isset($_GET['redirect'])) echo "?redirect=".$_GET['redirect']; ?>" method="POST" id="login">
         <input type="hidden" name="login" value=""/>
         
     	<input placeholder="Votre identifiant (E-mail)" type="email" name="identifiant" id="identifiant" maxlength="100" required="required" />
