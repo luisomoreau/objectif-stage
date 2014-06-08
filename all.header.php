@@ -1,4 +1,5 @@
 <?php
+require('settings.php');
 require('logincheck.php');
 require('fonctions.php');
 ?>

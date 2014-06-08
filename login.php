@@ -11,7 +11,6 @@ if (isset($_POST['login'])) {
     // Requ�te SQL
     $login=$_POST['identifiant'];
     $login=str_replace("'","\'",$login);
-    $salt="756f13fba8e472eff61c673d3df596d9";
     $mdp=md5($_POST['mdp'].$salt);
     $query = "SELECT COUNT(*) as 'existant', valideEtud, dateInscriptionEtud, idEtud FROM etudiants WHERE ((mailEtud = '".$login."' AND  mdpEtud = '".$mdp."') OR (mailPersoEtud = '".$login."' AND  mdpEtud = '".$mdp."'))";
     $query2 = "SELECT COUNT(*) as 'existant', idEnt, valideEnt FROM entreprises WHERE (mailEnt = '".$login."' AND  mdpEnt = '".$mdp."')";
