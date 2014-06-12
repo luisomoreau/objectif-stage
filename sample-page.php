@@ -66,7 +66,7 @@ $auth = phpCAS::checkAuthentication();
             <?php $user = phpCAS::getUser();
 
             ?>
-            <p>Nom d'utilisateur <b><?php echo get_ldap_datas($user);?></b>.</p>
+            <p>Mail <b><?php echo get_ldap_datas($user);?></b>.</p>
             <p><a href="?logout=">Se déconnecter</a></p><?php
         } else {
             // Demande d'authentification par le CAS
