@@ -10,6 +10,8 @@ require('fonctions.php');
 require_once 'config.php';
 // Load the CAS lib
 require_once $phpcas_path . '/CAS.php';
+//Info utilisateurs
+require('users/userinfo.php');
 
 // Uncomment to enable debugging
 phpCAS::setDebug();
@@ -60,6 +62,11 @@ $auth = phpCAS::checkAuthentication();
             ?>
             <h1>Successfull Authentication!</h1>
             <p>Nom d'utilisateur <b><?php echo phpCAS::getUser(); ?></b>.</p>
+            <p><a href="?logout=">Se déconnecter</a></p>
+            <?php $user = phpCAS::getUser();
+
+            ?>
+            <p>Nom d'utilisateur <b><?php echo get_ldap_datas($user);?></b>.</p>
             <p><a href="?logout=">Se déconnecter</a></p><?php
         } else {
             // Demande d'authentification par le CAS
