@@ -1,4 +1,7 @@
-@import url("/css/normalize.css");
-@import url("/css/foundation.css");
+@import url("../css/normalize.css");
+@import url("../css/foundation.css");
+h1 {
+  color: blue; }
+
 /* Now you should be able to custom the stylesheet below */
 /*---------------Header----------------*/
