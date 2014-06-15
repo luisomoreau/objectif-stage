@@ -5780,25 +5780,15 @@ table {
 .color-11 {
   background: white; }
 
-.black, .black .top-bar-section .dropdown, .black .top-bar-section .dropdown li a, .black
-.top-bar-section .dropdown li.title h5 a,
-.black .page,
-.black .top-bar-section .dropdown .page,
-.black
-.top-bar-section .dropdown li.title h5 a .page {
+.black,
+.black .page {
   background: #222;
   color: #FFF; }
 
-body.black, .black .top-bar-section body.dropdown {
+body.black {
   background: #FFF; }
 
-.black h1, .black .top-bar-section .dropdown h1, .black .top-bar-section .dropdown li a h1, .black
-.top-bar-section .dropdown li.title h5 a h1, .black h2, .black .top-bar-section .dropdown h2, .black .top-bar-section .dropdown li a h2, .black
-.top-bar-section .dropdown li.title h5 a h2, .black h3, .black .top-bar-section .dropdown h3, .black .top-bar-section .dropdown li a h3, .black
-.top-bar-section .dropdown li.title h5 a h3, .black h4, .black .top-bar-section .dropdown h4, .black .top-bar-section .dropdown li a h4, .black
-.top-bar-section .dropdown li.title h5 a h4, .black h5, .black .top-bar-section .dropdown h5, .black .top-bar-section .dropdown li a h5, .black
-.top-bar-section .dropdown li.title h5 a h5, .black h6, .black .top-bar-section .dropdown h6, .black .top-bar-section .dropdown li a h6, .black
-.top-bar-section .dropdown li.title h5 a h6 {
+.black h1, .black h2, .black h3, .black h4, .black h5, .black h6 {
   color: #FFF; }
 
 .l-boxed .page {
@@ -5910,140 +5900,13 @@ body.black, .black .top-bar-section body.dropdown {
 .breadcrumbs {
   float: right; }
 
-#admin-menu,
-#toolbar {
-  -webkit-box-shadow: none;
-  box-shadow: none; }
+.l-footer-columns .block-comment-recent li span {
+  display: block; }
 
-.top-bar .toggle-topbar.menu-icon a span {
-  box-shadow: 0 10px 0 1px #000000, 0 16px 0 1px #000000, 0 22px 0 1px #000000;
-  color: #777777; }
-
-.social-icons li i {
-  font-size: 1em;
-  border-radius: 50%;
-  border: 1px solid #ddd;
-  color: #ddd; }
-
-.social-icons li i:hover {
-  border: 1px solid #fff;
-  color: #fff; }
-
-.social-icons.accent li i {
-  border: 1px solid #fff;
-  color: #fff; }
-
-.social-icons.accent li i:hover {
-  border: 1px solid #aaa;
-  color: #aaa; }
-
-.header-top {
-  background: #999;
-  color: #FFF; }
-  .black .header-top, .black .top-bar-section .dropdown .header-top, .black
-  .top-bar-section .dropdown li.title h5 a .header-top {
-    background: #333;
-    color: #FFF; }
-  .header-top .columns > * {
-    font-size: 0.8125rem; }
-
-.contain-to-grid, .top-bar {
-  background: #FFF;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02); }
-  .black .contain-to-grid, .black .top-bar-section .dropdown .contain-to-grid, .black
-  .top-bar-section .dropdown li.title h5 a .contain-to-grid, .black .top-bar, .black .top-bar-section .dropdown .top-bar, .black
-  .top-bar-section .dropdown li.title h5 a .top-bar {
-    background: #222; }
-
-.top-bar.expanded .title-area {
-  background: #FFFFFF; }
-
-.top-bar .name h1 a {
-  background: #fff;
-  font-weight: 300;
-  font-size: 2.0625rem;
-  color: #000; }
-  .black .top-bar .name h1 a, .black
-  .top-bar-section .dropdown li.title h5 a .top-bar .name h1 a {
-    background: #222;
-    color: #FFF; }
-
-@media only screen and (max-width: 768px) {
-  .top-bar li.name h1 a {
-    font-size: 1.125rem; } }
-.top-bar-section, .top-bar-section ul, .top-bar-section li a:not(.button) {
-  background: transparent; }
-
-.top-bar-section .dropdown {
-  background: #FFF;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.2); }
-  .top-bar-section .dropdown li a,
-  .top-bar-section .dropdown li.title h5 a {
-    color: #333333; }
-  .top-bar-section .dropdown li a:hover {
-    color: white; }
-
-.top-bar-section ul li:hover > a,
-.top-bar-section li a:not(.button):hover {
-  background: transparent; }
-
-.top-bar-section .main-nav > li > a:not(.button) {
-  font-weight: 400;
-  font-size: 0.8125rem;
-  text-transform: uppercase; }
-
-.black .top-bar-section .main-nav > li, .black .top-bar-section .dropdown li a .top-bar-section .main-nav > li {
-  background: #222; }
-.top-bar-section .color-1 li a:hover {
-  background: #e60000; }
-.top-bar-section .color-2 li a:hover {
-  background: #ff751a; }
-.top-bar-section .color-3 li a:hover {
-  background: #fbb820; }
-.top-bar-section .color-4 li a:hover {
-  background: #94e107; }
-.top-bar-section .color-5 li a:hover {
-  background: #009ae7; }
-.top-bar-section .color-6 li a:hover {
-  background: #653fc8; }
-.top-bar-section .color-7 li a:hover {
-  background: #9b59b6; }
-.top-bar-section .color-8 li a:hover {
-  background: #34495e; }
-.top-bar-section .color-9 li a:hover {
-  background: magenta; }
-.top-bar-section .color-10 li a:hover {
-  background: black; }
-.top-bar-section .color-11 li a:hover {
-  background: white; }
-
-/* //////////////////////////  TitleBar /////////////////////////  */
-.titlebar {
-  background: #E8E9EA; }
-  .black .titlebar, .black .top-bar-section .dropdown .titlebar, .black
-  .top-bar-section .dropdown li.title h5 a .titlebar {
-    background: #292929; }
-  .titlebar .button.secondary {
-    font-size: 0.75rem;
-    padding: 2px 4px; }
-  .titlebar .title {
-    font-size: 2.714em;
-    line-height: 1.265em;
-    color: #444; }
-    .black .titlebar .title, .black .top-bar-section .dropdown li a .titlebar .title {
-      color: #EEE; }
-  .titlebar .subtitle {
-    color: #DDD; }
-
-.breadcrumbs {
-  background: none;
-  border: none; }
-  .breadcrumbs, .breadcrumbs a, .breadcrumbs > .current a {
-    color: #444; }
-    .black .breadcrumbs, .black .top-bar-section .dropdown .breadcrumbs, .black
-    .top-bar-section .dropdown li.title h5 a .breadcrumbs, .black .breadcrumbs a, .black .top-bar-section .dropdown .breadcrumbs a, .black
-    .top-bar-section .dropdown li.title h5 a .breadcrumbs a, .black .breadcrumbs > .current a, .black .top-bar-section .dropdown li a .breadcrumbs > .current a {
-      color: #ccc; }
+.l-footer {
+  margin-bottom: 0; }
+  .l-footer section.block {
+    padding: 0; }
 
 .titlebar {
   padding-bottom: 15px;
@@ -6059,3 +5922,6 @@ body.black, .black .top-bar-section body.dropdown {
 
 .top-bar .toggle-topbar.menu-icon a span {
   box-shadow: 0px 10px 0 1px #fff, 0px 16px 0 1px #fff, 0px 22px 0px 1px #fff; }
+
+.l-footer-columns .block {
+  padding: 50px 0; }

@@ -1,0 +1,14 @@
+// Non-modular or client styles for .l-footer region.
+
+.l-footer-columns {
+  .block-comment-recent li span {
+    display: block;
+  }
+}
+
+.l-footer {
+  margin-bottom:0;
+  section.block {
+    padding: 0;
+  }
+}

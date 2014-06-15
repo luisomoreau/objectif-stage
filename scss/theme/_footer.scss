@@ -1,0 +1,42 @@
+
+$l-footer-columns-bg: #272727;
+$l-footer: #1f1f1f;
+
+.l-footer, .l-footer-columns {
+  color: #FFF;
+  a {
+    color: #FFF;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+
+.l-footer-columns {
+  background: $l-footer-columns-bg;
+  .block-title {
+    font-size: em-calc(16);
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .block-comment-recent li span {
+    font-size: 13px;
+    opacity: 0.4;
+  }
+}
+
+.l-footer {
+  background: $l-footer;
+  border: none;
+}
+
+.l-footer {  
+  color: #777;
+  a {
+    color: #ddd;
+  }
+  & h1, & h2, & h3, & h4, & h5, & h6 {
+    color: #FFF;
+  }
+}
