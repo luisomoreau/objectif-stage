@@ -4,6 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Foundation | Welcome</title>
+    <!--<link rel="stylesheet" href="scss/custom2.css"/>-->
     <link rel="stylesheet" href="scss/custom.css"/>
     <script src="js/vendor/custom.modernizr.js"></script>
 </head>

@@ -1,20 +1,30 @@
-@import 'variables';
-@import url('../css/normalize.css');
-@import url('../css/foundation.css');
-@import "base/init";
-@import "layout/global";
-@import "layout/header";
-@import "layout/main";
-@import "layout/aside";
-@import "layout/triptych";
-@import "layout/footer";
+@charset "UTF-8";
+@import "variables";
+@import "foundation";
+@import "normalize";
 @import "theme/global";
-@import "theme/section";
-@import "theme/table";
+@import "layout/header";
+//@import "layout/footer";
 @import "theme/header";
-@import "theme/blocks";
-@import "theme/footer";
-h1{color:blue;}
-/* Now you should be able to custom the stylesheet below */
+//@import "theme/footer";
 
-/*---------------Header----------------*/
+.titlebar {
+  padding-bottom: 15px;
+  background-color: #57BFEB;
+}
+
+.titlebar .title {
+  color: #FFFFFF;
+  font-weigth:600;
+  text-shadow: 5px 4px 0 rgba(0,0,0,0.15);
+}
+
+.top-bar-section li:not(.has-form) a:not(.button) {
+  background: transparent;
+}
+
+.top-bar .toggle-topbar.menu-icon a span {
+  box-shadow: 0px 10px 0 1px #fff,
+  0px 16px 0 1px #fff,
+  0px 22px 0px 1px #fff;
+}
