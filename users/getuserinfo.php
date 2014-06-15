@@ -7,11 +7,11 @@
  */
 //variables
 $connexion = FALSE;
-$hostname = 'ldaps://ldap.univ-nc.nc';
-$port = 389;
+$hostname = 'ldap://ldap.univ-nc.nc';
+$port = 636;
 $dn = 'dc=univ-nc, dc=nc';
 echo "Connexion au serveur <br />";
-$connexion=ldap_connect($hostname);
+$connexion=ldap_connect($hostname,$port);
 
 // on teste : le serveur LDAP est-il trouvé ?
 if ($connexion)
@@ -44,7 +44,7 @@ else
 par exemple, sur tous les noms commençant par B */
 
 echo "Recherche suivant le filtre (uid=nbrengard) <br />";
-$query = "uid=falet";
+$query = "uid=nbrengard";
 $result=ldap_search($connexion, $dn, $query);
 echo "Le résultat de la recherche est $result <br />";
 
@@ -55,10 +55,11 @@ $info = ldap_get_entries($connexion, $result);
 echo "Données pour ".$info["count"]." entrées:<p />";
 
 for ($i=0; $i < $info["count"]; $i++) {
-    echo "dn est : ". $info[$i]["cn"] ."<br />";
-    echo "premiere entree cn : ". $info[$i]["cn"][0] ."<br />";
-    echo "Numéro de téléphone : ". $info[$i]["telephonenumber"][0] ."<br />";
-    echo "premier email : ". $info[$i]["mail"][0] ."<p />";
+    echo "dn est : ". $info[$i]["dn"] ."<br />";
+    echo "Nom complet : ". $info[$i]["cn"][0] ."<br />";
+    echo "Email : ". $info[$i]["mail"][0] ."<br />";
+    echo "Numéro de téléphone : ". $info[$i]["telephonenumber"][0] ."<p />";
+    echo "Année :". $info[$i]["supannetucursusanne"][0]. "<p />";
 }
 /* 4ème étape : clôture de la session  */
 echo "Fermeture de la connexion";
