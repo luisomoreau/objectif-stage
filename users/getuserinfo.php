@@ -43,9 +43,9 @@ else
 /* 3ème étape : on effectue une recherche anonyme, avec le dn de base,
 par exemple, sur tous les noms commençant par B */
 
-echo "Recherche suivant le filtre (uid=falet) <br />";
+echo "Recherche suivant le filtre (uid=nbrengard) <br />";
 $query = "uid=falet";
-$result=ldap_search($connexion, $baseDN, $query);
+$result=ldap_search($connexion, $dn, $query);
 echo "Le résultat de la recherche est $result <br />";
 
 echo "Le nombre d'entrées retournées est ";
@@ -57,9 +57,9 @@ echo "Données pour ".$info["count"]." entrées:<p />";
 for ($i=0; $i < $info["count"]; $i++) {
     echo "dn est : ". $info[$i]["cn"] ."<br />";
     echo "premiere entree cn : ". $info[$i]["cn"][0] ."<br />";
+    echo "Numéro de téléphone : ". $info[$i]["telephonenumber"][0] ."<br />";
     echo "premier email : ". $info[$i]["mail"][0] ."<p />";
 }
 /* 4ème étape : clôture de la session  */
 echo "Fermeture de la connexion";
 ldap_close($connexion);
-?>
