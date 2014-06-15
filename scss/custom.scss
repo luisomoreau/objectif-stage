@@ -1,6 +1,19 @@
+@import 'variables';
 @import url('../css/normalize.css');
 @import url('../css/foundation.css');
-
+@import "base/init";
+@import "layout/global";
+@import "layout/header";
+@import "layout/main";
+@import "layout/aside";
+@import "layout/triptych";
+@import "layout/footer";
+@import "theme/global";
+@import "theme/section";
+@import "theme/table";
+@import "theme/header";
+@import "theme/blocks";
+@import "theme/footer";
 h1{color:blue;}
 /* Now you should be able to custom the stylesheet below */
 
