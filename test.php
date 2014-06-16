@@ -71,7 +71,15 @@
             </div>
         </div>
     </section>
+    //fin header
 
+    <section class="row">
+        <div class="small-2 small-10">
+            <h1>Hello !</h1>
+        </div>
+    </section>
+
+    //debut footer
     <section class="l-footer-columns">
         <div class="row">
             <div class="footer-first large-3 columns">
