@@ -5898,7 +5898,7 @@ body.black, .black .top-bar-section body.dropdown {
   top: 35px; }
 
 .titlebar {
-  margin-bottom: 50px; }
+  margin-bottom: 10px; }
   .titlebar .button.secondary {
     margin: 2px; }
   .titlebar .title {
