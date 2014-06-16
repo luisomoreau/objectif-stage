@@ -4,11 +4,10 @@
 @import "foundation";
 @import "normalize";
 @import "theme/global";
-@import "theme/header";
-@import "theme/footer";
 @import "layout/header";
 @import "layout/footer";
-
+@import "theme/header";
+@import "theme/footer";
 
 .titlebar {
   padding-bottom: 15px;
@@ -32,5 +31,5 @@
 }
 
 .l-footer-columns .block {
-  padding:50px 0;
+  padding: 50px 0;
 }

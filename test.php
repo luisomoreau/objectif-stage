@@ -71,15 +71,20 @@
             </div>
         </div>
     </section>
-    //fin header
+    <!--fin header-->
 
     <section class="row">
-        <div class="small-2 small-10">
-            <h1>Hello !</h1>
+        <div class="small-12 columns">
+            <h1>Bienvenue sur la plateforme de stages !!!</h1>
         </div>
     </section>
+    <section class="row">
+        <p>
+            Pour commencer connectez vous !
+        </p>
+    </section>
 
-    //debut footer
+    <!--debut footer-->
     <section class="l-footer-columns">
         <div class="row">
             <div class="footer-first large-3 columns">
