@@ -46,7 +46,7 @@ $auth = phpCAS::checkAuthentication();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stages UNC</title>
     <link rel="stylesheet" href="scss/custom.css" />
-    <script src="js/vendor/modernizr.js"></script>
+    <script src="js/vendor/custom.modernizr.js"></script>
 </head>
 
 <body>

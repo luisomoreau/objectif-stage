@@ -86,7 +86,7 @@
   height: 70px;
   @media #{$small} {
     height: 100px;
-    width:100px;
+    width:116px;
   }
   .fixed & {
     @media #{$small} {
@@ -99,8 +99,11 @@
 
 .top-bar-section .main-nav > li > a:not(.button) {
   line-height: 100px;
+  font-height:600;
+  font-size: 12px;
   &.has-icon {
     line-height: 25px;
+    font-size: 12px;
     @media #{$small} {
       text-align: center;
     }
@@ -113,7 +116,7 @@
   min-width: 100px;
   i {
     display: block;
-    font-size: 2.5em;
+    font-size: 3.5em;
     display: inline-block;
     padding: 10px 10px 0 30px;
     @media #{$small} {
@@ -129,6 +132,7 @@
 }
 .top-bar-section .main-nav > .has-dropdown > a.has-icon {
   padding-right: 15px !important;
+  font-size: 12px;
   &:after {
     border: none;
   }

@@ -5857,16 +5857,19 @@ body.black, .black .top-bar-section body.dropdown {
   @media only screen and (min-width: 40.063em) {
     .top-bar-section > ul > li > a {
       height: 100px;
-      width: 100px; } }
+      width: 116px; } }
   @media only screen and (min-width: 40.063em) {
     .fixed .top-bar-section > ul > li > a {
       height: 70px; } }
 
 .top-bar-section .main-nav > li > a:not(.button) {
   line-height: 100px;
+  font-height: 600;
+  font-size: 12px;
   min-width: 100px; }
   .top-bar-section .main-nav > li > a:not(.button).has-icon {
-    line-height: 25px; }
+    line-height: 25px;
+    font-size: 12px; }
     @media only screen and (min-width: 40.063em) {
       .top-bar-section .main-nav > li > a:not(.button).has-icon {
         text-align: center; } }
@@ -5875,7 +5878,7 @@ body.black, .black .top-bar-section body.dropdown {
         line-height: 70px; } }
   .top-bar-section .main-nav > li > a:not(.button) i {
     display: block;
-    font-size: 2.5em;
+    font-size: 3.5em;
     display: inline-block;
     padding: 10px 10px 0 30px; }
     @media only screen and (min-width: 40.063em) {
@@ -5887,7 +5890,8 @@ body.black, .black .top-bar-section body.dropdown {
         display: none; } }
 
 .top-bar-section .main-nav > .has-dropdown > a.has-icon {
-  padding-right: 15px !important; }
+  padding-right: 15px !important;
+  font-size: 12px; }
   .top-bar-section .main-nav > .has-dropdown > a.has-icon:after {
     border: none; }
 
