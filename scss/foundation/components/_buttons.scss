@@ -13,7 +13,7 @@ $include-html-button-classes: $include-html-classes !default;
 $button-tny: rem-calc(10) !default;
 $button-sml: rem-calc(14) !default;
 $button-med: rem-calc(16) !default;
-$button-lrg: rem-calc(18) !default;
+$button-lrg: rem-calc(30) !default; /**18***/
 
 // We use this to control the display property.
 $button-display: inline-block !default;
