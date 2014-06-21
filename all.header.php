@@ -41,7 +41,7 @@ require('fonctions.php');
                 </ul>
                 <section class="top-bar-section">
                     <ul id="main-menu" class="main-nav">
-                        <li class="first leaf color-1"><a href="./index2" class="has-icon active"><i class="fi-home"></i>Accueil</a></li>
+                        <li class="first leaf color-1"><a href="./index" class="has-icon active"><i class="fi-home"></i>Accueil</a></li>
                         <?php
                             if (isset($_SESSION['connected'])) {
                                 echo '
