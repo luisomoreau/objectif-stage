@@ -1,3 +1,4 @@
+<div id="footer">
 <section class="l-footer-columns">
     <div class="row">
         <div class="footer-first large-3 columns">
@@ -66,10 +67,23 @@
     </div>
 </footer>
 </div>
+</div>
 <script src="js/vendor/jquery.js"></script>
 <script src="js/foundation.min.js"></script>
 <script>
     $(document).foundation();
+    $(window).bind("load resize", function () {
+        var footer = $("#footer");
+        var pos = footer.position();
+        var height = $(window).height();
+        height = height - pos.top;
+        height = height - footer.height();
+        if (height > 0) {
+            footer.css({
+                'margin-top': height + 'px'
+            });
+        }
+    });
 </script>
 </body>
 </html>

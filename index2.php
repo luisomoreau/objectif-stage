@@ -1,13 +1,25 @@
 <?php
-    include('logincheck2.php');
+    session_start();
+    //include('logincheck2.php');
     include("all.header2.php");
     echo '<section class="row">
             <div class="small-12 columns">
                 <h1>Bienvenue sur la plateforme de Stage de l\'UNC</h1>
             </div>
          </section>';
-    if ($auth) {
+    if (!(isset($_SESSION['connected']))) {
         echo '
+    <section class="row">
+        <div class="large-6 column">
+            <a href="./loginetud" class="large button expand">Vous êtes un étudiant</a>
+        </div>
+        <div class="large-6 column">
+            <a href="#" class="large button expand">Vous êtes une entreprise</a>
+        </div>
+    </section>';
+    } else {
+        if ($_SESSION["connected"]=="etud") {
+            echo '
     <section class="row">
         <div class="large-6 column">
             <a href="#" class="large button expand">Accédez à la liste des stages</a>
@@ -16,17 +28,9 @@
             <a href="#" class="large button expand">Accédez à la liste des entreprises</a>
         </div>
     </section>';
-    } else {
-        echo '
-    <section class="row">
-        <div class="large-6 column">
-            <a href="?login=" class="large button expand">Vous êtes un étudiant</a>
-        </div>
-        <div class="large-6 column">
-            <a href="#" class="large button expand">Vous êtes une entreprise</a>
-        </div>
-    </section>';
+        }
     }
+
     echo '    <section class="row">
         <div class="large-12">
             <p>

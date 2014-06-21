@@ -1,17 +1,32 @@
 <?php
-    include('all.header.php');
-    if ($_SESSION['type']==="etudiants") {
+    include('logincheck2.php');
+    include('all.header2.php');
+    if ($_SESSION['connected']==="etud") {
+        echo '<section class="row">
+            <div class="small-12 columns">
+                <h1>Les Services</h1>
+            </div>
+         </section>';
+        echo '
+        <section class="row">
+            <div class="large-6 column">
+                <a href="./listestages" class="large button expand">Liste des stages</a>
+            </div>
+            <div class="large-6 column">
+                <a href="./listeentreprises" class="large button expand">Liste des entreprises</a>
+            </div>
+        </section><section class="row"></section> ';
 ?>
-        <div class="col_23 float_l">
-        <h1>Services</h1>
-            <a href="listestages"><button class="big_button">Liste des stages</button></a>
-            <a href="listeentreprises"><button class="big_button">Liste des entreprises</button></a>
-        </div>
-        <div class="col_13 float_r">
-            <div class="cleaner h20"></div>
-            <h4>Informations</h4>
-            <p>Voici les services qui vous sont proposés par la plateforme.</p>
-        </div>
+<!--        <div class="col_23 float_l">-->
+<!--        <h1>Services</h1>-->
+<!--            <a href="listestages"><button class="big_button">Liste des stages</button></a>-->
+<!--            <a href="listeentreprises"><button class="big_button">Liste des entreprises</button></a>-->
+<!--        </div>-->
+<!--        <div class="col_13 float_r">-->
+<!--            <div class="cleaner h20"></div>-->
+<!--            <h4>Informations</h4>-->
+<!--            <p>Voici les services qui vous sont proposés par la plateforme.</p>-->
+<!--        </div>-->
         
 <?php
     } else if ($_SESSION['type']==="entreprises") {
@@ -53,5 +68,5 @@
             header('Location: index');
             die();
         }
-    include('all.footer.php');
+    include('all.footer2.php');
 ?>

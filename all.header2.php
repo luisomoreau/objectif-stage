@@ -41,17 +41,21 @@ require('fonctions.php');
                 </ul>
                 <section class="top-bar-section">
                     <ul id="main-menu" class="main-nav">
-                        <li class="first leaf color-1"><a href="./" class="has-icon active"><i class="fi-home"></i>Accueil</a></li>
-                        <li class="expanded color-2" title=""><a href="./etudiant" title="" class="has-icon"><i class="fi-address-book"></i>Services</a>
+                        <li class="first leaf color-1"><a href="./index2" class="has-icon active"><i class="fi-home"></i>Accueil</a></li>
+                        <?php
+                            if (isset($_SESSION['connected'])) {
+                                echo '
+                                    <li class="expanded color-2" title=""><a href="./services" title="" class="has-icon"><i class="fi-address-book"></i>Services</a></li>
+                                    <li class="leaf color-3"><a href="./documents" class="has-icon"><i class="fi-page"></i>documents</a></li>
+                                    <li class="last leaf color-4"><a href="./compte" class="has-icon"><i class="fi-torso"></i>Mon compte</a></li></ul>
+                                ';
+                            }
+                        ?>
 <!--                            <ul class="dropdown">-->
 <!--                                <li class="expanded color-2 show-for-small"><a href="/etudiant" title="">Espace étudiant</a>-->
 <!--                                <li class="first leaf" target="_blank"><a href="http://lee.univ-nc.nc/cgi-bin/WebObjects/ipWeb.woa" target="_blank">Notes</a></li>-->
 <!--                                <li class="last leaf" target="_blank"><a href="http://tic.univ-nc.nc/" target="_blank">Campus virtuel</a></li>-->
 <!--                            </ul>-->
-                        </li>
-                        <li class="leaf color-3"><a href="./documents" class="has-icon"><i class="fi-page"></i>documents</a></li>
-                        <li class="last leaf color-4"><a href="./compte" class="has-icon"><i class="fi-torso"></i>Mon compte</a></li>
-                    </ul>
                 </section>
             </nav>
         </div>
@@ -62,11 +66,11 @@ require('fonctions.php');
                 <h1 id="page-title" class="title">Accueil</h1>
             </div>
             <div class="large-4 columns" style="margin-top:50px;">
-                <?php
-                    if ($auth) {
-                        echo '<div>Bonjour '.phpCAS::getUser().' | <a href="?logout=">Déconnexion</a></div>';
-                    }
-                ?>
+<!--                --><?php
+//                    if ($auth) {
+//                        echo '<div>Bonjour '.phpCAS::getUser().' | <a href="?logout=">Déconnexion</a></div>';
+//                    }
+//                ?>
 
             </div>
         </div>
