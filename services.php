@@ -1,6 +1,6 @@
 <?php
     include('logincheck2.php');
-    include('all.header2.php');
+    include('all.header.php');
     if ($_SESSION['connected']==="etud") {
         echo '<section class="row">
             <div class="small-12 columns">
@@ -15,7 +15,7 @@
             <div class="large-6 column">
                 <a href="./listeentreprises" class="large button expand">Liste des entreprises</a>
             </div>
-        </section><section class="row"></section> ';
+        </section> ';
 ?>
 <!--        <div class="col_23 float_l">-->
 <!--        <h1>Services</h1>-->
@@ -68,5 +68,5 @@
             header('Location: index');
             die();
         }
-    include('all.footer2.php');
+    include('all.footer.php');
 ?>
