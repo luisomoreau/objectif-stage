@@ -1,6 +1,8 @@
 <?php
 include('all.header.php');
-if($_SESSION['type'] == "etudiants" || ($_SESSION['type'] === "admin" && isset($_POST['mailEtud']))) {
+include('logincheck2.php');
+$mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
+if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEtud']))) {
     /** MAJ ETUDIANT **/ 
     
     if (!isset($_POST['mailPersoEtud']) or !isset($_POST['nomEtud']) or !isset($_POST['prenomEtud']) or !isset($_POST['licenceEtud']) or !isset($_POST['sexeEtud']) or !isset($_POST['naissanceJour']) or !isset($_POST['naissanceMois']) or !isset($_POST['naissanceAnnee']) or !isset($_POST['telEtud'])) {
@@ -117,7 +119,7 @@ if($_SESSION['type'] == "etudiants" || ($_SESSION['type'] === "admin" && isset($
         }      
     }
     
-    if($trouveStageEtud!=1) {
+    if(!isset($trouveStageEtud)) {
         $trouveStageEtud=0;
     }
     
@@ -133,41 +135,30 @@ if($_SESSION['type'] == "etudiants" || ($_SESSION['type'] === "admin" && isset($
             }
         }
     }
-    
-    //check'
-    
-    $mdpEtud=str_replace("'","\'",$mdpEtud);
-    $nomEtud=str_replace("'","\'",$nomEtud);
-    $prenomEtud=str_replace("'","\'",$prenomEtud);
-    $sexeEtud=str_replace("'","\'",$sexeEtud);
-    $naissanceEtud=str_replace("'","\'",$naissanceEtud);
-    $mailPersoEtud=str_replace("'","\'",$mailPersoEtud);
-    $licenceEtud=str_replace("'","\'",$licenceEtud);
-    $telEtud=str_replace("'","\'",$telEtud);
-    $telSecEtud=str_replace("'","\'",$telSecEtud);
-    
+    //protection injection scripte à faire @todo
     if ($mdpEtud==="Defaut123") { 
-        if ($_SESSION['type'] === "admin") {
-            $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
-             mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_POST[mailEtud]'";
+        if ($_SESSION['connected'] === "admin") {
+            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
+             mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=? WHERE mailEtud=?');
+            $stmt->bind_param('ssssssssis', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $_POST['mailEtud']);
         } else {
-            $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
-             mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_SESSION[identifiant]'";
+            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
+             mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=? WHERE userEtud=?');
+            $stmt->bind_param('ssssssssis', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $_SESSION['identifiant']);
         }
     } else {
         if ($_SESSION['type'] === "admin") {
-            $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
-             mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, mdpEtud='$mdpEtud', trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_POST[mailEtud]'";
+            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
+                 mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=?, mdpEtud=? WHERE mailEtud=?');
+            $stmt->bind_param('ssssssssiss', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $mdpEtud, $_POST['mailEtud']);
         } else {
-            $query = "UPDATE etudiants SET nomEtud = '$nomEtud', prenomEtud='$prenomEtud', sexeEtud='$sexeEtud', naissanceEtud='$naissanceEtud',
-             mailPersoEtud='$mailPersoEtud', licenceEtud='$licenceEtud', telEtud='$telEtud', telSecEtud=$telSecEtud, mdpEtud='$mdpEtud', trouveStageEtud='$trouveStageEtud' WHERE mailEtud='$_SESSION[identifiant]'";
+            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
+             mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=?, mdpEtud=? WHERE userEtud=?');
+            $stmt->bind_param('ssssssssiss', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $mdpEtud, $_SESSION['identifiant']);
         }    
         if ($_SESSION['type'] != "admin") $_SESSION['mdp']=$mdpEtud;
     }
-    //echo "<br />".$query."<br />";  
-    // Exécution de la requète
-    $result = mysqli_query($dblink, $query);
-    if (!$result) {
+    if (!($stmt->execute())) {
         echo "Erreur lors de la mise à jour";
         include('all.footer.php');
         die();
@@ -175,7 +166,7 @@ if($_SESSION['type'] == "etudiants" || ($_SESSION['type'] === "admin" && isset($
     header('Location: compte');
     die();
  
-} else if ($_SESSION['type'] == "entreprises" || ($_SESSION['type'] === "admin" && isset($_POST[mailEnt]))) {
+} else if ($_SESSION['connected'] == "entreprises" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEnt']))) {
     /** MAJ ENTREPRISE **/ 
 
     if (!isset($_POST['mdpEnt']) or !isset($_POST['mdpEnt2']) or !isset($_POST['latEnt']) or !isset($_POST['lngEnt']) or !isset($_POST['nomEnt']) or !isset($_POST['mailEnt']) or !isset($_POST['nomContactEnt']) or !isset($_POST['prenomContactEnt']) or !isset($_POST['telEnt']) or !isset($_POST['adresseEnt']) ) {

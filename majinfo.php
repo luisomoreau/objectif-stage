@@ -24,6 +24,7 @@
         $stmt->execute();
         $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $sexeEtud, $naissanceEtud, $telEtud, $telSecEtud);
         $stmt->fetch();
+        $stmt->close();
         $jourEtud = date('d', strtotime($naissanceEtud));
         $moisEtud=date('m', strtotime($naissanceEtud));
         $anneeEtud=date('Y', strtotime($naissanceEtud));
