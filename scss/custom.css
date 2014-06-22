@@ -2593,7 +2593,9 @@ span.error, small.error {
 .error input,
 .error textarea,
 .error select {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  border-color: #c60f13;
+  background-color: rgba(198, 15, 19, 0.1); }
 .error input[type="checkbox"],
 .error input[type="radio"] {
   margin-bottom: 1rem; }
@@ -2624,7 +2626,9 @@ span.error, small.error {
 
 input.error,
 textarea.error {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  border-color: #c60f13;
+  background-color: rgba(198, 15, 19, 0.1); }
 
 label.error {
   color: #f04124; }

@@ -1,6 +1,6 @@
 <?php
+session_start();
 require('settings.php');
-//require('logincheck.php');
 require('fonctions.php');
 ?>
 <!doctype html>

@@ -457,6 +457,8 @@ $select-hover-bg-color: scale-color($select-bg-color, $lightness: -3%) !default;
       textarea,
       select {
         margin-bottom: 0;
+        border-color: #c60f13;
+        background-color: rgba(198,15,19,0.1);
       }
 
       input[type="checkbox"],
@@ -494,6 +496,8 @@ $select-hover-bg-color: scale-color($select-bg-color, $lightness: -3%) !default;
     input.error,
     textarea.error {
       margin-bottom: 0;
+      border-color: #c60f13;
+      background-color: rgba(198,15,19,0.1);
     }
     label.error { @include form-label-error-color; }
   }

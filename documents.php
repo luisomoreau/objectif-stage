@@ -1,5 +1,4 @@
 <?php
-$loginreq=0;
 include('all.header.php');
 ?>
         <h1>Documents utiles</h1>

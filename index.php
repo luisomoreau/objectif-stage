@@ -1,5 +1,4 @@
 <?php
-    session_start();
     //include('logincheck2.php');
     include("all.header.php");
     echo '<section class="row">

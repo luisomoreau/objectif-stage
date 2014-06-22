@@ -1,6 +1,6 @@
 <?php
-    include('logincheck2.php');
     include('all.header.php');
+    include('logincheck2.php');
     if ($_SESSION['connected']==="etud") {
         echo '<section class="row">
             <div class="small-12 columns">
