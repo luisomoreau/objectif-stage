@@ -127,7 +127,7 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
     if ( $_FILES['profilpic']['error'] <= 0 ) {
         if ( exif_imagetype($_FILES['profilpic']['tmp_name']) != false ) {
             if ( $_FILES['profilpic']['size'] <= 2097152 ) {
-                if ($_SESSION['type'] === "admin") {
+                if ($_SESSION['connected'] === "admin") {
                     imageToPng($_FILES['profilpic']['tmp_name'], 250, "fichiers/profile/".md5($_POST['mailEtud']).".png");
                 } else {
                     imageToPng($_FILES['profilpic']['tmp_name'], 250, "fichiers/profile/".md5($_SESSION['identifiant']).".png");

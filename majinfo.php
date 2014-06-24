@@ -79,7 +79,7 @@
             </div>
             <div class="large-4 columns">
                 <label for="profilpic" >Modifier ma photo de profile - <a href="javascript:window.location.reload()">Actualiser</a><br />
-                    <img src="fichiers/profile/<?php echo md5($mailEtud).".png" ?>" alt="Photo de profile" class="img_float_l img_frame" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"' />
+                    <img src="fichiers/profile/<?php echo md5($_SESSION['identifiant']).".png" ?>" alt="Photo de profile" class="img_float_l img_frame" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"' />
                 </label>
                 <input type="file" name="profilpic" id="profilpic"/>
                 <div class="cleaner h10"></div>
@@ -182,7 +182,7 @@
         </div>
         <div class="row">
             <div class="small-12 columns text-center">
-                <input type="checkbox" name="trouveStageEtud" id="trouveStageEtud" value="1" <?php if($trouveStageEtud==="1") { echo 'checked="checked"';}?>/>
+                <input type="checkbox" name="trouveStageEtud" id="trouveStageEtud" value="1" <?php if($trouveStageEtud=="1") { echo 'checked="checked"';}?>/>
                 <label class="checkbox" for="trouveStageEtud">J'ai trouvé un stage</label>
             </div>
         </div>

@@ -62,15 +62,17 @@ require('fonctions.php');
     </header>
     <section class="titlebar ">
         <div class="row">
-            <div class="large-8 columns">
+            <div class="small-8 columns">
                 <h1 id="page-title" class="title">Accueil</h1>
             </div>
-            <div class="large-4 columns" style="margin-top:50px;">
-<!--                --><?php
-//                    if ($auth) {
-//                        echo '<div>Bonjour '.phpCAS::getUser().' | <a href="?logout=">Déconnexion</a></div>';
-//                    }
-//                ?>
+            <div class="small-4 columns">
+                <?php
+                    if (isset($_SESSION['connected'])) {
+                        if ($_SESSION['connected']=="etud") {
+                            echo '<div class="text-right" style="margin-top:50px;">Bonjour '.$_SESSION['identifiant'].' | <a href="./logout">Déconnexion</a></div>';
+                        }
+                    }
+                ?>
 
             </div>
         </div>
