@@ -1,4 +1,5 @@
-<?php 
+<?php
+include('nontraite.php');
 include('all.header.php');
 if ($_SESSION[type]!=="entreprises" && $_SESSION[type]!=="admin") {
     header('Location: /');

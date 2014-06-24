@@ -1,4 +1,5 @@
 <?php
+include('nontraite.php');
     $loginreq=0;
     include('all.header.php');
     if (isset($_GET[valide]) && isset($_GET[mail]) && isset($_GET[type])) {

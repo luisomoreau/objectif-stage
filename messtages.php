@@ -1,4 +1,5 @@
 <?php
+include('nontraite.php');
 include('all.header.php');
 // Chargement des paramètres de la DB
       

@@ -1,4 +1,5 @@
-<?php 
+<?php
+include('nontraite.php');
     include('all.header.php');
     if (!isset($_POST[remuStage]) or !isset($_POST[typeStage]) or !isset($_POST[latStage]) or !isset($_POST[lngStage]) or!isset($_POST[nomStage]) or !isset($_POST[nomContactStage]) or !isset($_POST[prenomContactStage]) or !isset($_POST[mailContactStage]) or !isset($_POST[lieuStage]) or !isset($_POST[dateJourDebutStage]) or !isset($_POST[dateMoisDebutStage]) or !isset($_POST[dateAnneeDebutStage]) or !isset($_POST[dateJourFinStage]) or !isset($_POST[dateMoisFinStage]) or !isset($_POST[dateAnneeFinStage]) or !isset($_POST[dateJourLimiteStage]) or !isset($_POST[dateMoisLimiteStage]) or !isset($_POST[dateAnneeLimiteStage]) or !isset($_POST[sujetStage]) or !isset($_POST[detailsStage])) {
         header('Location: /');

@@ -1,4 +1,5 @@
-<?php 
+<?php
+include('nontraite.php');
     include('all.header.php');
     if ($_SESSION[type] !== "admin") {
         if ($_SESSION[type] == "entreprises" || (!isset($_GET[stage]) && !isset($_GET[ent]) && !isset($_POST[envoi_mail]))) {

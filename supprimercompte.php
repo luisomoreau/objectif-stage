@@ -1,4 +1,5 @@
 <?php
+include('nontraite.php');
 include('all.header.php');
 
 if ($_SESSION[type] !== "admin" || (!isset($_GET[idEtud]) && !isset($_GET[idEnt]))) {

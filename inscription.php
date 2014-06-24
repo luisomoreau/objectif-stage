@@ -1,4 +1,5 @@
 <?php
+include('nontraite.php');
 if(!isset($_POST['typeinscription'])) {
     header('Location: index');
     die(); 

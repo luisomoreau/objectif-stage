@@ -1,4 +1,5 @@
 <?php
+include('nontraite.php');
 include ('all.header.php');
 ?>
         <h1>Liste des entreprises</h1>

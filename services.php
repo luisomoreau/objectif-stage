@@ -1,4 +1,5 @@
 <?php
+include('nontraite.php');
     include('all.header.php');
     include('logincheck2.php');
     if ($_SESSION['connected']==="etud") {

@@ -1,4 +1,5 @@
-<?php 
+<?php
+include('nontraite.php');
 $loginreq=0;
 include('all.header.php');
 

@@ -192,7 +192,7 @@
             </div>
         </div>
     </form>
-<?php
+<?php//@todo entreprise
     } else if ($_SESSION[type] === "entreprises" || (isset($_GET[idEnt]) && $_SESSION[type] === "admin")) {
             // Requète SQL
             if ($_SESSION[type] === "admin") {
