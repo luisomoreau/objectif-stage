@@ -1,3 +1,4 @@
 <?php
-header('location : ./');
-die();
+header('location: ./');
+die("hum");
+?>
