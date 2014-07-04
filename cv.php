@@ -35,7 +35,11 @@ if (file_exists($cv)) {
             </div>
          </section>';
 } else {
-    echo '<p>Vous n\'avez pas encore envoyé votre CV !';
+    echo '<section class="row">
+            <div class="small-12 columns">
+                 <p>Vous n\'avez pas encore uploadé votre cv !</p>
+            </div>
+         </section>';
 }
 ?>
 

@@ -16,10 +16,10 @@
             if (!($stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, licenceEtud,
                                                     sexeEtud, naissanceEtud, telEtud, telSecEtud
                                             FROM Etudiants
-                                            WHERE mailEtud="nicolas.brengard@etudiant.univ-nc.nc"'))) {
+                                            WHERE userEtud=?'))) {
                 echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
-            //$stmt->bind_param('i', $_SESSION['identifiant']);
+            $stmt->bind_param('s', $_SESSION['identifiant']);
         }
         $stmt->execute();
         $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $sexeEtud, $naissanceEtud, $telEtud, $telSecEtud);
