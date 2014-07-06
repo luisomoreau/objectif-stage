@@ -1,9 +1,7 @@
 <?php
     include('all.header.php');
     $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
-    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date dans le passé
-    if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['type'] === "admin")) {
+    if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['connected'] === "admin")) {
         // Requète SQL
         if ($_SESSION['connected'] === "admin") {
             //$query = "SELECT * FROM Etudiants WHERE idEtud='$_GET[idEtud]'";
@@ -13,12 +11,10 @@
             $stmt->bind_param('i', $_GET['idEtud']);
         } else {
             //$query = "SELECT * FROM Etudiants WHERE mailEtud='$_SESSION[identifiant]'";
-            if (!($stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, licenceEtud,
+            $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, licenceEtud,
                                                     sexeEtud, naissanceEtud, telEtud, telSecEtud
                                             FROM Etudiants
-                                            WHERE userEtud=?'))) {
-                echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-            }
+                                            WHERE userEtud=?');
             $stmt->bind_param('s', $_SESSION['identifiant']);
         }
         $stmt->execute();
@@ -31,7 +27,9 @@
         echo '<section class="row">
             <div class="small-12 columns">
                 <h1>Profil Etudiant';
-        if ($_SESSION['connected'] === "admin") echo '<a href="supprimercompte?idEtud=' . $_GET['idEtud'] . '"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>';
+        if ($_SESSION['connected'] === "admin") {
+            echo '<a href="supprimercompte?idEtud=' . $_GET['idEtud'] . '"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>';
+        }
         echo '</h1>
             </div>
          </section>';
@@ -44,7 +42,7 @@
                 <input type="file" name="profilpic" id="profilpic"/>
             </div>
             <div class="large-8 columns">
-                <?php if ($_SESSION['connected'] === "admin") echo '<input type="hidden" name="mailEtud" value="'.$mailEtud.'" />'; ?>
+                <?php if ($_SESSION['connected'] === "admin") { echo '<input type="hidden" name="mailEtud" value="'.$mailEtud.'" />';} ?>
 
                 <div class="row collapse">
                     <div class="small-3 columns">
@@ -129,19 +127,21 @@
             </div>
         </div>
     </form>
-<?php//@todo entreprise
-    } else if ($_SESSION[type] === "entreprises" || (isset($_GET[idEnt]) && $_SESSION[type] === "admin")) {
+<?php
+    } else {
+        if ($_SESSION['connected'] == "ent" || (isset($_GET['idEnt']) && $_SESSION['connected'] === "admin")) {
+            var_dump($_SESSION['connected']);
             // Requète SQL
-            if ($_SESSION[type] === "admin") {
+            if ($_SESSION['connected'] === "admin") {
                 $query = "SELECT * FROM Entreprises WHERE idEnt='$_GET[idEnt]'";
             } else {
                 $query = "SELECT * FROM Entreprises WHERE mailEnt='$_SESSION[identifiant]'";
             }
             // Exécution de la requète
-            $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));  
+            $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
             // Affichage des resultats
             $data = mysqli_fetch_assoc($result);
-            
+            var_dump($_SESSION['connected']);
             $nomEnt=$data[nomEnt];
             $mailEnt=$data[mailEnt];
             $nomContactEnt=$data[nomContactEnt];
@@ -149,124 +149,124 @@
             $telEnt=$data[telEnt];
             $adresseEnt=$data[adresseEnt];
             $telSecEnt=$data[telSecEnt];
-?>
-    <h1>Modif entreprise<?php if ($_SESSION[type] === "admin") echo '<a href="supprimercompte?idEnt='.$_GET[idEnt].'"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>'?></h1>
-    <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
-        <div class="col_13 float_l">
-            <?php if ($_SESSION[type] === "admin") echo '<input type="hidden" name="mailEnt" value='.$mailEnt.' />'; ?>	            
-            <label for="profilpic">Modifier le logo de l'entreprise :<br />
-                <img src="fichiers/profile/<?php echo md5($mailEnt).".png" ?>" alt="Logo de l'entreprise" class="img_float_l img_frame" id="logo" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"'/>
-            </label>
-            <input type="file" name="profilpic" id="profilpic"/>
-            <div class="cleaner h10"></div>	
-                		
-    		<label for="nomEnt">Nom de l'entreprise</label>
-    		<input type="text" name="nomEnt" id="nomEnt" maxlength="100" required="required" value="<?php echo $nomEnt;?>"/>
-    		<div class="cleaner h10"></div>
-            
-    		<label for="mailEnt">Mail entreprise (Identifiant)</label>
-    		<input type="email" name="mailEnt" id="mailEnt" maxlength="100" required="required" value="<?php echo $mailEnt;?>"/>
-            <div class="cleaner h10"></div>
-            
-            <label for="mdpEnt">Mot de passe</label>
-    		<input type="password" name="mdpEnt" id="mdpEnt" maxlength="25" required="required" value="Defaut123" onkeyup="checkPatern('mdpEnt'); return false;"/>
-            <span id="confirmPatern" class="confirmPatern"></span>
-            <div class="cleaner h10"></div>
-             
-            <label for="mdpEnt2">Confirmer mot de passe</label>
-    		<input type="password" name="mdpEnt2" id="mdpEnt2" maxlength="25" required="required" value="Defaut123" onkeyup="checkPass('mdpEnt','mdpEnt2'); return false;"/>
-            <span id="confirmMessage" class="confirmMessage"></span>
-            <div class="cleaner h10"></div>                
-           
-            <label for="prenomContactEnt">Prenom de contact</label>
-    		<input type="text" name="prenomContactEnt" id="prenomContactEnt" maxlength="50" required="required" value="<?php echo $prenomContactEnt;?>"/>
-    		<div class="cleaner h10"></div>
-            
-            <label for="nomContactEnt">Nom de contact</label>
-    		<input type="text" name="nomContactEnt" id="nomContactEnt" maxlength="50" required="required" value="<?php echo $nomContactEnt;?>"/>
-    		<div class="cleaner h10"></div> 
-    	</div>
-        
-        <div class="col_23 float_r">
-            <label>Localisez votre entreprise : </label>
-            <input id="lat" type="hidden" name="latEnt" value="<?php echo $data[latEnt];?>"/>
-            <input id="lng" type="hidden" name="lngEnt" value="<?php echo $data[lngEnt];?>" />        
-            <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
-            type="text/javascript"></script>
-            <div id="map" style="width: 516px; height: 320px"><br/></div>         
-            <script type="text/javascript">
-            //<![CDATA[
-            loadmap(<?php echo json_encode($data[latEnt]);?>,<?php echo json_encode($data[lngEnt]);?>);
-            //]]>
-            </script>            
-    
-            <div class="cleaner h20"></div>              
-            <label for="telEnt">Téléphone </label>
-    		<input placeholder="Principal" type="tel" maxlength="6" name="telEnt" id="telEnt" value="<?php echo $telEnt;?>" onkeyup="verif_nombre(this)" required="required" />
-    		<input placeholder="Secondaire" type="tel" maxlength="6" name="telSecEnt" id="telSecEnt" value="<?php echo $telSecEnt;?>" onkeyup="verif_nombre(this)" />
-    		<div class="cleaner h10"></div>
-            
-            <label for="adresseEnt">Adresse</label>
-    		<textarea name="adresseEnt" id="adresseEnt" maxlength="255" required="required"><?php echo $adresseEnt;?></textarea>
-            
-        </div>
-        <div class="cleaner h40"></div>
-        <div class="centrer"><button type="submit">Mettre à jour mes informations</button></div>
-    </form>
-<?php
-            } else if ($_SESSION[type] === "admin") {
-                    // Requète SQL
-                    $query = "SELECT * FROM Administrateurs WHERE mailAdmin='$_SESSION[identifiant]'";
-                    // Exécution de la requète
-                    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));  
-                    // Affichage des resultats
-                    $data = mysqli_fetch_assoc($result);
-                    
-                    $nomAdmin=$data[nomAdmin];
-                    $prenomAdmin=$data[prenomAdmin];
-                    $mailAdmin=$data[mailAdmin];
-?>
-    <h1>Profil Administrateur</h1>
-    <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEtud') && checkPass('mdpEtud','mdpEtud2'))"> 
-        <div class="col_23 float_l">
-    		<label for="mailAdmin">Identifiant (Non modifiable)</label>
-    		<input placeholder="<?php echo $mailAdmin;?>" type="text" name="mailAdmin" id="mailAdmin" maxlength="100" required="required" disabled="disabled"/>
-        	<div class="cleaner h10"></div>
-            
-    		<label for="mdpAdmin">Mot de passe (Un chiffre, une majuscule, une minuscule, minimum 6 caractères)</label>
-    		<input type="password" name="mdpAdmin" id="mdpAdmin" maxlength="25" required="required" onkeyup="checkPatern('mdpAdmin'); return false;" value="Defaut123"/>
-            <span id="confirmPatern" class="confirmPatern"></span>
-            <div class="cleaner h10"></div>
-            
-            <label for="mdpAdmin2">Confirmer mot de passe</label>
-    		<input type="password" name="mdpAdmin2" id="mdpAdmin2" maxlength="25" required="required" onkeyup="checkPass('mdpAdmin','mdpAdmin2'); return false;" value="Defaut123"/>
-            <span id="confirmMessage" class="confirmMessage"></span>
-            <div class="cleaner h10"></div>
-    
-            <label for="prenomAdmin">Prenom</label>
-    		<input type="text" name="prenomAdmin" id="prenomAdmin" maxlength="50" required="required" value="<?php echo $prenomAdmin;?>"/>
-            <div class="cleaner h10"></div>
-            
-            <label for="nomAdmin">Nom</label>
-    		<input type="text" name="nomAdmin" id="nomAdmin" maxlength="50" required="required" value="<?php echo $nomAdmin;?>" />
-    		<div class="cleaner h10"></div>
-                        
-        </div>
-        
-        <div class="col_13 float_r">
-            <label for="profilpic" >Modifier ma photo de profile - <a href="javascript:window.location.reload()">Actualiser</a><br />
-                <img src="fichiers/profile/<?php echo md5($mailAdmin).".png" ?>" alt="Photo de profile" class="img_float_l img_frame" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"' />
-            </label>
-            <input type="file" name="profilpic" id="profilpic"/>
-            <div class="cleaner h10"></div>	
-        </div>
-		<div class="cleaner h40"></div>
-		<div class="centrer">
-            <button id="envoyer" type="submit">Enregistrer mes informations</button>
-        </div>
-    </form>
+            ?>
+            <h1>Modif entreprise<?php if ($_SESSION['connected'] === "admin") echo '<a href="supprimercompte?idEnt='.$_GET['idEnt'].'"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>'?></h1>
+            <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
+                <div class="col_13 float_l">
+                    <?php if ($_SESSION['connected'] === "admin") echo '<input type="hidden" name="mailEnt" value='.$mailEnt.' />'; ?>
+                    <label for="profilpic">Modifier le logo de l'entreprise :<br />
+                        <img src="fichiers/profile/<?php echo md5($mailEnt).".png" ?>" alt="Logo de l'entreprise" class="img_float_l img_frame" id="logo" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"'/>
+                    </label>
+                    <input type="file" name="profilpic" id="profilpic"/>
+                    <div class="cleaner h10"></div>
 
-<?php
-                }
-include('all.footer.php');
-?>
+                    <label for="nomEnt">Nom de l'entreprise</label>
+                    <input type="text" name="nomEnt" id="nomEnt" maxlength="100" required="required" value="<?php echo $nomEnt;?>"/>
+                    <div class="cleaner h10"></div>
+
+                    <label for="mailEnt">Mail entreprise (Identifiant)</label>
+                    <input type="email" name="mailEnt" id="mailEnt" maxlength="100" required="required" value="<?php echo $mailEnt;?>"/>
+                    <div class="cleaner h10"></div>
+
+                    <label for="mdpEnt">Mot de passe</label>
+                    <input type="password" name="mdpEnt" id="mdpEnt" maxlength="25" required="required" value="Defaut123" onkeyup="checkPatern('mdpEnt'); return false;"/>
+                    <span id="confirmPatern" class="confirmPatern"></span>
+                    <div class="cleaner h10"></div>
+
+                    <label for="mdpEnt2">Confirmer mot de passe</label>
+                    <input type="password" name="mdpEnt2" id="mdpEnt2" maxlength="25" required="required" value="Defaut123" onkeyup="checkPass('mdpEnt','mdpEnt2'); return false;"/>
+                    <span id="confirmMessage" class="confirmMessage"></span>
+                    <div class="cleaner h10"></div>
+
+                    <label for="prenomContactEnt">Prenom de contact</label>
+                    <input type="text" name="prenomContactEnt" id="prenomContactEnt" maxlength="50" required="required" value="<?php echo $prenomContactEnt;?>"/>
+                    <div class="cleaner h10"></div>
+
+                    <label for="nomContactEnt">Nom de contact</label>
+                    <input type="text" name="nomContactEnt" id="nomContactEnt" maxlength="50" required="required" value="<?php echo $nomContactEnt;?>"/>
+                    <div class="cleaner h10"></div>
+                </div>
+
+                <div class="col_23 float_r">
+                    <label>Localisez votre entreprise : </label>
+                    <input id="lat" type="hidden" name="latEnt" value="<?php echo $data[latEnt];?>"/>
+                    <input id="lng" type="hidden" name="lngEnt" value="<?php echo $data[lngEnt];?>" />
+                    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
+                            type="text/javascript"></script>
+                    <div id="map" style="width: 516px; height: 320px"><br/></div>
+                    <script type="text/javascript">
+                        //<![CDATA[
+                        loadmap(<?php echo json_encode($data[latEnt]);?>,<?php echo json_encode($data[lngEnt]);?>);
+                        //]]>
+                    </script>
+
+                    <div class="cleaner h20"></div>
+                    <label for="telEnt">Téléphone </label>
+                    <input placeholder="Principal" type="tel" maxlength="6" name="telEnt" id="telEnt" value="<?php echo $telEnt;?>" onkeyup="verif_nombre(this)" required="required" />
+                    <input placeholder="Secondaire" type="tel" maxlength="6" name="telSecEnt" id="telSecEnt" value="<?php echo $telSecEnt;?>" onkeyup="verif_nombre(this)" />
+                    <div class="cleaner h10"></div>
+
+                    <label for="adresseEnt">Adresse</label>
+                    <textarea name="adresseEnt" id="adresseEnt" maxlength="255" required="required"><?php echo $adresseEnt;?></textarea>
+
+                </div>
+                <div class="cleaner h40"></div>
+                <div class="centrer"><button type="submit">Mettre à jour mes informations</button></div>
+            </form>
+        <?php
+        } else if ($_SESSION['connected'] === "admin") {
+            // Requète SQL
+            $query = "SELECT * FROM Administrateurs WHERE mailAdmin='$_SESSION[identifiant]'";
+            // Exécution de la requète
+            $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
+            // Affichage des resultats
+            $data = mysqli_fetch_assoc($result);
+
+            $nomAdmin=$data[nomAdmin];
+            $prenomAdmin=$data[prenomAdmin];
+            $mailAdmin=$data[mailAdmin];
+            ?>
+            <h1>Profil Administrateur</h1>
+            <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEtud') && checkPass('mdpEtud','mdpEtud2'))">
+                <div class="col_23 float_l">
+                    <label for="mailAdmin">Identifiant (Non modifiable)</label>
+                    <input placeholder="<?php echo $mailAdmin;?>" type="text" name="mailAdmin" id="mailAdmin" maxlength="100" required="required" disabled="disabled"/>
+                    <div class="cleaner h10"></div>
+
+                    <label for="mdpAdmin">Mot de passe (Un chiffre, une majuscule, une minuscule, minimum 6 caractères)</label>
+                    <input type="password" name="mdpAdmin" id="mdpAdmin" maxlength="25" required="required" onkeyup="checkPatern('mdpAdmin'); return false;" value="Defaut123"/>
+                    <span id="confirmPatern" class="confirmPatern"></span>
+                    <div class="cleaner h10"></div>
+
+                    <label for="mdpAdmin2">Confirmer mot de passe</label>
+                    <input type="password" name="mdpAdmin2" id="mdpAdmin2" maxlength="25" required="required" onkeyup="checkPass('mdpAdmin','mdpAdmin2'); return false;" value="Defaut123"/>
+                    <span id="confirmMessage" class="confirmMessage"></span>
+                    <div class="cleaner h10"></div>
+
+                    <label for="prenomAdmin">Prenom</label>
+                    <input type="text" name="prenomAdmin" id="prenomAdmin" maxlength="50" required="required" value="<?php echo $prenomAdmin;?>"/>
+                    <div class="cleaner h10"></div>
+
+                    <label for="nomAdmin">Nom</label>
+                    <input type="text" name="nomAdmin" id="nomAdmin" maxlength="50" required="required" value="<?php echo $nomAdmin;?>" />
+                    <div class="cleaner h10"></div>
+
+                </div>
+
+                <div class="col_13 float_r">
+                    <label for="profilpic" >Modifier ma photo de profile - <a href="javascript:window.location.reload()">Actualiser</a><br />
+                        <img src="fichiers/profile/<?php echo md5($mailAdmin).".png" ?>" alt="Photo de profile" class="img_float_l img_frame" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"' />
+                    </label>
+                    <input type="file" name="profilpic" id="profilpic"/>
+                    <div class="cleaner h10"></div>
+                </div>
+                <div class="cleaner h40"></div>
+                <div class="centrer">
+                    <button id="envoyer" type="submit">Enregistrer mes informations</button>
+                </div>
+            </form>
+
+        <?php
+        }
+    }
+    include('all.footer.php');
