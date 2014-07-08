@@ -21,9 +21,6 @@
         $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $sexeEtud, $naissanceEtud, $telEtud, $telSecEtud);
         $stmt->fetch();
         $stmt->close();
-        $jourEtud = date('d', strtotime($naissanceEtud));
-        $moisEtud=date('m', strtotime($naissanceEtud));
-        $anneeEtud=date('Y', strtotime($naissanceEtud));
         echo '<section class="row">
             <div class="small-12 columns">
                 <h1>Profil Etudiant';
@@ -97,6 +94,29 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="small-6 columns">
+                        <div class="row collapse">
+                            <div class="small-3 columns">
+                                <span class="prefix">Tel UNC</span>
+                            </div>
+                            <div class="small-9 columns">
+                                <input type="tel" maxlength="6" name="telEtud" id="telEtud" required="required" value="<?php echo $telEtud;?>" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="small-6 columns">
+                        <div class="row collapse">
+                            <div class="small-3 columns">
+                                <span class="prefix">Tel personnel</span>
+                            </div>
+                            <div class="small-9 columns">
+                                <input placeholder="" type="tel" maxlength="6" name="telSecEtud" id="telSecEtud" onkeyup="verif_nombre(this)" value="<?php echo $telSecEtud;?>"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="row collapse">
                     <div class="small-3 columns">
@@ -106,26 +126,63 @@
                         <input type="email" name="mailPersoEtud" id="mailPersoEtud" maxlength="100" required="required" value="<?php echo $mailPersoEtud;?>">
                     </div>
                 </div>
-
-                <div class="cleaner h10"></div>
-                <label for="telEtud">Téléphone </label>
-                <input placeholder="Principal" type="tel" maxlength="6" name="telEtud" id="telEtud" onkeyup="verif_nombre(this)" required="required" value="<?php echo $telEtud;?>"/>
-                <input placeholder="Secondaire" type="tel" maxlength="6" name="telSecEtud" id="telSecEtud" onkeyup="verif_nombre(this)" value="<?php echo $telSecEtud;?>"/>
-                <div class="cleaner h10"></div>
             </div>
-
         </div>
+
+        <!--
         <div class="row">
             <div class="small-12 columns text-center">
-                <input type="checkbox" name="trouveStageEtud" id="trouveStageEtud" value="1" <?php if($trouveStageEtud=="1") { echo 'checked="checked"';}?>/>
+                <input type="checkbox" name="trouveStageEtud" id="trouveStageEtud" value="1" />
                 <label class="checkbox" for="trouveStageEtud">J'ai trouvé un stage</label>
             </div>
         </div>
+        -->
+        <div class="row ">
+            <div class="small-12 large-3 large-centered columns">
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        <span class="prefix">Avez-vous trouvé un stage?</span>
+                    </div>
+                    <div class="small-4 columns">
+                        <div class="switch">
+                            <input id="trouveStageEtud" name="trouveStageEtud" type="radio" value="1" <?php if($trouveStageEtud=="1") { echo 'checked';} ?>>
+                            <label for="trouveStageEtud" onclick="" class="text-center">Oui</label>
+
+                            <input id="trouveStageEtud" name="trouveStageEtud" type="radio" value="0" <?php if($trouveStageEtud=="0") { echo 'checked';} ?>>
+                            <label for="trouveStageEtud" onclick="" class="text-center">Non</label>
+
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div class="row">
+            <div class="small-12 large-3 large-centered columns">
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        <span class="prefix">Avez-vous trouvé un stage?</span>
+                    </div>
+                    <div class="small-4 columns">
+                        <select name="trouveStageEtud" id="trouveStageEtud">
+                            <option>Non</option>
+                            <option>Oui</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <br />
         <div class="row">
             <div class="small-12 large-6 large-centered columns">
                 <input class="large button expand" id="envoyer" type="submit" value="Enregistrer mes informations"/>
             </div>
         </div>
+
     </form>
 <?php
     } else {

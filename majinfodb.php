@@ -5,26 +5,11 @@ $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
 if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEtud']))) {
     /** MAJ ETUDIANT **/ 
     
-    if (!isset($_POST['mailPersoEtud']) or !isset($_POST['nomEtud']) or !isset($_POST['prenomEtud']) or !isset($_POST['licenceEtud']) or !isset($_POST['sexeEtud']) or !isset($_POST['naissanceJour']) or !isset($_POST['naissanceMois']) or !isset($_POST['naissanceAnnee']) or !isset($_POST['telEtud'])) {
+    if (!isset($_POST['mailPersoEtud']) or !isset($_POST['filiereEtud']) or !isset($_POST['telSecEtud'])) {
             header('Location: /');
             die(); 
     }
-    
-    // On concatène la date de naissance à partir des 3 POST + verification
-    if (($_POST['naissanceAnnee']>2005) || $_POST['naissanceAnnee']<1900) {
-            header('Location: /');
-            die(); 
-    }
-    if (($_POST['naissanceMois']>12) || $_POST['naissanceMois']<1) {
-            header('Location: /');
-            die(); 
-    }
-    if (($_POST['naissanceJour']>31) || $_POST['naissanceJour']<1) {
-            header('Location: /');
-            die(); 
-    }
-        
-    $naissanceEtud = $_POST['naissanceAnnee'].'-'.$_POST['naissanceMois'].'-'.$_POST['naissanceJour'];
+
     
     // On prépare les variables à insérer dans la BDD, on remplace par NULL si vide. (Entre simples quotes sinon)
     foreach($_POST as $col=>$val) {
@@ -51,38 +36,11 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
         <?php        
         die();
     }
-    if ($mdpEtud!=="Defaut123") {
-        if ((strlen($mdpEtud)>25) || (strlen($mdpEtud2)>25)) {
-                header('Location: /');
-                die(); 
-        } else { //mdp bonne taille
-            if (!preg_match('/[A-Z]+[a-z]+[0-9]+/', $mdpEtud)) {
-                header('Location: /');
-                die(); 
-            } else { //mdp valide et bonne taille
-                $salt="756f13fba8e472eff61c673d3df596d9";
-                $mdpEtud=md5($mdpEtud.$salt);
-                $mdpEtud2=md5($mdpEtud2.$salt);
-                if (!($mdpEtud===$mdpEtud2)) {
-                    header('Location: /');
-                    die(); 
-                }
-            }
-    }
-    }
-    if (strlen($nomEtud)>50) {
+    if (($filiereEtud!=="SPI - INFO") && ($filiereEtud!=="SPI - MEGP")) {
            header('Location: /');
-            die(); 
+            die();
     }
-    if (strlen($prenomEtud)>50) {
-           header('Location: /');
-            die(); 
-    }
-    if (($licenceEtud!=="L2 SPI") && ($licenceEtud!=="L3 SPI")) {
-           header('Location: /');
-            die(); 
-    }
-    if (strlen($telEtud)!=6) {
+    if (strlen($telSecEtud)!=6) {
                 include('all.footer.php');
                 ?>
                 <script>
@@ -92,34 +50,15 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
                 <?php        
                 die();
     } else {
-        if (!preg_match ("/[0-9]/", $telEtud)) {
+        if (!preg_match ("/[0-9]/", $telSecEtud)) {
            header('Location: /');
             die(); 
         } 
     }
-    
-    
-    if (empty($telSecEtud)) {
-        $telSecEtud = "NULL";
+
+    if($trouveStageEtud == "1") {
+        $trouveStageEtud=1;
     } else {
-        if (strlen($telSecEtud)!=6) {
-                include('all.footer.php');
-                ?>
-                <script>
-                    alert('Le telephone secondaire ne contient pas 6 chiffres');
-                    history.back();
-                </script>
-                <?php        
-                die();
-        } else {
-            if (!preg_match ("/[0-9]/", $telSecEtud)) {
-                header('Location: /');
-                die(); 
-            }
-        }      
-    }
-    
-    if(!isset($trouveStageEtud)) {
         $trouveStageEtud=0;
     }
     
@@ -136,28 +75,14 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
         }
     }
     //protection injection scripte à faire @todo
-    if ($mdpEtud==="Defaut123") { 
-        if ($_SESSION['connected'] === "admin") {
-            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
-             mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=? WHERE mailEtud=?');
-            $stmt->bind_param('ssssssssis', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $_POST['mailEtud']);
-        } else {
-            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
-             mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=? WHERE userEtud=?');
-            $stmt->bind_param('ssssssssis', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $_SESSION['identifiant']);
-        }
+    if ($_SESSION['connected'] === "admin") {
+        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, licenceEtud=?, telSecEtud=?, trouveStageEtud=? WHERE mailEtud=?');
+        $stmt->bind_param('sssis', $mailPersoEtud, $licenceEtud, $telSecEtud, $trouveStageEtud, $_POST['mailEtud']);
     } else {
-        if ($_SESSION['type'] === "admin") {
-            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
-                 mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=?, mdpEtud=? WHERE mailEtud=?');
-            $stmt->bind_param('ssssssssiss', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $mdpEtud, $_POST['mailEtud']);
-        } else {
-            $stmt = $mysqli->prepare('UPDATE etudiants SET nomEtud = ?, prenomEtud=?, sexeEtud=?, naissanceEtud=?,
-             mailPersoEtud=?, licenceEtud=?, telEtud=?, telSecEtud=?, trouveStageEtud=?, mdpEtud=? WHERE userEtud=?');
-            $stmt->bind_param('ssssssssiss', $nomEtud, $prenomEtud, $sexeEtud, $naissanceEtud, $mailPersoEtud, $licenceEtud, $telEtud, $telSecEtud, $trouveStageEtud, $mdpEtud, $_SESSION['identifiant']);
-        }    
-        if ($_SESSION['type'] != "admin") $_SESSION['mdp']=$mdpEtud;
+        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, licenceEtud=?, telSecEtud=?, trouveStageEtud=? WHERE userEtud=?');
+        $stmt->bind_param('sssis', $mailPersoEtud, $licenceEtud, $telSecEtud, $trouveStageEtud, $_SESSION['identifiant']);
     }
+
     if (!($stmt->execute())) {
         echo "Erreur lors de la mise à jour";
         include('all.footer.php');
