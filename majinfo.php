@@ -129,14 +129,7 @@
             </div>
         </div>
 
-        <!--
-        <div class="row">
-            <div class="small-12 columns text-center">
-                <input type="checkbox" name="trouveStageEtud" id="trouveStageEtud" value="1" />
-                <label class="checkbox" for="trouveStageEtud">J'ai trouvé un stage</label>
-            </div>
-        </div>
-        -->
+
         <div class="row ">
             <div class="small-12 large-3 large-centered columns">
                 <div class="row collapse">
@@ -145,11 +138,11 @@
                     </div>
                     <div class="small-4 columns">
                         <div class="switch">
-                            <input id="trouveStageEtud" name="trouveStageEtud" type="radio" value="1" <?php if($trouveStageEtud=="1") { echo 'checked';} ?>>
-                            <label for="trouveStageEtud" onclick="" class="text-center">Oui</label>
-
                             <input id="trouveStageEtud" name="trouveStageEtud" type="radio" value="0" <?php if($trouveStageEtud=="0") { echo 'checked';} ?>>
                             <label for="trouveStageEtud" onclick="" class="text-center">Non</label>
+
+                            <input id="trouveStageEtud" name="trouveStageEtud" type="radio" value="1" <?php if($trouveStageEtud=="1") { echo 'checked';} ?>>
+                            <label for="trouveStageEtud" onclick="" class="text-center">Oui</label>
 
                             <span></span>
                         </div>
@@ -158,23 +151,21 @@
             </div>
         </div>
 
-        <!--
-        <div class="row">
-            <div class="small-12 large-3 large-centered columns">
-                <div class="row collapse">
-                    <div class="small-8 columns">
-                        <span class="prefix">Avez-vous trouvé un stage?</span>
-                    </div>
-                    <div class="small-4 columns">
-                        <select name="trouveStageEtud" id="trouveStageEtud">
-                            <option>Non</option>
-                            <option>Oui</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
+<!--        <div class="row">-->
+<!--            <div class="small-12 large-3 large-centered columns">-->
+<!--                <div class="row collapse">-->
+<!--                    <div class="small-8 columns">-->
+<!--                        <span class="prefix">Avez-vous trouvé un stage?</span>-->
+<!--                    </div>-->
+<!--                    <div class="small-4 columns">-->
+<!--                        <select name="trouveStageEtud" id="trouveStageEtud">-->
+<!--                            <option>Non</option>-->
+<!--                            <option>Oui</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <br />
         <div class="row">
