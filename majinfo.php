@@ -11,14 +11,13 @@
             $stmt->bind_param('i', $_GET['idEtud']);
         } else {
             //$query = "SELECT * FROM Etudiants WHERE mailEtud='$_SESSION[identifiant]'";
-            $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, licenceEtud,
-                                                    sexeEtud, naissanceEtud, telEtud, telSecEtud
+            $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, filiereEtud, civiliteEtud, naissanceEtud, telEtud, telSecEtud
                                             FROM Etudiants
                                             WHERE userEtud=?');
             $stmt->bind_param('s', $_SESSION['identifiant']);
         }
         $stmt->execute();
-        $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $sexeEtud, $naissanceEtud, $telEtud, $telSecEtud);
+        $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $filiereEtud, $civiliteEtud, $naissanceEtud, $telEtud, $telSecEtud);
         $stmt->fetch();
         $stmt->close();
         echo '<section class="row">
@@ -51,45 +50,75 @@
                     </div>
                 </div>
 
-                <div class="row collapse">
-                    <div class="small-3 columns">
-                        <span class="prefix">Prenom</span>
+                <div class="row">
+                    <div class="large-2 columns">
+                        <div class="row collapse">
+                            <div class="small-6 columns">
+                                <span class="prefix">Civilité</span>
+                            </div>
+                            <div class="small-6 columns">
+                                <input type="text" maxlength="6" name="civiliteEtud" id="civiliteEtud" required="required" value="<?php echo $civiliteEtud;?>" disabled="disabled">
+                            </div>
+                        </div>
                     </div>
-                    <div class="small-9 columns">
-                        <input type="text" name="prenomEtud" id="prenomEtud" maxlength="50" required="required" value="<?php echo $prenomEtud;?>" disabled="disabled">
+                    <div class="large-4 columns">
+                        <div class="row collapse">
+                            <div class="small-3 columns">
+                                <span class="prefix">Prenom</span>
+                            </div>
+                            <div class="small-9 columns">
+                                <input type="text" name="prenomEtud" id="prenomEtud" maxlength="50" required="required" value="<?php echo $prenomEtud;?>" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="large-6 columns">
+                        <div class="row collapse">
+                            <div class="small-3 columns">
+                                <span class="prefix">Nom</span>
+                            </div>
+                            <div class="small-9 columns">
+                                <input type="text" name="nomEtud" id="nomEtud" maxlength="50" required="required" value="<?php echo $nomEtud;?>" disabled="disabled">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row collapse">
-                    <div class="small-3 columns">
-                        <span class="prefix">Nom</span>
-                    </div>
-                    <div class="small-9 columns">
-                        <input type="text" name="nomEtud" id="nomEtud" maxlength="50" required="required" value="<?php echo $nomEtud;?>" disabled="disabled">
-                    </div>
-                </div>
+<!--                <div class="row collapse">-->
+<!--                    <div class="small-3 columns">-->
+<!--                        <span class="prefix">Prenom</span>-->
+<!--                    </div>-->
+<!--                    <div class="small-9 columns">-->
+<!--                        <input type="text" name="prenomEtud" id="prenomEtud" maxlength="50" required="required" value="--><?php //echo $prenomEtud;?><!--" disabled="disabled">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!---->
+<!--                <div class="row collapse">-->
+<!--                    <div class="small-3 columns">-->
+<!--                        <span class="prefix">Nom</span>-->
+<!--                    </div>-->
+<!--                    <div class="small-9 columns">-->
+<!--                        <input type="text" name="nomEtud" id="nomEtud" maxlength="50" required="required" value="--><?php //echo $nomEtud;?><!--" disabled="disabled">-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <div class="row">
-                    <div class="small-6 columns">
+                    <div class="large-2 columns">
                         <div class="row collapse">
-                            <div class="small-5 columns">
+                            <div class="small-6 columns">
                                 <span class="prefix">Année</span>
                             </div>
-                            <div class="small-7 columns">
+                            <div class="small-6 columns">
                                 <input type="text" name="licenceEtud" id="licenceEtud" required="required" value="<?php echo $licenceEtud;?>" disabled="disabled">
                             </div>
                         </div>
                     </div>
-                    <div class="small-6 columns">
+                    <div class="large-10 columns">
                         <div class="row collapse">
-                            <div class="small-5 columns">
+                            <div class="small-2 columns">
                                 <span class="prefix">Filière</span>
                             </div>
-                            <div class="small-7 columns">
-                                <select name="filiereEtud" id="filiereEtud">
-                                    <option>SPI - INFO</option>
-                                    <option>SPI - MEGP</option>
-                                </select>
+                            <div class="small-10 columns">
+                                <input type="text" name="filiereEtud" id="filiereEtud" required="required" value="<?php echo $filiereEtud;?>" disabled="disabled">
                             </div>
                         </div>
                     </div>
@@ -125,6 +154,15 @@
                     </div>
                     <div class="small-9 columns">
                         <input type="email" name="mailPersoEtud" id="mailPersoEtud" maxlength="100" required="required" value="<?php echo $mailPersoEtud;?>">
+                    </div>
+                </div>
+
+                <div class="row collapse">
+                    <div class="small-3 columns">
+                        <span class="prefix">Date de naissance</span>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="date" name="naissanceEtud" id="naissanceEtud" placeholder="AAAA-MM-JJ">
                     </div>
                 </div>
             </div>

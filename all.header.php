@@ -13,7 +13,7 @@ require('fonctions.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="scss/custom.css"/>
     <link rel="stylesheet" href="css/foundation-icons/foundation-icons.css"/>
-    <script src="js//javascript.js"></script>
+    <script src="js/javascript.js"></script>
     <script src="js/vendor/custom.modernizr.js"></script>
 </head>
 <body>

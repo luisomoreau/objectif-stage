@@ -5,7 +5,7 @@ $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
 if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEtud']))) {
     /** MAJ ETUDIANT **/ 
     
-    if (!isset($_POST['mailPersoEtud']) or !isset($_POST['filiereEtud']) or !isset($_POST['telSecEtud'])) {
+    if (!isset($_POST['mailPersoEtud']) or !isset($_POST['telSecEtud'])) {
             header('Location: /');
             die(); 
     }
@@ -36,19 +36,18 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
         <?php        
         die();
     }
-    if (($filiereEtud!=="SPI - INFO") && ($filiereEtud!=="SPI - MEGP")) {
-           header('Location: /');
-            die();
-    }
     if (strlen($telSecEtud)!=6) {
+        /*
                 include('all.footer.php');
                 ?>
                 <script>
                     alert('Le telephone ne contient pas 6 chiffres');
                     history.back();
                 </script>
-                <?php        
+                <?php
                 die();
+        */
+        $telSecEtud=null;
     } else {
         if (!preg_match ("/[0-9]/", $telSecEtud)) {
            header('Location: /');
@@ -74,13 +73,13 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
             }
         }
     }
-    //protection injection scripte à faire @todo
+    //protection injection scripte à faire + date check @todo
     if ($_SESSION['connected'] === "admin") {
-        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, licenceEtud=?, telSecEtud=?, trouveStageEtud=? WHERE mailEtud=?');
-        $stmt->bind_param('sssis', $mailPersoEtud, $licenceEtud, $telSecEtud, $trouveStageEtud, $_POST['mailEtud']);
+        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, telSecEtud=?, naissanceEtud=?, trouveStageEtud=? WHERE mailEtud=?');
+        $stmt->bind_param('sssis', $mailPersoEtud, $telSecEtud, $naissanceEtud, $trouveStageEtud, $_POST['mailEtud']);
     } else {
-        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, licenceEtud=?, telSecEtud=?, trouveStageEtud=? WHERE userEtud=?');
-        $stmt->bind_param('sssis', $mailPersoEtud, $licenceEtud, $telSecEtud, $trouveStageEtud, $_SESSION['identifiant']);
+        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, telSecEtud=?, naissanceEtud=?, trouveStageEtud=? WHERE userEtud=?');
+        $stmt->bind_param('sssis', $mailPersoEtud, $telSecEtud, $naissanceEtud, $trouveStageEtud, $_SESSION['identifiant']);
     }
 
     if (!($stmt->execute())) {
