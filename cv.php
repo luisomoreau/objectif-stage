@@ -2,12 +2,14 @@
 include('all.header.php');
 if ($_SESSION['connected']!=="etud") {
     header('Location: ./');
-    die(); 
+    die();
 }
 echo '<section class="row">
             <div class="small-12 columns">
-                <h1>Mon CV</h1>
-                <p>Vous pouvez ici envoyer votre CV pour pouvoir le joindre automatiquement au mails que vous envoyez aux entreprises.</p>
+                <div class="panel">
+                    <p>Vous pouvez ici envoyer votre CV pour pouvoir le joindre automatiquement au mails que vous envoyez aux entreprises.</p>
+                    <p>Modification du CV en bas de la page</p>
+                </div>
             </div>
          </section>';
 if (isset($_POST['cv'])) {
@@ -42,13 +44,13 @@ if (file_exists($cv)) {
          </section>';
 }
 ?>
-
+    <br />
     <form action="cv" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="small-12 large-6 large-centered columns">
                 <input type="hidden" name="cv" />
-                <label for="cv">Modifier votre CV (format PDF uniquement)</label>
-                <input class="float_l" type="file" name="cv" id="cv"/>
+                <label for="cv"><h4>Modifier votre CV (format PDF uniquement)</h4></label>
+                <input type="file" name="cv" id="cv"/>
             </div>
         </div>
         <div class="row">

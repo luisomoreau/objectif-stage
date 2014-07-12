@@ -23,7 +23,7 @@
         $stmt->close();
         echo '<section class="row">
             <div class="small-12 columns">
-                <h1>Profil Etudiant';
+                <h1>';
         if ($_SESSION['connected'] === "admin") {
             echo '<a href="supprimercompte?idEtud=' . $_GET['idEtud'] . '"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>';
         }
@@ -35,7 +35,8 @@
         <div class="row">
             <div class="large-4 columns">
                     <img src="fichiers/profile/<?php echo md5($_SESSION['identifiant']).".png" ?>" alt="Photo de profile" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"' />
-
+                <br />
+                <label for="profilpic">Modifier votre photo de profil</label>
                 <input type="file" name="profilpic" id="profilpic"/>
             </div>
             <div class="large-8 columns">
@@ -71,20 +72,20 @@
                 <div class="row">
                     <div class="small-6 columns">
                         <div class="row collapse">
-                            <div class="small-3 columns">
+                            <div class="small-5 columns">
                                 <span class="prefix">Année</span>
                             </div>
-                            <div class="small-9 columns">
+                            <div class="small-7 columns">
                                 <input type="text" name="licenceEtud" id="licenceEtud" required="required" value="<?php echo $licenceEtud;?>" disabled="disabled">
                             </div>
                         </div>
                     </div>
                     <div class="small-6 columns">
                         <div class="row collapse">
-                            <div class="small-3 columns">
+                            <div class="small-5 columns">
                                 <span class="prefix">Filière</span>
                             </div>
-                            <div class="small-9 columns">
+                            <div class="small-7 columns">
                                 <select name="filiereEtud" id="filiereEtud">
                                     <option>SPI - INFO</option>
                                     <option>SPI - MEGP</option>
@@ -95,22 +96,22 @@
                 </div>
 
                 <div class="row">
-                    <div class="small-6 columns">
+                    <div class="large-6 columns">
                         <div class="row collapse">
-                            <div class="small-3 columns">
+                            <div class="small-5 columns">
                                 <span class="prefix">Tel UNC</span>
                             </div>
-                            <div class="small-9 columns">
+                            <div class="small-7 columns">
                                 <input type="tel" maxlength="6" name="telEtud" id="telEtud" required="required" value="<?php echo $telEtud;?>" disabled="disabled">
                             </div>
                         </div>
                     </div>
-                    <div class="small-6 columns">
+                    <div class="large-6 columns">
                         <div class="row collapse">
-                            <div class="small-3 columns">
+                            <div class="small-5 columns">
                                 <span class="prefix">Tel personnel</span>
                             </div>
-                            <div class="small-9 columns">
+                            <div class="small-7 columns">
                                 <input placeholder="" type="tel" maxlength="6" name="telSecEtud" id="telSecEtud" onkeyup="verif_nombre(this)" value="<?php echo $telSecEtud;?>"/>
                             </div>
                         </div>

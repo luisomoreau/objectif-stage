@@ -56,7 +56,7 @@ echo '<section class="row">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-6 columns">
+                    <div class="large-6 columns">
                         <div class="row collapse">
                             <div class="small-6 large-5 columns">
                                 <span class="prefix">Prenom de contact</span>
@@ -66,7 +66,7 @@ echo '<section class="row">
                             </div>
                         </div>
                     </div>
-                    <div class="small-6 columns">
+                    <div class="large-6 columns">
                         <div class="row collapse">
                             <div class="small-6 large-5 columns">
                                 <span class="prefix">Nom de contact</span>
@@ -78,7 +78,7 @@ echo '<section class="row">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-6 columns">
+                    <div class="large-6 columns">
                         <div class="row collapse">
                             <div class="small-6 large-5 columns">
                                 <span class="prefix">Tel principale</span>
@@ -89,7 +89,7 @@ echo '<section class="row">
                             </div>
                         </div>
                     </div>
-                    <div class="small-6 columns">
+                    <div class="large-6 columns">
                         <div class="row collapse">
                             <div class="small-6 large-5 columns">
                                 <span class="prefix">Tel secondaire</span>

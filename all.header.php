@@ -64,7 +64,17 @@ require('fonctions.php');
     <section class="titlebar ">
         <div class="row">
             <div class="small-8 columns">
-                <h1 id="page-title" class="title">Accueil</h1>
+                <h1 id="page-title" class="title">
+                    <?php
+                    $page = substr(substr(strrchr($_SERVER['SCRIPT_NAME'], "/"), 1),0,-4);
+                    switch($page) {
+                        case "cv":
+                            $page = "Mon CV";
+                            break;
+                    }
+                    echo $page;
+                    ?>
+                </h1>
             </div>
             <div class="small-4 columns">
                 <?php
