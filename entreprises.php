@@ -9,10 +9,10 @@ echo '<section class="row">
 if (!(isset($_SESSION['connected']))) {
     echo '
     <section class="row">
-        <div class="large-6 column">
+        <div class="large-6 columns">
             <a href="./loginent" class="large button expand">Se connecter</a>
         </div>
-        <div class="large-6 column">
+        <div class="large-6 columns">
             <a href="./inscription" class="large button expand">S\'inscrire</a>
         </div>
     </section>';
