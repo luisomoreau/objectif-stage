@@ -1,36 +1,24 @@
 <?php
-    //include('logincheck2.php');
-    include("all.header.php");
-    echo '<section class="row">
+//include('logincheck2.php');
+include("all.header.php");
+echo '<section class="row">
             <div class="small-12 columns">
-                <h1>Bienvenue sur la plateforme de Stage de l\'UNC</h1>
+                <h1>Bienvenue sur l\'espace dédié aux entreprises</h1>
             </div>
          </section>';
-    if (!(isset($_SESSION['connected']))) {
-        echo '
+if (!(isset($_SESSION['connected']))) {
+    echo '
     <section class="row">
         <div class="large-6 column">
-            <a href="./loginetud" class="large button expand">Vous êtes un étudiant</a>
+            <a href="./loginent" class="large button expand">Se connecter</a>
         </div>
         <div class="large-6 column">
-            <a href="./entreprises" class="large button expand">Vous êtes une entreprise</a>
+            <a href="./inscription" class="large button expand">S\'inscrire</a>
         </div>
     </section>';
-    } else {
-        if ($_SESSION["connected"]=="etud") {
-            echo '
-    <section class="row">
-        <div class="large-6 column">
-            <a href="#" class="large button expand">Accédez à la liste des stages</a>
-        </div>
-        <div class="large-6 column">
-            <a href="#" class="large button expand">Accédez à la liste des entreprises</a>
-        </div>
-    </section>';
-        }
-    }
+}
 
-    echo '    <section class="row">
+echo '    <section class="row">
         <div class="large-12">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc congue sem lorem, id elementum libero fringilla sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at suscipit purus. Etiam ut eleifend velit. Morbi molestie, leo ac condimentum tempus, neque ipsum fringilla neque, nec ultrices libero ante vel est. Donec purus tellus, suscipit sit amet erat eget, posuere auctor turpis. Nam aliquam, turpis ac adipiscing placerat, nibh enim posuere nulla, ac molestie orci erat vitae elit. Integer at tellus nec nunc euismod blandit. Sed imperdiet ac sapien lobortis suscipit. Nullam vehicula et erat ac mollis. Etiam nec consectetur orci, nec hendrerit ante. Nullam auctor at odio in convallis. Proin accumsan nibh sit amet nisi vulputate, ac sodales tortor mattis.
@@ -49,5 +37,5 @@
             </p>
         </div>
     </section>';
-    include("all.footer.php");
+include("all.footer.php");
 ?>
