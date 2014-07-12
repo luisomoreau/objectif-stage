@@ -23,7 +23,7 @@ $query = "uid=".$user;
 $result=ldap_search($connexion, $dn, $query);
 
 $info = ldap_get_entries($connexion, $result);
-echo htmlentities(serialize($info));
+echo serialize($info);
 
 ldap_close($connexion);
 
