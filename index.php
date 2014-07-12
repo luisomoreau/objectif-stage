@@ -13,7 +13,7 @@
             <a href="./loginetud" class="large button expand">Vous êtes un étudiant</a>
         </div>
         <div class="large-6 column">
-            <a href="#" class="large button expand">Vous êtes une entreprise</a>
+            <a href="./inscription" class="large button expand">Vous êtes une entreprise</a>
         </div>
     </section>';
     } else {
