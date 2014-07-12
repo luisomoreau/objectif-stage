@@ -26,3 +26,5 @@ $info = ldap_get_entries($connexion, $result);
 echo htmlentities(serialize($info));
 
 ldap_close($connexion);
+
+
