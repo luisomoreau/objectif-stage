@@ -16,12 +16,18 @@
             $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, filiereEtud, civiliteEtud, naissanceEtud, telEtud, telSecEtud
                                             FROM Etudiants
                                             WHERE userEtud=?');
+            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
             $stmt->bind_param('s', $_SESSION['identifiant']);
+            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
         $stmt->execute();
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $filiereEtud, $civiliteEtud, $naissanceEtud, $telEtud, $telSecEtud);
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         $stmt->fetch();
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         $stmt->close();
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         echo '<section class="row">
             <div class="small-12 columns">
                 <h1>';
