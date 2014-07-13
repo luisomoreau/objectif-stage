@@ -7,14 +7,14 @@
         // Requète SQL
         if ($_SESSION['connected'] === "admin") {
             //$query = "SELECT * FROM Etudiants WHERE idEtud='$_GET[idEtud]'";
-            if (!($stmt = $mysqli->prepare('SELECT * FROM Etudiants WHERE idEtud=?'))) {
+            if (!($stmt = $mysqli->prepare('SELECT * FROM etudiants WHERE idEtud=?'))) {
                 echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
             $stmt->bind_param('i', $_GET['idEtud']);
         } else {
             //$query = "SELECT * FROM Etudiants WHERE mailEtud='$_SESSION[identifiant]'";
             $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, filiereEtud, civiliteEtud, naissanceEtud, telEtud, telSecEtud
-                                            FROM Etudiants
+                                            FROM etudiants
                                             WHERE userEtud=?');
             echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
             $stmt->bind_param('s', $_SESSION['identifiant']);
