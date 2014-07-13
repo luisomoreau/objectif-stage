@@ -3,6 +3,7 @@ session_start();
 require_once('settings.php');
 require_once('fonctions.php');
 
+/*
 if (!isset($_SESSION['connected'])) {
     // Load the settings from the central config file
     require_once 'config.php';
@@ -19,6 +20,7 @@ if (!isset($_SESSION['connected'])) {
         casLogin();
     }
 }
+*/
 ?>
 <!doctype html>
 <html lang="fr">
