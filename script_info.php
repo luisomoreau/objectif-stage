@@ -1,5 +1,5 @@
 <?php
-include('nontraite.php');
+
 /**
  *  Small script to add some info about the example script that is running.
  *  Adds some info that makes it easier to distinguish different proxy sessions

@@ -56,8 +56,7 @@ include ('all.header.php');
     <div class="row">
         <div class="small-12 columns">
             <?php
-            // Chargement des paramètres de la DB
-            require('sqlconf.php');
+            // Chargement des paramètres de la DB @todo SQL
             if (isset($_GET['champ_rech'])) {
                 $query = "SELECT * FROM stages WHERE (nomStage LIKE '%".$_GET['champ_rech']."%'";
             } else {

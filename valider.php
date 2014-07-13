@@ -3,8 +3,7 @@ include('nontraite.php');
     $loginreq=0;
     include('all.header.php');
     if (isset($_GET[valide]) && isset($_GET[mail]) && isset($_GET[type])) {
-        // Chargement des paramètres de la DB
-        require('sqlconf.php');
+        // Chargement des paramètres de la DB @todo SQL
         
         // Connection SQL
         $dblink = mysqli_connect($sqlserver,$sqlid,$sqlpwd,$sqldb) or die("Erreur de connection au server SQL: ".mysqli_error($dblink));

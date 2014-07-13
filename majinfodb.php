@@ -1,6 +1,6 @@
 <?php
 include('all.header.php');
-include('logincheck2.php');
+include('logincheck.php');
 $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
 if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEtud']))) {
     /** MAJ ETUDIANT **/ 
@@ -230,8 +230,7 @@ if($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && is
     $latEnt=str_replace("'","\'",$latEnt);
     $lngEnt=str_replace("'","\'",$lngEnt);
       
-     // Chargement des paramètres de la DB
-    require('sqlconf.php');  
+     // Chargement des paramètres de la DB @todo SQL
     // Connection SQL
     $dblink = mysqli_connect($sqlserver,$sqlid,$sqlpwd,$sqldb) or die("Erreur de connection au server SQL: ".mysqli_error($dblink));  
     // Requète SQL

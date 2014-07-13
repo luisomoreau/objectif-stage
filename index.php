@@ -1,5 +1,4 @@
 <?php
-    //include('logincheck2.php');
     include("all.header.php");
     echo '<section class="row">
             <div class="small-12 columns">

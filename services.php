@@ -1,7 +1,7 @@
 <?php
 include('nontraite.php');
     include('all.header.php');
-    include('logincheck2.php');
+    include('logincheck.php');
     if ($_SESSION['connected']==="etud") {
         echo '<section class="row">
             <div class="small-12 columns">

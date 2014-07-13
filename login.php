@@ -3,8 +3,7 @@ include('nontraite.php');
 $loginreq=0;
 include('all.header.php'); 
 if (isset($_POST['login'])) {
-    // Chargement des param�tres de la DB
-    require('sqlconf.php');
+    // Chargement des param�tres de la DB @todo SQL
     
     // Connection SQL
     $dblink = mysqli_connect($sqlserver,$sqlid,$sqlpwd,$sqldb) or die("Erreur de connection au server SQL: ".mysqli_error($dblink));

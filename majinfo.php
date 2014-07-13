@@ -1,5 +1,7 @@
 <?php
     include('all.header.php');
+    require_once('logincheck.php');
+
     $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
     if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['connected'] === "admin")) {
         // Requète SQL
@@ -153,7 +155,7 @@
                         <span class="prefix">Mail personnel</span>
                     </div>
                     <div class="small-9 columns">
-                        <input type="email" name="mailPersoEtud" id="mailPersoEtud" maxlength="100" required="required" value="<?php echo $mailPersoEtud;?>">
+                        <input type="email" name="mailPersoEtud" id="mailPersoEtud" maxlength="100" value="<?php echo $mailPersoEtud;?>">
                     </div>
                 </div>
 
