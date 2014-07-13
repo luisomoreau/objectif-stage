@@ -5,7 +5,7 @@ require_once('fonctions.php');
 // Load the settings from the central config file
 require_once 'config.php';
 // Load the CAS lib
-require_once $phpcas_path . '/CAS.php';
+require_once 'CAS.php';
 // Initialize phpCAS
 phpCAS::client(CAS_VERSION_2_0, $cas_host, $cas_port, $cas_context);
 // For quick testing you can disable SSL validation of the CAS server.
