@@ -231,13 +231,13 @@
             // Affichage des resultats
             $data = mysqli_fetch_assoc($result);
             var_dump($_SESSION['connected']);
-            $nomEnt=$data[nomEnt];
-            $mailEnt=$data[mailEnt];
-            $nomContactEnt=$data[nomContactEnt];
-            $prenomContactEnt=$data[prenomContactEnt];
-            $telEnt=$data[telEnt];
-            $adresseEnt=$data[adresseEnt];
-            $telSecEnt=$data[telSecEnt];
+            $nomEnt=$data['nomEnt'];
+            $mailEnt=$data['mailEnt'];
+            $nomContactEnt=$data['nomContactEnt'];
+            $prenomContactEnt=$data['prenomContactEnt'];
+            $telEnt=$data['telEnt'];
+            $adresseEnt=$data['adresseEnt'];
+            $telSecEnt=$data['telSecEnt'];
             ?>
             <h1>Modif entreprise<?php if ($_SESSION['connected'] === "admin") echo '<a href="supprimercompte?idEnt='.$_GET['idEnt'].'"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>'?></h1>
             <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">

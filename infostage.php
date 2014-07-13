@@ -1,114 +1,163 @@
 <?php
-include('nontraite.php');
 include ('all.header.php');
 
 if (!isset($_GET['id'])) {
     header('Location: index');
     die();    
 }
+$mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
+
+
 $valideModif=false;
-if ($_SESSION['type'] === "entreprises" || $_SESSION['type'] === "admin") {
-    // Requète SQL
-    $query = "SELECT COUNT(*) as 'existant' FROM stages WHERE idEnt='$_SESSION[idEnt]' AND idStage='$_GET[id]'";
-    // Exécution de la requète pour les colones
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-    // Affichage des colones
-    $data = mysqli_fetch_assoc($result);
-    if ($data['existant']==1 || $_SESSION['type'] == "admin") {
+if ($_SESSION['connected'] === "entreprises" || $_SESSION['connected'] === "admin") {
+    if (!($stmt = $mysqli->prepare('SELECT COUNT(*) FROM stages WHERE idEnt=? AND idStage=?'))) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    $stmt->bind_param('ii', $_SESSION['idEnt'], $_GET['id']);
+    if (!($stmt->execute())) {
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    $stmt->bind_result($existe);
+    $stmt->fetch();
+    if ($existe==1 || $_SESSION['connected'] == "admin") {
         $valideModif=true;
     }
+    $stmt->close();
 }
 
 // Requète SQL
-$query = "SELECT * FROM stages,entreprises WHERE stages.idEnt=entreprises.idEnt AND idStage='$_GET[id]'";
-// Exécution de la requète
-$result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-// Remplissage du tableau
-$data = mysqli_fetch_assoc($result);
+if (!($stmt = $mysqli->prepare('SELECT mailEnt, nomStage, sujetStage,  detailsStage,
+                                       prenomContactStage, nomContactStage, mailContactStage, telEnt,
+                                       telSecEnt, adresseEnt, dateDebutStage, dateFinStage, dateLimiteStage, lieuStage,
+                                       latStage, lngStage, dureeStage, filiereStage, l1Stage, l2Stage, l3Stage
+                                FROM stages,entreprises
+                                WHERE stages.idEnt=entreprises.idEnt
+                                AND idStage=?'))) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$stmt->bind_param('i',$_GET['id']);
+if (!($stmt->execute())) {
+    echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$stmt->bind_result($mailEnt, $nomStage, $sujetStage,  $detailsStage,
+    $prenomContactStage, $nomContactStage, $mailContactStage, $telEnt,
+    $telSecEnt, $adresseEnt, $dateDebutStage, $dateFinStage, $dateLimiteStage, $lieuStage,
+    $latStage, $lngStage, $dureeStage, $filiereStage, $l1Stage, $l2Stage, $l3Stage);
+$stmt->fetch();
+$stmt->close();
+$niveauStage="";
+if ($l1Stage==1) {
+    $niveauStage.="L1 ";
+}
+if ($l2Stage==1) {
+    $niveauStage.="L2 ";
+}
+if ($l2Stage==1) {
+    $niveauStage.="L3 ";
+}
 ?>
-    	<h1>Information sur le stage <?php if ($valideModif) echo '<a href="majstage?id='.$_GET['id'].'"><button class="float_r">Modifier le stage</button></a>'?></h1>
-        
-        <div class="col_13 float_l">
-            <img src="fichiers/profile/<?php echo md5($data['mailEnt']).".png" ?>" alt="Logo de l'entreprise" class="img_float_l img_frame" onerror='this.onerror = null; this.src="./fichiers/profile/opt.png"'/>
+<div class="row panel">
+    <h1><?php if ($valideModif) echo '<a href="majstage?id='.$_GET['id'].'"><button class="float_r">Modifier le stage</button></a>'?></h1>
+    <div class="row">
+        <div class="large-4 columns text-center">
+            <img src="fichiers/profile/<?php echo md5($mailEnt).".png" ?>" alt="Logo de l'entreprise" onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
         </div>
-        
-        <div class="col_23 float_r">
+        <div class="large-8 columns">
             <h4>Nom</h4>
-            <p><em><?php echo $data['nomStage'] ?></em></p>
+            <p><em><?php echo $nomStage ?></em></p>
             <h4>Sujet</h4>
-            <p><?php echo $data['sujetStage'] ?></p>
-            <h4>Niveau</h4>
-            <p><?php echo $data['typeStage'] ?></p>
+            <p><?php echo $sujetStage ?></p>
+            <div class="row">
+                <div class="small-6 columns">
+                    <h4>Filière</h4>
+                    <p><?php echo $filiereStage ?></p>
+                </div>
+                <div class="small-6 columns">
+                    <h4>Niveau</h4>
+                    <p><?php echo $niveauStage ?></p>
+                </div>
+            </div>
         </div>
-        
-		<div class="cleaner h10"></div>
-        <div class="col_23 float_l">
-            <h5>Détails</h5>
-            <p><?php echo $data['detailsStage']; ?></p>
-            <h5>Langages nécessaires</h5>
-            <p><?php
-                if ($data['htmlcssStage'] == 1) echo " HTML/CSS";
-                if ($data['phpStage'] == 1) echo " PHP";
-                if ($data['sqlStage'] == 1) echo " SQL";
-                if ($data['javaStage'] == 1) echo " JAVA";
-                if ($data['cStage'] == 1) echo " C";
-                if ($data['csStage'] == 1) echo " C#";
-            ?></p>
-            <?php
-                if ($data['langageAutreStage'] != NULL) {
-                    echo '<h5>Autres langages</h5><p>'.$data['langageAutreStage'].'</p>';
-                }
-            ?>
-            <h5>Contact</h5>
-            <p><?php echo $data['prenomContactStage']." ". $data['nomContactStage']." - ".$data['mailContactStage']?></p>
-            <p><?php echo "Téléphone : ".$data['telEnt'];
-                if($data['telSecEnt']!=NULL) {
+    </div>
+    <br />
+    <div class="row">
+        <div class="large-6 columns">
+            <h4>Détails</h4>
+            <p><?php echo $detailsStage; ?></p>
+            <h4>Contact</h4>
+            <p><?php echo $prenomContactStage." ". $nomContactStage." - ".$mailContactStage?></p>
+            <p><?php echo "Téléphone : ".$telEnt;
+                if($telSecEnt!=NULL) {
                     echo " ou ".$data['telSecEnt'];
                 }
-            ?></p>
-            <p><?php echo nl2br($data['adresseEnt']); ?></p>
+                ?></p>
+            <p><?php echo nl2br($adresseEnt); ?></p>
         </div>
-        <div class="col_13 float_r">
-            <h5>Date de début du stage</h5><span class="date"> <?php echo utf8_encode(strftime("%A %#d %B %Y",strtotime($data['dateDebutStage']))) ?></span>
-            <div class="cleaner h10"></div>
-            
-            <h5>Date de fin du stage</h5><span class="date"> <?php echo utf8_encode(strftime("%A %#d %B %Y",strtotime($data['dateFinStage']))) ?></span>
-            <div class="cleaner h10"></div>
-            
-            <h5>Durée du stage</h5><span class="date"> <?php echo $data['dureeStage']; ?> jours</span>
-            <div class="cleaner h10"></div>
-            
-            <h5>Contacter avant le</h5><span class="date"> <?php echo utf8_encode(strftime("%A %#d %B %Y",strtotime($data['dateLimiteStage']))) ?></span>
-            <div class="cleaner h10"></div>
-            <?php if(($_SESSION['type'] == "admin") || $_SESSION['type'] == "etudiants") {
-                echo '<p><a href="mail?stage='.$_GET['id'].'">Contacter l\'entreprise pour ce stage</a></p>';
-            } ?>
-            <div class="cleaner h10"></div>
-            
-            <h5>Lieu du stage</h5>
-            <p><?php echo nl2br($data['lieuStage']); ?></p>
+        <div class="large-6 columns">
+            <div class="row">
+                <div class="large-6 columns">
+                    <h4>Début du stage</h4><p><?php echo utf8_encode(strftime("%A %#d %B %Y",strtotime($dateDebutStage))) ?></p>
+                </div>
+                <div class="large-6 columns">
+                    <h4>Fin du stage</h4><p> <?php echo utf8_encode(strftime("%A %#d %B %Y",strtotime($dateFinStage))) ?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    <h4>Durée du stage</h4><p> <?php echo $dureeStage; ?> jours</p>
+                </div>
+                <div class="large-6 columns">
+                    <h4>Contacter avant le</h4><p> <?php echo utf8_encode(strftime("%A %#d %B %Y",strtotime($dateLimiteStage))) ?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    <h4>Lieu du stage</h4>
+                    <p><?php echo nl2br($lieuStage); ?></p>
+                </div>
+                <div class="large-6 columns">
+                    <?php if(($_SESSION['connected'] == "admin") || $_SESSION['connected'] == "etud") {
+                        echo '<a href="mail?stage='.$_GET['id'].'" class="button">Contacter l\'entreprise pour ce stage</a>';
+                    } ?>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
         </div>
-        <div class="cleaner h10"></div>
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
-        type="text/javascript"></script>
-        <div id="map" style="width: 820px; height: 320px"><br/></div> 
-        <script type="text/javascript">
-            //<![CDATA[
-            function load() 
-            {
-                if (GBrowserIsCompatible()) {
-                    var map = new GMap2(document.getElementById("map"));
-                    map.addControl(new GSmallMapControl());
-                    map.addControl(new GMapTypeControl());
-                    var center = new GLatLng(<?php echo json_encode($data['latStage']);?>, <?php echo json_encode($data['lngStage']);?>);
-                    map.setCenter(center, 15);
-                    var marker = new GMarker(center, {draggable: false});  
-                    map.addOverlay(marker);           
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
+                    type="text/javascript"></script>
+            <div id="map" style="height: 320px"><br/></div>
+            <script type="text/javascript">
+                //<![CDATA[
+                function load()
+                {
+                    if (GBrowserIsCompatible()) {
+                        var map = new GMap2(document.getElementById("map"));
+                        map.addControl(new GSmallMapControl());
+                        map.addControl(new GMapTypeControl());
+                        var center = new GLatLng(<?php echo json_encode($latStage);?>, <?php echo json_encode($lngStage);?>);
+                        map.setCenter(center, 15);
+                        var marker = new GMarker(center, {draggable: false});
+                        map.addOverlay(marker);
+                    }
                 }
-            } 
-            load();
-            //]]>
-        </script>
+                load();
+                //]]>
+            </script>
+        </div>
+    </div>
+
+</div>
+
 <?php
 include ('all.footer.php');
 ?>
