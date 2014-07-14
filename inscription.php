@@ -1,17 +1,14 @@
 <?php
 $loginreq = 0;
 include('all.header.php');
-echo '<section class="row">
-            <div class="small-12 columns">
-                <h1>Inscription entreprise</h1>
-            </div>
-         </section>';
 ?>
-
-    <form action="inscriptiondb" method="POST" id="inscEntreprise" enctype="multipart/form-data"
+    <section class="row">
+        <div class="small-12 columns">
+            <h1>Inscription entreprise</h1>
+        </div>
+    </section>
+    <form method="post" action="./inscriptiondb" enctype="multipart/form-data"
           onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
-        <input type="hidden" name="typeinscription" value="ent"/>
-
         <div class="row">
             <div class="large-3 columns">
                 <label for="profilpic" class="text-center">Ajouter votre logo (facultatif)<br/>
@@ -130,9 +127,10 @@ echo '<section class="row">
             </div>
         </div>
         <br/>
+
         <div class="row">
             <div class="small-12 large-6 large-centered columns">
-                <input class="large button expand" id="envoyer" type="submit" value="S'inscrire"/>
+                <input class="large button expand" id="envoyer" name="submit" type="submit" value="S'inscrire"/>
             </div>
         </div>
 

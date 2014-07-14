@@ -7,6 +7,7 @@ logincheck.php
 logincheck2.php
 /CAS/certificate.pem
 config.php
+loginent.php
 
 # Ignore files that may contain personal information
 fichiers/*

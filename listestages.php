@@ -1,5 +1,6 @@
 <?php
 include('all.header.php');
+require_once('logincheck.php');
 ?>
     <div class="row panel">
         <div class="row">

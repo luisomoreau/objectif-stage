@@ -1,7 +1,6 @@
 <?php
     include('all.header.php');
     require_once('logincheck.php');
-
     $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
     if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['connected'] === "admin")) {
         // Requète SQL
