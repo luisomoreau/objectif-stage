@@ -1,7 +1,7 @@
 <?php
 include('all.header.php');
 ?>
-    <form method="post" action="./inscriptiondb" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
+    <form method="POST" action="./inscriptiondb" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
         <section class="row">
             <div class="small-12 columns">
                 <h1>Inscription entreprise</h1>
