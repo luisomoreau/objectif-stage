@@ -125,5 +125,5 @@ include('all.header.php');
         $nom_expediteur = "Objectif Stage";
         $piece_jointe = 0;
         email($destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe);*/
-    //header('Location: valider');
+    header('Location: valider');
     die();
