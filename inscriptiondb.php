@@ -5,7 +5,7 @@ include('all.header.php');
         or !isset($_POST['prenomContactEnt']) or !isset($_POST['nomContactEnt']) or !isset($_POST['telEnt'])
         or !isset($_POST['telSecEnt']) or !isset($_POST['adresseEnt']) or !isset($_POST['latEnt']) or !isset($_POST['lngEnt'])) {
             //header('Location: ./');
-        var_dump(get_defined_vars());
+            var_dump(get_defined_vars());
             die("wtf");
     }
     if (strlen($_POST['nomEnt'])>100) {
