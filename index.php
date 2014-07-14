@@ -1,6 +1,5 @@
 <?php
     include("all.header.php");
-
     // Check si logged via CAS
     if (!isset($_SESSION['connected'])) {
         // Load the settings from the central config file
