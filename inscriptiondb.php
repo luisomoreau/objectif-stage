@@ -4,9 +4,8 @@ include('all.header.php');
     if (!isset($_POST['nomEnt']) or !isset($_POST['mailEnt']) or !isset($_POST['mdpEnt']) or !isset($_POST['mdpEnt2'])
         or !isset($_POST['prenomContactEnt']) or !isset($_POST['nomContactEnt']) or !isset($_POST['telEnt'])
         or !isset($_POST['telSecEnt']) or !isset($_POST['adresseEnt']) or !isset($_POST['latEnt']) or !isset($_POST['lngEnt'])) {
-            //header('Location: ./');
-            var_dump(get_defined_vars());
-            die("wtf");
+            header('Location: ./');
+            die();
     }
     if (strlen($_POST['nomEnt'])>100) {
            header('Location: ./');
@@ -30,11 +29,11 @@ include('all.header.php');
         header('Location: ./');
         die();
     } else { //mdp valide et bonne taille
-        $password=$mdpEnt;
+        $password=$_POST['mdpEnt'];
         $salt="stageunc123";
-        $mdpEnt=hash('sha512',$salt.$mdpEnt);
-        $mdpEnt2=hash('sha512',$salt.$mdpEnt2);
-        if (!($mdpEnt===$mdpEnt2)) {
+        $_POST['mdpEnt']=hash('sha512',$salt.$_POST['mdpEnt']);
+        $_POST['mdpEnt2']=hash('sha512',$salt.$_POST['mdpEnt2']);
+        if (!($_POST['mdpEnt']===$_POST['mdpEnt2'])) {
             header('Location: ./');
             die();
         }
@@ -91,13 +90,13 @@ include('all.header.php');
     if ( $_FILES['profilpic']['error'] <= 0 ) {
         if ( exif_imagetype($_FILES['profilpic']['tmp_name']) != false ) {
             if ( $_FILES['profilpic']['size'] <= 2097152 ) {
-                imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/".md5($mailEnt).".png");
+                imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/".md5($_POST['mailEnt']).".png");
             }
         }
     }
     $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
     if (!($stmt = $mysqli->prepare('INSERT INTO entreprises (nomEnt, mailEnt, mdpEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?'))) {
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('ssssssssss', $_POST['nomEnt'], $_POST['mailEnt'], $_POST['mdpEnt'], $_POST['nomContactEnt'],
@@ -128,5 +127,3 @@ include('all.header.php');
         email($destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe);*/
     //header('Location: valider');
     die();
-include('all.footer.php');
-?>
