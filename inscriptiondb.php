@@ -1,16 +1,11 @@
 <?php
-    ini_set('display_errors',1);
-    ini_set('display_startup_errors',1);
-    error_reporting(-1);
-
 include('all.header.php');
-var_dump(get_defined_vars());
     /**** inscription entreprise ****/
     if (!isset($_POST['nomEnt']) or !isset($_POST['mailEnt']) or !isset($_POST['mdpEnt']) or !isset($_POST['mdpEnt2'])
         or !isset($_POST['prenomContactEnt']) or !isset($_POST['nomContactEnt']) or !isset($_POST['telEnt'])
         or !isset($_POST['telSecEnt']) or !isset($_POST['adresseEnt']) or !isset($_POST['latEnt']) or !isset($_POST['lngEnt'])) {
             //header('Location: ./');
-
+        var_dump(get_defined_vars());
             die("wtf");
     }
     if (strlen($_POST['nomEnt'])>100) {
@@ -31,8 +26,8 @@ var_dump(get_defined_vars());
         <?php        
         die();
     }
-    if (!preg_match('/^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/', $mdpEnt)) {
-        header('Location: /');
+    if (!preg_match('/^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/', $_POST['mdpEnt'])) {
+        header('Location: ./');
         die();
     } else { //mdp valide et bonne taille
         $password=$mdpEnt;

@@ -1,14 +1,12 @@
 <?php
-$loginreq = 0;
 include('all.header.php');
 ?>
-    <section class="row">
-        <div class="small-12 columns">
-            <h1>Inscription entreprise</h1>
-        </div>
-    </section>
-    <form method="post" action="./inscriptiondb" enctype="multipart/form-data"
-          onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
+    <form method="post" action="./inscriptiondb" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
+        <section class="row">
+            <div class="small-12 columns">
+                <h1>Inscription entreprise</h1>
+            </div>
+        </section>
         <div class="row">
             <div class="large-3 columns">
                 <label for="profilpic" class="text-center">Ajouter votre logo (facultatif)<br/>
@@ -133,8 +131,9 @@ include('all.header.php');
                 <input class="large button expand" id="envoyer" name="submit" type="submit" value="S'inscrire"/>
             </div>
         </div>
-
     </form>
+
+
 <?php
 include('all.footer.php');
 ?>
