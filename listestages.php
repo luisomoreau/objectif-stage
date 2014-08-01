@@ -1,6 +1,7 @@
 <?php
 include('all.header.php');
 require_once('logincheck.php');
+$user = getInfos();
 ?>
     <div class="row panel">
         <div class="row">
@@ -10,7 +11,6 @@ require_once('logincheck.php');
         </div>
         <form action="listestages" method="GET" id="recherche">
             <div class="row">
-
                 <div class="large-6 column">
                     <input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100"
                            value="<?php if (isset($_GET['champ_rech'])) {
@@ -20,7 +20,7 @@ require_once('logincheck.php');
                 <div class="large-3 column">
                     <div class="row collapse">
                         <div class="small-8 columns">
-                            <span class="prefix">Afficher même les stages expirés ?</span>
+                            <span class="prefix">Afficher les stages expirés</span>
                         </div>
                         <div class="small-4 columns">
                             <div class="switch">
@@ -42,7 +42,7 @@ require_once('logincheck.php');
                 <div class="large-3 columns">
                     <div class="row collapse">
                         <div class="small-8 columns">
-                            <span class="prefix">Rémunéré ?</span>
+                            <span class="prefix">Rémunéré</span>
                         </div>
                         <div class="small-4 columns">
                             <div class="switch">
@@ -61,7 +61,76 @@ require_once('logincheck.php');
                         </div>
                     </div>
                 </div>
+                <div class="large-12 columns">
+                    <h4>Options</h4>
+                    <div class="row">
+                        <div class="large-3 columns">
+                            <div class="row collapse">
+                                <div class="small-4 columns">
+                                    <span class="prefix">Année</span>
+                                </div>
+                                <div class="small-8 columns">
+                                    <select id="annee" name="annee">
+                                         <?php
+                                         switch ($user->annee) {
+                                             case "L1":
+                                                 echo ' <option value="l1" selected>L1</option>
+                                                        <option value="l2">L2</option>
+                                                        <option value="l3">L3</option>';
+                                                 break;
+                                             case "L2":
+                                                 echo ' <option value="l1">L1</option>
+                                                        <option value="l2" selected>L2</option>
+                                                        <option value="l3">L3</option>';
+                                                 break;
+                                             case "L3":
+                                                 echo ' <option value="l1">L1</option>
+                                                        <option value="l2">L2</option>
+                                                        <option value="l3" selected>L3</option>';
+                                                 break;
+                                         }
+                                         ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row collapse">
+                                <div class="small-4 columns">
+                                    <span class="prefix">Filière</span>
+                                </div>
+                                <div class="small-8 columns">
+                                    <select id="filiere" name="filiere">
+                                        <option value="spi_info">SPI - Informatique</option>
+                                        <option value="spi_megp">SPI - MEGP</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row collapse">
+                                <div class="small-6 columns">
+                                    <span class="prefix">Début du stage</span>
+                                </div>
+                                <div class="small-6 columns">
+                                    <input type="date" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="large-3 columns">
+                            <div class="row collapse">
+                                <div class="small-6 columns">
+                                    <span class="prefix">Durée du stage</span>
+                                </div>
+                                <div class="small-6 columns">
+                                    <input type="number" id="duree" name="duree" placeholder="En jours">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <br />
             <div class="row">
                 <div class="large-centered large-6 columns">
                     <input class="large button expand" id="envoyer" type="submit" value="Rechercher"/>
@@ -70,7 +139,7 @@ require_once('logincheck.php');
         </form>
     </div>
     <div class="row">
-        <div class="small-12 columns">
+        <div class="small-12">
             <?php
             //@todo filiere
             $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
@@ -80,24 +149,35 @@ require_once('logincheck.php');
                         OR sujetStage LIKE ?
                         OR detailsStage LIKE ?
                         OR competencesStage LIKE ?)';
-            $user = getInfos();
             if (!isset($_GET['expStage']) || $_GET['expStage'] == 0) {
                 $baseQuery .= " AND TO_DAYS(NOW()) < TO_DAYS(dateLimiteStage)";
             }
             if (isset($_GET['remStage']) && $_GET['remStage'] == 1) {
                 $baseQuery .= " AND remuStage=1";
             }
-            switch ($user->annee) {
-                case "L1":
-                    $baseQuery .= " AND l1Stage=1";
-                    break;
-                case "L2":
-                    $baseQuery .= " AND l2Stage=1";
-                    break;
-                case "L3":
-                    $baseQuery .= " AND l3Stage=1";
-                    break;
+            if (isset($_GET['annee'])) {
+                switch($_GET['annee']) {
+                    case "l1":
+                        $baseQuery .= " AND l1Stage = 1";
+                        break;
+                    case "l2":
+                        $baseQuery .= " AND l2Stage = 1";
+                        break;
+                    case "l3":
+                        $baseQuery .= " AND l3Stage = 1";
+                        break;
+                }
             }
+            if (isset($_GET['filiere'])) {
+                //$baseQuery .= " AND filiereStage = \"".$_GET['filiere']."\"";
+            }
+            if (isset($_GET['dateDebut'])) {
+                //$baseQuery .= " AND dateDebutStage = \"".$_GET['dateDebut']."\"";
+            }
+            if (isset($_GET['duree'])) {
+                //$baseQuery .= " AND dureeStage = \"".$_GET['duree']."\"";
+            }
+            $baseQuery .= " ORDER BY dateDebutStage DESC";
             if (!($stmt = $mysqli->prepare($baseQuery))) {
                 echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
@@ -135,7 +215,7 @@ require_once('logincheck.php');
                         <h4>Pas de résultat</h4>
                     </div>
                 </div>
-                <?php
+            <?php
             }
 
             $stmt->close();
