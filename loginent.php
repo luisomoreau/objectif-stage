@@ -5,8 +5,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 
     $mdp = hash('sha512', $salt . $_POST['mdp']);
-    if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idEnt, nomEnt FROM entreprises WHERE mailEnt=? AND mdpEnt=?'))
-    ) {
+    if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idEnt, nomEnt FROM entreprises WHERE mailEnt=? AND mdpEnt=?'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('ss', $_POST['identifiant'], $mdp);
@@ -19,15 +18,19 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     $stmt->close();
     if ($exist) {
         echo $id;
-        $_SESSION['identifiant']=$nom;
-        $_SESSION['idEnt']=$id;
-        $_SESSION["connected"]="ent";
+        $_SESSION['identifiant'] = $nom;
+        $_SESSION['idEnt'] = $id;
+        $_SESSION["connected"] = "ent";
         header('location: ./');
         die();
     }
 } else {
     ?>
-    <h1>Connexion entreprise</h1>
+    <div class="row">
+        <div class="large-12 columns">
+            <h1>Connexion entreprise</h1>
+        </div>
+    </div>
     <form method="post">
         <div class="row">
             <div class="small-12 large-6 large-centered columns">

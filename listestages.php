@@ -211,8 +211,8 @@ $user = getInfos();
             } else {
                 ?>
                 <div class="row">
-                    <div class="small-12 columns">
-                        <h4>Pas de résultat</h4>
+                    <div class="small-12 columns text-center">
+                        <h3>Pas de résultat</h3>
                     </div>
                 </div>
             <?php

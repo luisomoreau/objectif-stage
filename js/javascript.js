@@ -7,6 +7,7 @@ function loadmap(var1, var2) {
         var map = new GMap2(document.getElementById("map"));
         map.addControl(new GSmallMapControl());
         map.addControl(new GMapTypeControl());
+        map.disableScrollWheelZoom();
         var center = new GLatLng(var1, var2);
         map.setCenter(center, 15);
         geocoder = new GClientGeocoder();
@@ -22,7 +23,6 @@ function loadmap(var1, var2) {
             document.getElementById("lng").value = point.lng().toFixed(7);
 
         });
-
 
         GEvent.addListener(map, "moveend", function () {
             map.clearOverlays();

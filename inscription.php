@@ -122,9 +122,9 @@ include('all.header.php');
                 <input id="lat" type="hidden" name="latEnt" value=""/>
                 <input id="lng" type="hidden" name="lngEnt" value=""/>
                 <script
-                    src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
+                    src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
                     type="text/javascript"></script>
-                <div id="map" style="height: 320px;"><br/></div>
+                <div id="map" style="height: 320px;max-width: none"><br/></div>
                 <script type="text/javascript">
                     //<![CDATA[
                     loadmap(-22.2630844, 166.4031372);

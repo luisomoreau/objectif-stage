@@ -1,49 +1,78 @@
 <?php
-include('nontraite.php');
-include ('all.header.php');
+include('all.header.php');
 ?>
-        <h1>Liste des entreprises</h1>
-        <div id="col">
+    <div class="row panel">
+        <div class="large-12 columns">
             <h3>Recherche</h3>
+
             <form action="listeentreprises" method="GET" id="recherche">
-          		<input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php if (isset($_GET['champ_rech'])) {echo $_GET['champ_rech'];} ?>" /> <button id="recherche" type="submit">Rechercher</button>
+                <input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php if (isset($_GET['champ_rech'])) {
+                    echo $_GET['champ_rech'];
+                } ?>"/>
+                <div class="row">
+                    <div class="large-centered large-6 columns">
+                        <input class="large button expand" id="envoyer" type="submit" value="Rechercher"/>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class="cleaner h20"></div>
-        <h4>Résultats</h4>
+    </div>
+
 <?php
-if (isset($_GET['champ_rech'])) {
-    $query = "SELECT * FROM entreprises WHERE (nomEnt LIKE '%".$_GET['champ_rech']."%'";
-} else {
-    $query = "SELECT * FROM entreprises WHERE (nomEnt LIKE '%%'";
-}
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 
 if (isset($_GET['champ_rech'])) {
-    $query.=" OR telEnt LIKE '%".$_GET['champ_rech']."%'";
-    $query.=" OR adresseEnt LIKE '%".$_GET['champ_rech']."%')";
-} else {
-    $query.=")";
-}
-// Exécution de la requète
-$result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-// Affichage des colones
-$data = mysqli_fetch_assoc($result);
-if ($data == NULL) {
-    echo "Aucun résultat";
-} else {
-    echo "<table>";
-    echo "<tr><th>Nom de l'entreprise</th><th>Téléphone</th><th>Adresse</th><th>Options</th></tr>";
-    // Exécution de la requète pour les valeures
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-    // Remplissage du tableau
-    while($data = mysqli_fetch_assoc($result)) {
-        echo '<tr onclick="document.location.href=\'infoentreprise?id='.$data['idEnt'].'\'">';
-        echo '<td>'.$data['nomEnt'].'</td><td>'.$data['telEnt'].'</td><td>'.$data['adresseEnt'].'</td>';
-        echo '<td><a href="infoentreprise?id='.$data['idEnt'].'">Plus d\'infos</a></td>';
-        echo '</tr>';
+    $query = "SELECT * FROM entreprises WHERE (nomEnt LIKE '%" . $_GET['champ_rech'] . "%'";
+    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE nomEnt LIKE ? OR telEnt LIKE ? OR adresseEnt LIKE ?'))) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    // On ferme le tableau
-    echo "</table>";
+    $search = '%' . $_GET['champ_rech'] . '%';
+    $stmt->bind_param('sss', $search, $search, $search);
+} else {
+    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises'))) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
 }
-include ('all.footer.php');
+if (!($stmt->execute())) {
+    echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$stmt->bind_result($idEnt, $nomEnt, $telEnt, $adresseEnt);
+$stmt->store_result();
+if ($stmt->num_rows > 0) {
+    ?>
+    <div class="row">
+        <div class="small-12">
+            <table style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Nom de l'entreprise</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                while ($stmt->fetch()) {
+                    echo '<tr onclick="document.location.href=\'infoentreprise?id=' . $idEnt . '\'">';
+                    echo '<td>' . $nomEnt . '</td><td>' . $telEnt . '</td><td>' . $adresseEnt . '</td>';
+                    echo '<td><a href="infoentreprise?id=' . $idEnt . '">Plus d\'infos</a></td>';
+                    echo '</tr>';
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php
+} else {
+    ?>
+    <div class="row">
+        <div class="small-12 columns text-center">
+            <h3>Pas de résultat</h3>
+        </div>
+    </div>
+<?php
+}
+include('all.footer.php');
 ?>
