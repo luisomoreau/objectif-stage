@@ -2,7 +2,6 @@
 session_start();
 require_once('settings.php');
 require_once('fonctions.php');
-
 ?>
 <!doctype html>
 <html lang="fr">
@@ -14,10 +13,12 @@ require_once('fonctions.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="scss/custom.css"/>
     <link rel="stylesheet" href="css/foundation-icons/foundation-icons.css"/>
+    <link rel="stylesheet" href="css/foundation-datepicker.css"/>
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/javascript.js"></script>
     <script src="js/vendor/custom.modernizr.js"></script>
+    <script src="js/foundation-datepicker.js"></script>
 </head>
 <body>
 <!--.page -->

@@ -23,6 +23,8 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         $_SESSION["connected"] = "ent";
         header('location: ./');
         die();
+    } else {
+        header('location: ./loginent');
     }
 } else {
     ?>

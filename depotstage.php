@@ -1,207 +1,180 @@
 <?php
-include('nontraite.php');
 include('all.header.php');
-if ($_SESSION[type]!=="entreprises") {
-    header('Location: index');
-    die(); 
+if ($_SESSION['connected'] !== "ent") {
+    header('Location: ./');
+    die();
 }
-        // Connection SQL
-        $dblink = mysqli_connect($sqlserver,$sqlid,$sqlpwd,$sqldb) or die("Erreur de connection au server SQL: ".mysqli_error($dblink));
-               
-        // Requète SQL
-        $query = "SELECT * FROM Entreprises WHERE idEnt=$_SESSION[idEnt]";
-                
-        // Exécution de la requète
-        $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-        
-        $data = mysqli_fetch_assoc($result);
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+if (!($stmt = $mysqli->prepare('SELECT prenomContactEnt, nomContactEnt, mailEnt, adresseEnt, latEnt, lngEnt
+                                FROM Entreprises WHERE idEnt=?'))
+) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$stmt->bind_param('i', $_SESSION['idEnt']);
+if (!($stmt->execute())) {
+    echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$stmt->bind_result($prenomContactEnt, $nomContactEnt, $mailEnt, $adresseEnt, $latEnt, $lngEnt);
+$stmt->fetch();
+$stmt->close();
 
 ?>
-<h1>Depôt stage</h1>
-<form action="depotstagedb" method="POST" id="depoStage">
-    <div class="col_1 float_l">	
-        <label for="nomStage">Nom stage</label>
-    	<input type="text" name="nomStage" id="nomStage" maxlength="200" required="required" value=""/>
-    	<div class="cleaner h10"></div> 
-        
-        <label for="prenomContactStage">Prenom du contact pour le stage</label>
-    	<input type="text" name="prenomContactStage" id="prenomContactStage" maxlength="50" required="required" value="<?php echo $data[prenomContactEnt];?>"/>
-    	<div class="cleaner h10"></div>
-        
-        <label for="nomContactStage">Nom du contact pour le stage</label>
-    	<input type="text" name="nomContactStage" id="nomContactStage" maxlength="50" required="required" value="<?php echo $data[nomContactEnt];?>"/>
-    	<div class="cleaner h10"></div> 
-        
-        <label for="mailContactStage">Mail du contact pour le stage</label>
-    	<input type="email" name="mailContactStage" id="mailContactStage" maxlength="100" required="required" value="<?php echo $data[mailEnt];?>"/>
-    	<div class="cleaner h10"></div>
-        
-        <label for="lieuStage">Lieu du stage</label>
-    	<textarea name="lieuStage" id="lieuStage" maxlength="255" required="required"><?php echo $data[adresseEnt];?></textarea>
-    	<div class="cleaner h10"></div>
+    <div class="row">
+        <div class="large-12 columns">
+            <h1>Déposer un stage</h1>
+        </div>
     </div>
-    <div class="col_23 float_r">
-        <label>Veuillez indiquer le lieu du stage : </label>       
-        <input id="lat" type="hidden" name="latStage" value=""/>
-        <input id="lng" type="hidden" name="lngStage" value="" />
-           
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
-        type="text/javascript"></script>
-        <div id="map" style="width: 500px; height: 330px"><br/></div>
-        <script type="text/javascript">
-            //<![CDATA[
-            loadmap(<?php echo $data[latEnt].",".$data[lngEnt]?>);
-            //]]>
-        </script>
-    </div>
-    <div class="cleaner h10"></div>
-    <div class="col_23 float_l">
-        <label for="sujetStage">Sujet du stage</label>
-    	<textarea name="sujetStage" id="sujetStage" maxlength="1000" required="required"></textarea>
-    	<div class="cleaner h10"></div>
-        
-        <label for="detailsStage">Details du stage</label>
-    	<textarea name="detailsStage" id="detailsStage" maxlength="1000" required="required"></textarea>
-    	<div class="cleaner h10"></div>
-        
-        Compétences necessaires :
-        <div class="cleaner h10"></div>
-        <input type="checkbox" name="htmlcssStage" id="htmlcssStage" value="1"/>
-        <label class="checkbox" for="htmlcssStage" >HTML/CSS</label>
-        
-        <input type="checkbox" name="phpStage" id="phpStage" value="1"/>
-        <label class="checkbox" for="phpStage" >PHP</label>
-        
-        <input type="checkbox" name="sqlStage" id="sqlStage" value="1"/>
-        <label class="checkbox" for="sqlStage" >SQL</label>
-        
-        <input type="checkbox" name="javaStage" id="javaStage" value="1"/>
-        <label class="checkbox" for="javaStage">JAVA</label>
-        
-        <input type="checkbox" name="cStage" id="cStage" value="1"/>
-        <label class="checkbox" for="cStage">C</label>
-        
-        <input type="checkbox" name="csStage" id="csStage" value="1"/>
-        <label class="checkbox" for="csStage">C#</label>
-        <div class="cleaner h10"></div>
-        
-        <label for="langageAutreStage">Autres compétences</label>
-    	<textarea name="langageAutreStage" id="langageAutreStage" maxlength="255"></textarea>
-    	<div class="cleaner h10"></div>
-        
-        <label>Stage rémunéré :</label>
-        <input type="radio" name="remuStage" id="remuStageO" value="1" required="required" />
-        <label class="radio" for="remuStageO" >Oui</label>
-    	<input type="radio" name="remuStage" id="remuStageN" value="0" required="required" />
-        <label class="radio" for="remuStageN" >Non</label>
-    </div>
-    <div class="col_13 float_r">
-        <div class="cleaner h10"></div>
-        <label>Niveau du stage</label>
-        <select name="typeStage" required>
-            <option selected="selected" disabled="disabled" value="">Niveau</option>
-            <option>Stage L2</option>
-            <option>Stage L3</option>
-            <option>Projet Tuteuré</option>
-        </select>
-        <div class="cleaner h10"></div>
-        
-        <label>Date début stage</label>
-        <select name="dateJourDebutStage" required>
-        	<option selected="selected" disabled="disabled" value="">Jour</option>
-            <?php
-            for ($i=1;$i<=31;$i++) {
-                echo "<option value=".$i.">".$i."</option>";
-            }
-            ?>
-        </select>
-        <select name="dateMoisDebutStage" required>
-        	<option selected="selected" disabled="disabled" value="">Mois</option>
-        	<option value="1">Janvier</option>
-        	<option value="2">Fevrier</option>
-        	<option value="3">Mars</option>
-        	<option value="4">Avril</option>
-        	<option value="5">Mai</option>
-        	<option value="6">Juin</option>
-        	<option value="7">Juillet</option>
-        	<option value="8">Août</option>
-        	<option value="9">Septembre</option>
-        	<option value="10">Octobre</option>
-        	<option value="11">Novembre</option>
-        	<option value="12">Décembre</option>
-        </select>
-        <select name="dateAnneeDebutStage" required>
-        	<option selected="selected" disabled="disabled" value="">Année</option>
-            <option value="2015">2015</option>
-        	<option value="2014">2014</option>
-        	<option value="2013">2013</option>
-        </select>
-        <div class="cleaner h10"></div>
-        
-        <label>Date fin stage</label>
-        <select name="dateJourFinStage" required>
-        	<option selected="selected" disabled="disabled" value="">Jour</option>
-            <?php
-            for ($i=1;$i<=31;$i++) {
-                echo "<option value=".$i.">".$i."</option>";
-            }
-            ?>
-        </select>
-        <select name="dateMoisFinStage" required>
-        	<option selected="selected" disabled="disabled" value="">Mois</option>
-        	<option value="1">Janvier</option>
-        	<option value="2">Fevrier</option>
-        	<option value="3">Mars</option>
-        	<option value="4">Avril</option>
-        	<option value="5">Mai</option>
-        	<option value="6">Juin</option>
-        	<option value="7">Juillet</option>
-        	<option value="8">Août</option>
-        	<option value="9">Septembre</option>
-        	<option value="10">Octobre</option>
-        	<option value="11">Novembre</option>
-        	<option value="12">Décembre</option>
-        </select>
-        <select name="dateAnneeFinStage" required>
-        	<option selected="selected" disabled="disabled" value="">Année</option>
-            <option value="2015">2015</option>
-        	<option value="2014">2014</option>
-        	<option value="2013">2013</option>
-        </select>
-        <div class="cleaner h10"></div>
-        
-        <label>Date expiration offre de stage</label>
-        <select name="dateJourLimiteStage" required>
-        	<option selected="selected" disabled="disabled" value="">Jour</option>
-            <?php
-            for ($i=1;$i<=31;$i++) {
-                echo "<option value=".$i.">".$i."</option>";
-            }
-            ?>
-        </select>
-        <select name="dateMoisLimiteStage" required>
-        	<option selected="selected" disabled="disabled" value="">Mois</option>
-        	<option value="1">Janvier</option>
-        	<option value="2">Fevrier</option>
-        	<option value="3">Mars</option>
-        	<option value="4">Avril</option>
-        	<option value="5">Mai</option>
-        	<option value="6">Juin</option>
-        	<option value="7">Juillet</option>
-        	<option value="8">Août</option>
-        	<option value="9">Septembre</option>
-        	<option value="10">Octobre</option>
-        	<option value="11">Novembre</option>
-        	<option value="12">Décembre</option>
-        </select>
-        <select name="dateAnneeLimiteStage" required>
-        	<option selected="selected" disabled="disabled" value="">Année</option>
-            <option value="2015">2015</option>
-        	<option value="2014">2014</option>
-        	<option value="2013">2013</option>
-        </select>
-    </div>
-    <div class="cleaner h20"></div>
-    <button class="float_l" type="submit">Deposer le stage</button>
-</form>
+    <form action="depotstagedb" method="POST" id="depoStage">
+        <div class="row">
+            <div class="large-6 columns">
+                <div class="row collapse">
+                    <div class="small-6 large-3 columns">
+                        <span class="prefix">Intitulé du stage</span>
+                    </div>
+                    <div class="small-6 large-9 columns">
+                        <input type="text" name="nomStage" id="nomStage" maxlength="200" required/>
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="small-6 large-3 columns">
+                        <span class="prefix">Prénom du contact</span>
+                    </div>
+                    <div class="small-6 large-9 columns">
+                        <input type="text" name="prenomContactStage" id="prenomContactStage" maxlength="50" value="<?php echo $prenomContactEnt; ?>" required/>
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="small-6 large-3 columns">
+                        <span class="prefix">Nom du contact</span>
+                    </div>
+                    <div class="small-6 large-9 columns">
+                        <input type="text" name="nomContactStage" id="nomContactStage" maxlength="50" value="<?php echo $nomContactEnt; ?>" required/>
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="small-6 large-3 columns">
+                        <span class="prefix">Mail du contact</span>
+                    </div>
+                    <div class="small-6 large-9 columns">
+                        <input type="email" name="mailContactStage" id="mailContactStage" maxlength="100" value="<?php echo $mailEnt; ?>" required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <label for="lieuStage">Lieu du stage</label>
+                        <textarea name="lieuStage" id="lieuStage" maxlength="255" required><?php echo $adresseEnt; ?></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="large-6 columns">
+                <input id="lat" type="hidden" name="latStage" value=""/>
+                <input id="lng" type="hidden" name="lngStage" value=""/>
+
+                <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
+                        type="text/javascript"></script>
+                <div id="map" style=" height: 250px"><br/></div>
+                <script type="text/javascript">
+                    //<![CDATA[
+                    loadmap(<?php echo $latEnt.",".$lngEnt?>);
+                    //]]>
+                </script>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <label for="sujetStage">Sujet du stage</label>
+                <textarea name="sujetStage" id="sujetStage" maxlength="1000" required></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <label for="detailsStage">Details du stage</label>
+                <textarea name="detailsStage" id="detailsStage" maxlength="1000" required></textarea>
+            </div>
+        </div>
+        <br/>
+
+        <div class="row">
+            <div class="large-6 columns">
+                <div class="row collapse">
+                    <div class="large-8 columns">
+                        <span class="prefix">Filière</span>
+                    </div>
+                    <div class="large-4 columns">
+                        <select name="filiereStage" required>
+                            <option selected="selected" disabled="disabled" value="">Filière</option>
+                            <option>SPI</option>
+                            <option>Droit</option>
+                            <option>Anglais</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row collapse">
+                    <div class="large-8 columns">
+                        <span class="prefix">Niveau</span>
+                    </div>
+                    <div class="large-4 columns">
+                        <select name="niveauStage" required>
+                            <option selected="selected" disabled="disabled" value="">Niveau</option>
+                            <option>Stage L2</option>
+                            <option>Stage L3</option>
+                            <option>Projet Tuteuré</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        <span class="prefix">Stage rémunéré</span>
+                    </div>
+                    <div class="small-4 columns">
+                        <div class="switch">
+                            <input id="remStage" name="remStage" type="radio" value="0" checked="">
+                            <label for="remStage" onclick="" class="text-center">Non</label>
+                            <input id="remStage" name="remStage" type="radio" value="1">
+                            <label for="remStage" onclick="" class="text-center">Oui</label>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="large-6 columns">
+                <div class="row collapse">
+                    <div class="large-6 columns">
+                        <span class="prefix">Date début stage</span>
+                    </div>
+                    <div class="large-6 columns">
+                        <input type="text" class="span2 date_picker" value="01/01/2014">
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="large-6 columns">
+                        <span class="prefix">Date fin stage</span>
+                    </div>
+                    <div class="large-6 columns">
+                        <input type="text" class="span2 date_picker" value="01/01/2014">
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="large-6 columns">
+                        <span class="prefix">Date limite stage</span>
+                    </div>
+                    <div class="large-6 columns">
+                        <input type="text" class="span2 date_picker" value="01/01/2014">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 large-6 large-centered columns">
+                <input class="large button expand" id="envoyer" name="submit" type="submit" value="Déposer le stage"/>
+            </div>
+        </div>
+    </form>
+    <script>
+        $('.date_picker').fdatepicker({
+            format: 'mm/dd/yyyy'
+        });
+    </script>
 <?php include('all.footer.php'); ?>
