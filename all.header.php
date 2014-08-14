@@ -14,6 +14,8 @@ require_once('fonctions.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="scss/custom.css"/>
     <link rel="stylesheet" href="css/foundation-icons/foundation-icons.css"/>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
     <script src="js/javascript.js"></script>
     <script src="js/vendor/custom.modernizr.js"></script>
 </head>
@@ -81,6 +83,9 @@ require_once('fonctions.php');
                 <?php
                     if (isset($_SESSION['connected'])) {
                         if ($_SESSION['connected']=="etud") {
+                            echo '<div class="text-right" style="margin-top:50px;">Bonjour '.$_SESSION['identifiant'].' | <a href="./logout">Déconnexion</a></div>';
+                        }
+                        if ($_SESSION['connected']=="ent") {
                             echo '<div class="text-right" style="margin-top:50px;">Bonjour '.$_SESSION['identifiant'].' | <a href="./logout">Déconnexion</a></div>';
                         }
                     }

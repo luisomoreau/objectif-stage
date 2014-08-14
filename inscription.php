@@ -1,7 +1,7 @@
 <?php
 include('all.header.php');
 ?>
-    <form method="POST" action="./inscriptiondb" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEnt') && checkPass('mdpEnt','mdpEnt2'))">
+    <form method="POST" action="./inscriptiondb" enctype="multipart/form-data" onsubmit="return (checkPatern('#mdpEnt') && checkPass('#mdpEnt','#mdpEnt2'))">
         <section class="row">
             <div class="small-12 columns">
                 <h1>Inscription entreprise</h1>
@@ -36,8 +36,12 @@ include('all.header.php');
                         <span class="prefix">Mot de passe</span>
                     </div>
                     <div class="small-6 large-9 columns">
-                        <input type="password" name="mdpEnt" id="mdpEnt" maxlength="25" required="required" onkeyup="checkPatern('mdpEnt'); return false;"/>
-                        <span id="confirmPatern" class="confirmPatern"></span>
+                        <input type="password" name="mdpEnt" id="mdpEnt" maxlength="25" required="required" onkeyup="checkPatern('#mdpEnt'); return false;"/>
+
+                        <div class="row">
+                            <div class="small-12 columns confirmPatern">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row collapse">
@@ -46,8 +50,12 @@ include('all.header.php');
                     </div>
                     <div class="small-6 large-9 columns">
                         <input type="password" name="mdpEnt2" id="mdpEnt2" maxlength="25" required="required"
-                               onkeyup="checkPass('mdpEnt','mdpEnt2'); return false;"/>
-                        <span id="confirmMessage" class="confirmMessage"></span>
+                               onkeyup="checkPass('#mdpEnt','#mdpEnt2'); return false;"/>
+
+                        <div class="row">
+                            <div class="small-12 columns confirmMessage">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

@@ -38,7 +38,7 @@
             echo '
     <section class="row">
         <div class="large-6 column">
-            <a href="./listestages" class="large button expand">Accédez à la liste des stages</a>
+            <a href="./listestages" class="large button expand">Accédez à la liste des offres</a>
         </div>
         <div class="large-6 column">
             <a href="./listeentreprises" class="large button expand">Accédez à la liste des entreprises</a>

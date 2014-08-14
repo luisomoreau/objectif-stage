@@ -30,7 +30,6 @@ include('all.header.php');
         die();
     } else { //mdp valide et bonne taille
         $password=$_POST['mdpEnt'];
-        $salt="stageunc123";
         $_POST['mdpEnt']=hash('sha512',$salt.$_POST['mdpEnt']);
         $_POST['mdpEnt2']=hash('sha512',$salt.$_POST['mdpEnt2']);
         if (!($_POST['mdpEnt']===$_POST['mdpEnt2'])) {
