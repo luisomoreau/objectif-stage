@@ -1,5 +1,10 @@
+<script>
+    $('.date_picker').fdatepicker({
+        format: 'dd/mm/yyyy'
+    });
+</script>
 <div id="footer">
-<section class="l-footer-columns">
+<section class="l-footer-columns hide">
     <div class="row">
         <div class="footer-first large-3 columns">
             <div class="block block-block block-block-5">
@@ -61,8 +66,8 @@
 <footer class="l-footer panel" role="contentinfo">
     <div class="row">
 
-        <div class="copyright large-6 text-right columns">
-            &copy; 2014 &quot;Espace Numérique de Travail&quot; All rights reserved.
+        <div class="copyright large-6 large-centered text-center columns">
+            &copy; 2014 &quot;Objectif stage&quot; All rights reserved.
         </div>
     </div>
 </footer>

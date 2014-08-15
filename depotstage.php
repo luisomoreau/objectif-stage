@@ -172,9 +172,4 @@ $stmt->close();
             </div>
         </div>
     </form>
-    <script>
-        $('.date_picker').fdatepicker({
-            format: 'mm/dd/yyyy'
-        });
-    </script>
 <?php include('all.footer.php'); ?>

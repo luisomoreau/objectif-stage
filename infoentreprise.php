@@ -21,8 +21,8 @@ $stmt->close();
     <div class="row panel">
         <div class="row">
             <?php if ($_SESSION['connected'] == "admin") echo '<h1><a href="majinfo?idEnt=' . $_GET['id'] . '"><button class="float_r">Modifier l\'entreprise</button></a></h1>' ?>
-            <div class="large-4 columns">
-                <img src="fichiers/profile/<?php echo md5($mailEnt) . ".png" ?>" alt="Logo de l'entreprise" onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"'/>
+            <div class="large-4 columns text-center">
+                <img src="fichiers/profile/<?php echo md5($mailEnt) . ".png" ?>" alt="Logo de l'entreprise" onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
             </div>
             <div class="large-8 columns">
                 <h4>Nom</h4>
