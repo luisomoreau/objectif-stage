@@ -1,11 +1,12 @@
 <?php
-include('nontraite.php');
+include("nontraite.php");
+//@todo cette page !
 include ('all.header.php');
-if ($_SESSION[type]!=="admin") {
+if ($_SESSION['connected']!=="admin") {
     header('Location : /');
     die();
 }
-if (isset($_GET[idMsg])) {
+if (isset($_GET['idMsg'])) {
     $query = "DELETE FROM Contact WHERE idMsg='$_GET[idMsg])'";
     // Exécution de la requète
     $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
@@ -15,13 +16,13 @@ if (isset($_GET[idMsg])) {
         <div id="col">
             <h3>Recherche</h3>
             <form action="messagescontact" method="GET" id="recherche">
-          		<input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php echo $_GET[champ_rech]; ?>" /> <button id="recherche" type="submit">Rechercher</button>    
+          		<input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php echo $_GET['champ_rech']; ?>" /> <button id="recherche" type="submit">Rechercher</button>
             </form>
         </div>
         <div class="cleaner h20"></div>
         <h4>Résultats</h4>
 <?php
-$query = "SELECT * FROM Contact WHERE (messageContact LIKE '%".$_GET[champ_rech]."%'  OR sujetContact LIKE '%".$_GET[champ_rech]."%' OR nomContact LIKE '%".$_GET[champ_rech]."%' OR mailContact LIKE '%".$_GET[champ_rech]."%') ORDER BY dateContact DESC";
+$query = "SELECT * FROM Contact WHERE (messageContact LIKE '%".$_GET['champ_rech']."%'  OR sujetContact LIKE '%".$_GET['champ_rech']."%' OR nomContact LIKE '%".$_GET['champ_rech']."%' OR mailContact LIKE '%".$_GET['champ_rech']."%') ORDER BY dateContact DESC";
 // Exécution de la requète
 $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
 // Affichage des colones
@@ -35,8 +36,8 @@ if ($data == NULL) {
     $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
     // Remplissage du tableau
     while($data = mysqli_fetch_assoc($result)) {
-        echo '<tr onclick="document.location.href=\'messagescontact?id='.$data[idMsg].'\'">';
-        echo "<td>$data[nomContact]</td><td>$data[mailContact]</td><td>$data[sujetContact]</td><td>".utf8_encode (strftime("%#d %B %Y - %Hh%M",strtotime($data[dateContact])))."</td>";
+        echo '<tr onclick="document.location.href=\'messagescontact?id='.$data['idMsg'].'\'">';
+        echo "<td>$data[nomContact]</td><td>$data[mailContact]</td><td>$data[sujetContact]</td><td>".utf8_encode (strftime("%#d %B %Y - %Hh%M",strtotime($data['dateContact'])))."</td>";
         echo '</tr>';
     }
     // On ferme le tableau

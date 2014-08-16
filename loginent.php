@@ -19,7 +19,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     if ($exist) {
         echo $id;
         $_SESSION['identifiant'] = $nom;
-        $_SESSION['idEnt'] = $id;
+        $_SESSION['id'] = $id;
         $_SESSION["connected"] = "ent";
         header('location: ./');
         die();

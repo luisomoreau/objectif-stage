@@ -8,7 +8,7 @@ $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if (!($stmt = $mysqli->prepare('SELECT prenomContactEnt, nomContactEnt, mailEnt, adresseEnt, latEnt, lngEnt FROM Entreprises WHERE idEnt=?'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
-$stmt->bind_param('i', $_SESSION['idEnt']);
+$stmt->bind_param('i', $_SESSION['id']);
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }

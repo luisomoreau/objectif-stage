@@ -239,7 +239,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
             $stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
                                         FROM Entreprises
                                         WHERE idEnt=?');
-            $stmt->bind_param('i', $_SESSION['idEnt']);
+            $stmt->bind_param('i', $_SESSION['id']);
         }
         $stmt->execute();
         $stmt->bind_result($nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt);
@@ -363,20 +363,23 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
             </div>
         </form>
     <?php
-    } else if ($_SESSION['connected'] === "admin") {
-        // Requète SQL
-        $query = "SELECT * FROM Administrateurs WHERE mailAdmin='$_SESSION[identifiant]'";
-        // Exécution de la requète
-        $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: " . mysqli_error($dblink));
-        // Affichage des resultats
-        $data = mysqli_fetch_assoc($result);
+    } else if ($_SESSION['connected'] === "admin") { //@todo admin
+        $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
+        if (!($stmt = $mysqli->prepare('SELECT nomAdmin, prenomAdmin, mailAdmin
+                                        FROM Administrateurs WHERE idAdmin=?'))) {
+            echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        }
+        $stmt->bind_param('i', $_SESSION['id']);
+        if (!($stmt->execute())) {
+            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        }
+        $stmt->bind_result($nomAdmin, $prenomAdmin, $mailAdmin);
+        $stmt->fetch();
+        $stmt->close();
 
-        $nomAdmin = $data[nomAdmin];
-        $prenomAdmin = $data[prenomAdmin];
-        $mailAdmin = $data[mailAdmin];
         ?>
         <h1>Profil Administrateur</h1>
-        <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('mdpEtud') && checkPass('mdpEtud','mdpEtud2'))">
+        <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('#mdpAdmin') && checkPass('#mdpAdmin','#mdpAdmin2'))">
             <div class="col_23 float_l">
                 <label for="mailAdmin">Identifiant (Non modifiable)</label>
                 <input placeholder="<?php echo $mailAdmin; ?>" type="text" name="mailAdmin" id="mailAdmin" maxlength="100" required disabled="disabled"/>
@@ -384,13 +387,13 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                 <div class="cleaner h10"></div>
 
                 <label for="mdpAdmin">Mot de passe (Un chiffre, une majuscule, une minuscule, minimum 6 caractères)</label>
-                <input type="password" name="mdpAdmin" id="mdpAdmin" maxlength="25" required onkeyup="checkPatern('mdpAdmin'); return false;" value="Defaut123"/>
+                <input type="password" name="mdpAdmin" id="mdpAdmin" maxlength="25" required onkeyup="checkPatern('#mdpAdmin'); return false;" value="Defaut123"/>
                 <span id="confirmPatern" class="confirmPatern"></span>
 
                 <div class="cleaner h10"></div>
 
                 <label for="mdpAdmin2">Confirmer mot de passe</label>
-                <input type="password" name="mdpAdmin2" id="mdpAdmin2" maxlength="25" required onkeyup="checkPass('mdpAdmin','mdpAdmin2'); return false;" value="Defaut123"/>
+                <input type="password" name="mdpAdmin2" id="mdpAdmin2" maxlength="25" required onkeyup="checkPass('#mdpAdmin','#mdpAdmin2'); return false;" value="Defaut123"/>
                 <span id="confirmMessage" class="confirmMessage"></span>
 
                 <div class="cleaner h10"></div>
@@ -410,7 +413,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
             <div class="col_13 float_r">
                 <label for="profilpic">Modifier ma photo de profile - <a href="javascript:window.location.reload()">Actualiser</a><br/>
                     <img src="fichiers/profile/<?php echo md5($mailAdmin) . ".png" ?>" alt="Photo de profile" class="img_float_l img_frame"
-                         onerror='this.onerror = null; this.src="./fichiers/profile/defaut.png"'/>
+                         onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
                 </label>
                 <input type="file" name="profilpic" id="profilpic"/>
 

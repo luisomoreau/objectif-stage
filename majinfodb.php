@@ -25,7 +25,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         header('Location: ./');
         die();
     } else {
-        $naissanceEtud=date("Y-m-d", strtotime(str_replace('/', '-', $naissanceEtud)));
+        $naissanceEtud = date("Y-m-d", strtotime(str_replace('/', '-', $naissanceEtud)));
     }
 
     //check erreurs
@@ -131,7 +131,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         <?php
         die();
     }
-    if ($mdpEnt !== "Defaut123") {
+    if ($_POST['mdpEnt'] !== "Defaut123") {
         if (!preg_match('/^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/', $_POST['mdpEnt'])) {
             header('Location: ./');
             die();
@@ -251,75 +251,60 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
 
 } else if ($_SESSION['connected'] === "admin") {
     /** MAJ ADMIN **/
-    if (!isset($_POST['nomAdmin']) or !isset($_POST['prenomAdmin']) or !isset($_POST['mdpAdmin'])) {
+    if (!isset($_POST['nomAdmin']) or !isset($_POST['prenomAdmin']) or !isset($_POST['mdpAdmin']) or !isset($_POST['mdpAdmin2'])) {
         header('Location: ./');
         die();
     }
 
-    // On prépare les variables à insérer dans la BDD, on remplace par NULL si vide. (Entre simples quotes sinon)
-    foreach ($_POST as $col => $val) {
-        //echo $col." => ".$val."<br />";
-        if (empty($val)) {
-            $$col = "";
-        } else {
-            $$col = "$val";
-        }
-    }
-
-    if ($mdpAdmin !== "Defaut123") {
-        if ((strlen($mdpAdmin) > 25) || (strlen($mdpAdmin2) > 25)) {
+    if ($_POST['mdpAdmin'] !== "Defaut123") {
+        if (!preg_match('/^(?=.*\d)(?=.*[a-zA-z]).{6,16}$/', $_POST['mdpAdmin'])) {
             header('Location: ./');
             die();
-        } else { //mdp bonne taille
-            if (!preg_match('/[A-Z]+[a-z]+[0-9]+/', $mdpAdmin)) {
+        } else { //mdp valide et bonne taille
+            $password = $_POST['mdpAdmin'];
+            $_POST['mdpAdmin'] = hash('sha512', $salt . $_POST['mdpAdmin']);
+            $_POST['mdpAdmin2'] = hash('sha512', $salt . $_POST['mdpAdmin2']);
+            if (!($_POST['mdpAdmin'] === $_POST['mdpAdmin2'])) {
                 header('Location: ./');
                 die();
-            } else { //mdp valide et bonne taille
-                $salt = "756f13fba8e472eff61c673d3df596d9";
-                $mdpAdmin = md5($mdpAdmin . $salt);
-                $mdpAdmin2 = md5($mdpAdmin2 . $salt);
-                if (!($mdpAdmin === $mdpAdmin2)) {
-                    header('Location: ./');
-                    die();
-                }
             }
         }
     }
 
-    if (strlen($nomAdmin) > 50) {
+    if (strlen($_POST['nomAdmin']) > 50) {
         header('Location: ./');
         die();
+    } else {
+        $nomAdmin = $_POST['nomAdmin'];
     }
-    if (strlen($prenomAdmin) > 50) {
+    if (strlen($_POST['prenomAdmin']) > 50) {
         header('Location: ./');
         die();
+    } else {
+        $prenomAdmin = $_POST['prenomAdmin'];
     }
-
 
     // Upload et check logo
     if ($_FILES['profilpic']['error'] <= 0) {
         if (exif_imagetype($_FILES['profilpic']['tmp_name']) != false) {
             if ($_FILES['profilpic']['size'] <= 2097152) {
-                imageToPng($_FILES['profilpic']['tmp_name'], 250, "fichiers/profile/" . md5($_SESSION['identifiant']) . ".png");
+                imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_SESSION['mail']) . ".png");
             }
         }
     }
 
-    $nomAdmin = str_replace("'", "\'", $nomAdmin);
-    $prenomAdmin = str_replace("'", "\'", $prenomAdmin);
-    if ($mdpAdmin === "Defaut123") {
-        $query = "UPDATE administrateurs SET nomAdmin='$nomAdmin', prenomAdmin='$prenomAdmin' WHERE mailAdmin='$_SESSION[identifiant]'";
+    $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+    if ($_POST['mdpAdmin'] === "Defaut123") {
+        $stmt = $mysqli->prepare('UPDATE administrateurs SET nomAdmin=?, prenomAdmin=? WHERE idAdmin=?');
+        $stmt->bind_param('ssi', $nomAdmin, $prenomAdmin, $_SESSION['id']);
     } else {
-        $query = "UPDATE administrateurs SET nomAdmin='$nomAdmin', prenomAdmin='$prenomAdmin', mdpAdmin='mdpAdmin' WHERE mailAdmin='$_SESSION[identifiant]'";
-        $_SESSION['mdp'] = $mdpAdmin;
+        $stmt = $mysqli->prepare('UPDATE administrateurs SET nomAdmin=?, prenomAdmin=?, mdpAdmin=? WHERE idAdmin=?');
+        $stmt->bind_param('ssis', $nomAdmin, $prenomAdmin, $_POST['mdpAdmin'], $_SESSION['id']);
     }
-    // Exécution de la requète
-    $result = mysqli_query($dblink, $query);
-    if (!$result) {
-        echo "Erreur lors de la mise à jour";
-        include('all.footer.php');
-        die();
+    if (!($stmt->execute())) {
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
+    $stmt->close();
     header('Location: compte');
     die();
 

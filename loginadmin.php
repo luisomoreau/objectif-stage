@@ -5,7 +5,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 
     $mdp = hash('sha512', $salt . $_POST['mdp']);
-    if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idAdmin, nomAdmin, prenomAdmin FROM administrateurs WHERE mailAdmin=? AND mdpAdmin=?'))) {
+    if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idAdmin, nomAdmin, prenomAdmin, mailAdmin FROM administrateurs WHERE mailAdmin=? AND mdpAdmin=?'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('ss', $_POST['identifiant'], $mdp);
@@ -13,13 +13,14 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         echo "Erreur, le mail est déjà utilisé";
     }
-    $stmt->bind_result($exist, $id, $nom, $prenom);
+    $stmt->bind_result($exist, $id, $nom, $prenom, $mailAdmin);
     $stmt->fetch();
     $stmt->close();
     if ($exist) {
         echo $id;
         $_SESSION['identifiant'] = $nom." ".$prenom;
-        $_SESSION['idEnt'] = $id;
+        $_SESSION['id'] = $id;
+        $_SESSION['mail'] = $mailAdmin;
         $_SESSION["connected"] = "admin";
         header('location: ./');
         die();
