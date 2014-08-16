@@ -23,7 +23,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
     $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $filiereEtud, $civiliteEtud, $naissanceEtud, $telEtud, $telSecEtud);
     $stmt->fetch();
     $stmt->close();
-    var_dump($naissanceEtud);
+    //var_dump($naissanceEtud);
     echo '<section class="row">
             <div class="small-12 columns">
                 <h1>';
