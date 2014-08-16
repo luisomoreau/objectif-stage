@@ -26,6 +26,7 @@ if ($_SESSION['connected'] === "entreprises" || $_SESSION['connected'] === "admi
 }
 
 // Requète SQL
+
 if (!($stmt = $mysqli->prepare('SELECT mailEnt, nomStage, sujetStage,  detailsStage,
                                        prenomContactStage, nomContactStage, mailContactStage, telEnt,
                                        telSecEnt, adresseEnt, dateDebutStage, dateFinStage, dateLimiteStage, lieuStage,

@@ -5,9 +5,7 @@ if ($_SESSION['connected'] !== "ent") {
     die();
 }
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('SELECT prenomContactEnt, nomContactEnt, mailEnt, adresseEnt, latEnt, lngEnt
-                                FROM Entreprises WHERE idEnt=?'))
-) {
+if (!($stmt = $mysqli->prepare('SELECT prenomContactEnt, nomContactEnt, mailEnt, adresseEnt, latEnt, lngEnt FROM Entreprises WHERE idEnt=?'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
 $stmt->bind_param('i', $_SESSION['idEnt']);

@@ -16,6 +16,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                                             FROM etudiants, diplomes
                                             WHERE userEtud=?
                                             AND diplome_sise = filiereEtud');
+
         $stmt->bind_param('s', $_SESSION['identifiant']);
     }
     $stmt->execute();
