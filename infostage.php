@@ -29,9 +29,10 @@ if ($_SESSION['connected'] === "entreprises" || $_SESSION['connected'] === "admi
 if (!($stmt = $mysqli->prepare('SELECT mailEnt, nomStage, sujetStage,  detailsStage,
                                        prenomContactStage, nomContactStage, mailContactStage, telEnt,
                                        telSecEnt, adresseEnt, dateDebutStage, dateFinStage, dateLimiteStage, lieuStage,
-                                       latStage, lngStage, dureeStage, filiereStage, l1Stage, l2Stage, l3Stage
-                                FROM stages,entreprises
+                                       latStage, lngStage, dureeStage, diplome_nom, l1Stage, l2Stage, l3Stage
+                                FROM stages,entreprises,diplomes
                                 WHERE stages.idEnt=entreprises.idEnt
+                                AND diplome_sise = filiereStage
                                 AND idStage=?'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }

@@ -12,9 +12,10 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
         $stmt->bind_param('i', $_GET['idEtud']);
     } else {
         //$query = "SELECT * FROM Etudiants WHERE mailEtud='$_SESSION[identifiant]'";
-        $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, filiereEtud, civiliteEtud, naissanceEtud, telEtud, telSecEtud
-                                            FROM etudiants
-                                            WHERE userEtud=?');
+        $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud
+                                            FROM etudiants, diplomes
+                                            WHERE userEtud=?
+                                            AND diplome_sise = filiereEtud');
         $stmt->bind_param('s', $_SESSION['identifiant']);
     }
     $stmt->execute();

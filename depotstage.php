@@ -97,17 +97,29 @@ $stmt->close();
         <br>
 
         <div class="row">
-            <div class="large-6 columns">
+            <div class="large-9 columns">
                 <div class="row collapse">
-                    <div class="large-8 columns">
+                    <div class="large-3 columns">
                         <span class="prefix">Filière</span>
                     </div>
-                    <div class="large-4 columns">
+                    <div class="large-9 columns">
                         <select name="filiereStage" required>
                             <option selected="selected" disabled="disabled" value="">Filière</option>
-                            <option>SPI</option>
-                            <option>Droit</option>
-                            <option>Anglais</option>
+                            <?php
+                            $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+                            if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1'))) {
+                                echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+                            }
+                            if (!($stmt->execute())) {
+                                echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+                            }
+                            $stmt->bind_result($diplome_sise, $diplome_nom);
+                            $stmt->store_result();
+                            while ($stmt->fetch()) {
+                                echo ' <option value="'.$diplome_sise.'">'.$diplome_nom.'</option>';
+                            }
+                            $stmt->close();
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -141,7 +153,7 @@ $stmt->close();
                     </div>
                 </div>
             </div>
-            <div class="large-6 columns">
+            <div class="large-3 columns">
                 <div class="row collapse">
                     <div class="large-6 columns">
                         <span class="prefix">Date début stage</span>
