@@ -1,101 +1,145 @@
 <?php
 include('all.header.php');
-if ($_SESSION['connected'] !== "admin") {
-    if ($_SESSION['connected'] == "entreprises" || (!isset($_GET['stage']) && !isset($_GET['ent']) && !isset($_POST['envoi_mail']))) {
-        header('Location: /');
-        die();
-    }
+include('logincheck.php');
+$user = getInfos();
+if ($user == null) {
+    header('Location: ./');
+    die();
 }
-$cv = "./fichiers/cv/" . md5($_SESSION['identifiant']) . ".pdf";
-if (isset($_POST['envoi_mail'])) {
-    if ($_POST['typemail'] === "stage") {
-        $query = "UPDATE Etudiants SET nbCandEtud=nbCandEtud+1 WHERE mailEtud='$_SESSION[identifiant]'";
-        $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: " . mysqli_error($dblink));
-    }
-    $destinataire = stripslashes($_POST['destinataire']);
+if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && isset($_POST['sujet']) && isset($_POST['message'])) {
+    $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+    //Si l'étudiant envoie un mail on ajoute 1 à ses candidatures
+    $stmt = $mysqli->prepare('UPDATE Etudiants SET nbCandEtud=nbCandEtud+1 WHERE userEtud=?');
+    $stmt->bind_param('s', $_SESSION['identifiant']);
+    $stmt->execute();
+    $stmt->close();
+
+    $destinataire = stripslashes($_POST['dest']);
     $sujet = stripslashes($_POST['sujet']);
     $message = stripslashes(nl2br($_POST['message']));
-    $expediteur = $_SESSION['identifiant'];
-    $nom_expediteur = stripslashes($_POST['nom_expediteur']);
-
-
-    if ($_POST['cv'] === "1") {
-        $piece_jointe = $cv;
+    $expediteur = $user->mail;
+    $nom_expediteur = $user->displayName;
+    $cv = "./fichiers/cv/" . md5($_SESSION['identifiant']) . ".pdf";
+    if (file_exists($cv)) {
+        if ($_POST['cv'] === "1") {
+            $piece_jointe = $cv;
+        } else {
+            $piece_jointe = '0';
+        }
     } else {
-        $piece_jointe = 0;
+        $piece_jointe = '0';
     }
-    $query = "INSERT INTO Mail (idEtud, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
-                        VALUES ('$_SESSION[idEtud]', '$destinataire2', '$sujet2', '$message2', '$nom_expediteur2', '$piece_jointe')";
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: " . mysqli_error($dblink));
-    email($destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe);
+
+    //check si le mail existe
+    $exist = 0;
+    if ($_POST['cible'] == 'stage') {
+        $stmt = $mysqli->prepare('SELECT COUNT(*) FROM stages,entreprises WHERE stages.idEnt=entreprises.idEnt AND mailContactStage=?');
+        $stmt->bind_param('s', $_POST['dest']);
+        $stmt->execute();
+        $stmt->bind_result($exist);
+        $stmt->fetch();
+        $stmt->close();
+    } else {
+        if ($_POST['cible'] == 'ent') {
+            $stmt = $mysqli->prepare('SELECT COUNT(*) FROM entreprises WHERE mailEnt=?');
+            $stmt->bind_param('i', $_POST['dest']);
+            $stmt->execute();
+            $stmt->bind_result($exist);
+            $stmt->fetch();
+            $stmt->close();
+        }
+    }
+    if ($exist > 0) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
+        if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
+            $stmt = $mysqli->prepare('INSERT INTO Mail (idEtud, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
+                        VALUES (?,?,?,?,?,?)');
+            $stmt->bind_param('isssss', $_SESSION['idEtud'], $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe);
+            $stmt->execute();
+            $stmt->close();
+            ?>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h3>Mail Envoyé !</h3>
+                </div>
+            </div>
+        <?php
+        } else {
+            ?>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h3>le mail n'a pas été envoyé, veuillez réessayer</h3>
+                </div>
+            </div>
+            <?php
+        }
+    } else {
+        header('location: ./');
+        die();
+    }
 } else {
-    if (isset($_GET['stage'])) {
-        // Requète SQL
-        $query = "SELECT * FROM stages,entreprises WHERE stages.idEnt=entreprises.idEnt AND idStage='$_GET[stage]'";
-        // Exécution de la requète
-        $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: " . mysqli_error($dblink));
-        // Remplissage du tableau
-        $data = mysqli_fetch_assoc($result);
+    if (isset($_GET['cible']) && isset($_GET['mail']) && ($_GET['cible'] == 'ent' || $_GET['cible'] == 'stage')) {
+        ?>
+        <form method="post" action="mail">
+            <div class="row panel">
+                <div class="row collapse">
+                    <div class="small-4 columns">
+                        <span class="prefix">Expediteur : </span>
+                    </div>
+                    <div class="small-8 columns">
+                        <input type="text" value="<?php echo $user->displayName . ' (' . $user->mail . ')'; ?>" disabled>
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="small-4 columns">
+                        <span class="prefix">Destinataire : </span>
+                    </div>
+                    <div class="small-8 columns">
+                        <input type="text" value="<?php echo $_GET['mail']; ?>" disabled>
+                        <input type="hidden" name="cible" value="<?php echo $_GET['cible']; ?>">
+                        <input type="hidden" name="dest" value="<?php echo $_GET['mail']; ?>">
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="small-4 columns">
+                        <span class="prefix">Sujet : </span>
+                    </div>
+                    <div class="small-8 columns">
+                        <input type="text" name="sujet" value="Stage : ">
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        <span class="prefix">Souhaitez vous joindre votre cv ?</span>
+                    </div>
+                    <div class="small-4 columns">
+                        <div class="switch">
+                            <input id="cv" name="cv" type="radio" value="0">
+                            <label for="cv" onclick="" class="text-center">Non</label>
 
-        $destinataire = $data['mailContactStage'];
-        $typemail = "stage";
-        $sujet = "Stage: ";
-        $sujet .= $data['nomStage'];
+                            <input id="cv" name="cv" type="radio" value="1" checked>
+                            <label for="cv" onclick="" class="text-center">Oui</label>
+
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <textarea id="mail" name="message" maxlength="1000" rows="10" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-centered large-6 columns">
+                    <input class="large button expand" id="envoyer" type="submit" value="Envoyer"/>
+                </div>
+            </div>
+        </form>
+    <?php
+    } else {
+        header('location: ./');
+        die();
     }
-    if (isset($_GET['ent'])) {
-        // Requète SQL
-        $query = "SELECT * FROM entreprises WHERE idEnt='$_GET[ent]'";
-        // Exécution de la requète
-        $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: " . mysqli_error($dblink));
-        // Remplissage du tableau
-        $data = mysqli_fetch_assoc($result);
-        $typemail = "ent";
-        $destinataire = $data['mailEnt'];
-        $sujet = "Demande de stage";
-    }
-
-    ?>
-    <h1>Envoyer un mail</h1>
-    <form method="post" name="contact" action="mail">
-        <div class="col_13 float_l">
-            <input type="hidden" name="envoi_mail"/>
-            <input type="hidden" name="destinataire" value="<?php if (isset ($destinataire)) echo $destinataire ?>"/>
-            <input type="hidden" name="typemail" value="<?php if (isset ($typemail)) echo $typemail ?>"/>
-
-            <label for="$nom_expediteur">Expediteur:</label>
-            <input type="text" id="nom_expediteur" name="nom_expediteur" maxlength="100" value="<?php if (isset ($nom_disp) && isset($nom_disp2)) echo $nom_disp . ' ' . $nom_disp2; ?>"/>
-
-            <div class="cleaner h10"></div>
-
-            <label for="dest">Destinataire:</label>
-            <input type="text" id="dest" name="dest" maxlength="100"
-                   placeholder="<?php if (isset ($destinataire)) echo $destinataire ?>" <?php if ($_SESSION['connected'] !== "admin") echo 'disabled="disabled"'; ?> />
-
-            <div class="cleaner h10"></div>
-
-            <input type="checkbox" name="cv" id="cv" value="1" <?php if (file_exists($cv)) {
-                echo 'checked="checked"';
-            } else {
-                echo 'disabled="disabled"';
-            }; ?> />
-            <label class="checkbox" for="cv" <?php if (!file_exists($cv)) { ?> onclick="alert('Vous n\'avez pas de CV !\r\n Vous pouvez en enregistrer un avec l\'longlet Compte');" <?php } ?> >Joindre
-                mon CV</label>
-        </div>
-        <div class="col_23 float_r">
-            <label for="sujet">Sujet:</label>
-            <input type="text" name="sujet" id="sujet" maxlength="150" value="<?php if (isset ($sujet)) echo $sujet ?>"/>
-
-            <div class="cleaner h10"></div>
-
-            <label for="message">Message:</label>
-            <textarea id="mail" name="message" maxlength="1000"></textarea>
-
-            <div class="cleaner h20"></div>
-
-            <input type="submit" value="Envoyer" id="submit" name="submit" class="big_button"/>
-        </div>
-    </form>
-<?php
 }
 include('all.footer.php');
 ?>

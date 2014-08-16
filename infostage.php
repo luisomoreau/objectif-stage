@@ -119,7 +119,7 @@ if ($l2Stage==1) {
                 </div>
                 <div class="large-6 columns">
                     <?php if(($_SESSION['connected'] == "admin") || $_SESSION['connected'] == "etud") {
-                        echo '<a href="mail?stage='.$_GET['id'].'" class="button">Contacter l\'entreprise pour ce stage</a>';
+                        echo '<a href="mail?cible=stage&mail='.$mailContactStage.'" class="button">Contacter l\'entreprise pour ce stage</a>';
                     } ?>
 
                 </div>
