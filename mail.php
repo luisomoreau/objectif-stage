@@ -18,11 +18,6 @@ if (isset($_POST['envoi_mail'])) {
     $expediteur = $_SESSION['identifiant'];
     $nom_expediteur = stripslashes($_POST['nom_expediteur']);
 
-    $destinataire2 = str_replace("'", "\'", $destinataire);
-    $sujet2 = str_replace("'", "\'", $sujet);
-    $message2 = str_replace("'", "\'", $message);
-    $expediteur2 = str_replace("'", "\'", $expediteur);
-    $nom_expediteur2 = str_replace("'", "\'", $nom_expediteur);
 
     if ($_POST['cv'] === "1") {
         $piece_jointe = $cv;
@@ -64,16 +59,17 @@ if (isset($_POST['envoi_mail'])) {
     <form method="post" name="contact" action="mail">
         <div class="col_13 float_l">
             <input type="hidden" name="envoi_mail"/>
-            <input type="hidden" name="destinataire" value="<?php echo $destinataire ?>"/>
-            <input type="hidden" name="typemail" value="<?php echo $typemail ?>"/>
+            <input type="hidden" name="destinataire" value="<?php if (isset ($destinataire)) echo $destinataire ?>"/>
+            <input type="hidden" name="typemail" value="<?php if (isset ($typemail)) echo $typemail ?>"/>
 
             <label for="$nom_expediteur">Expediteur:</label>
-            <input type="text" id="nom_expediteur" name="nom_expediteur" maxlength="100" value="<?php echo $nom_disp . " " . $nom_disp2; ?>"/>
+            <input type="text" id="nom_expediteur" name="nom_expediteur" maxlength="100" value="<?php if (isset ($nom_disp) && isset($nom_disp2)) echo $nom_disp . ' ' . $nom_disp2; ?>"/>
 
             <div class="cleaner h10"></div>
 
             <label for="dest">Destinataire:</label>
-            <input type="text" id="dest" name="dest" maxlength="100" placeholder="<?php echo $destinataire ?>" <?php if ($_SESSION[type] !== "admin") echo 'disabled="disabled"'; ?> />
+            <input type="text" id="dest" name="dest" maxlength="100"
+                   placeholder="<?php if (isset ($destinataire)) echo $destinataire ?>" <?php if ($_SESSION['connected'] !== "admin") echo 'disabled="disabled"'; ?> />
 
             <div class="cleaner h10"></div>
 
@@ -87,7 +83,7 @@ if (isset($_POST['envoi_mail'])) {
         </div>
         <div class="col_23 float_r">
             <label for="sujet">Sujet:</label>
-            <input type="text" name="sujet" id="sujet" maxlength="150" value="<?php echo $sujet ?>"/>
+            <input type="text" name="sujet" id="sujet" maxlength="150" value="<?php if (isset ($sujet)) echo $sujet ?>"/>
 
             <div class="cleaner h10"></div>
 
