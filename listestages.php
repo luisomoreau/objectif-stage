@@ -65,12 +65,12 @@ $user = getInfos();
                     <h4>Options</h4>
 
                     <div class="row">
-                        <div class="large-3 columns">
+                        <div class="large-2 columns">
                             <div class="row collapse">
-                                <div class="small-4 columns">
+                                <div class="small-5 columns">
                                     <span class="prefix">Année</span>
                                 </div>
-                                <div class="small-8 columns">
+                                <div class="small-7 columns">
                                     <select id="annee" name="annee">
                                         <?php
                                         switch ($user->annee) {
@@ -95,35 +95,49 @@ $user = getInfos();
                                 </div>
                             </div>
                         </div>
-                        <div class="large-3 columns">
+                        <div class="large-6 columns">
                             <div class="row collapse">
-                                <div class="small-4 columns">
+                                <div class="small-2 columns">
                                     <span class="prefix">Filière</span>
                                 </div>
-                                <div class="small-8 columns">
+                                <div class="small-10 columns">
                                     <select id="filiere" name="filiere">
-                                        <option value="spi_info">SPI - Informatique</option>
-                                        <option value="spi_megp">SPI - MEGP</option>
+                                        <option selected="selected" disabled="disabled" value="">Filière</option>
+                                        <?php
+                                        $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+                                        if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1'))) {
+                                            echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+                                        }
+                                        if (!($stmt->execute())) {
+                                            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+                                        }
+                                        $stmt->bind_result($diplome_sise, $diplome_nom);
+                                        $stmt->store_result();
+                                        while ($stmt->fetch()) {
+                                            echo ' <option value="'.$diplome_sise.'">'.$diplome_nom.'</option>';
+                                        }
+                                        $stmt->close();
+                                        ?>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="large-3 columns">
+                        <div class="large-2 columns">
                             <div class="row collapse">
-                                <div class="small-6 columns">
+                                <div class="small-7 columns">
                                     <span class="prefix">Début du stage</span>
                                 </div>
-                                <div class="small-6 columns">
+                                <div class="small-5 columns">
                                     <input type="text" class="date_picker" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA" value="<?php if (isset($_GET['dateDebut'])) echo $_GET['dateDebut']; ?>">
                                 </div>
                             </div>
                         </div>
-                        <div class="large-3 columns">
+                        <div class="large-2 columns">
                             <div class="row collapse">
-                                <div class="small-6 columns">
+                                <div class="small-7 columns">
                                     <span class="prefix">Durée du stage</span>
                                 </div>
-                                <div class="small-6 columns">
+                                <div class="small-5 columns">
                                     <input type="number" id="duree" name="duree" placeholder="En jours" value="<?php if (isset($_GET['duree'])) echo $_GET['duree']; ?>">
                                 </div>
                             </div>
