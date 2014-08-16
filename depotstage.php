@@ -65,6 +65,7 @@ $stmt->close();
                         <textarea name="lieuStage" id="lieuStage" maxlength="255" required><?php echo $adresseEnt; ?></textarea>
                     </div>
                 </div>
+                <br>
             </div>
             <div class="large-6 columns">
                 <input id="lat" type="hidden" name="latStage" value=""/>
@@ -86,13 +87,14 @@ $stmt->close();
                 <textarea name="sujetStage" id="sujetStage" maxlength="1000" required></textarea>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="large-12 columns">
                 <label for="detailsStage">Details du stage</label>
                 <textarea name="detailsStage" id="detailsStage" maxlength="1000" required></textarea>
             </div>
         </div>
-        <br/>
+        <br>
 
         <div class="row">
             <div class="large-6 columns">

@@ -7,8 +7,8 @@ require_once('fonctions.php');
 <html lang="fr">
 <head>
     <title>Objectif Stage</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="Description" content="Plateforme de gestion des stages de l'UNC." />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="Description" content="Plateforme de gestion des stages de l'UNC."/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="scss/custom.css"/>
@@ -48,19 +48,19 @@ require_once('fonctions.php');
                     <ul id="main-menu" class="main-nav">
                         <li class="first leaf color-1"><a href="./" class="has-icon active"><i class="fi-home"></i>Accueil</a></li>
                         <?php
-                            if (isset($_SESSION['connected'])) {
-                                echo '
+                        if (isset($_SESSION['connected'])) {
+                            echo '
                                     <li class="expanded color-2" title=""><a href="./services" title="" class="has-icon"><i class="fi-address-book"></i>Services</a></li>
                                     <li class="leaf color-3"><a href="./documents" class="has-icon"><i class="fi-page"></i>documents</a></li>
                                     <li class="last leaf color-4"><a href="./compte" class="has-icon"><i class="fi-torso"></i>Mon compte</a></li></ul>
                                 ';
-                            }
+                        }
                         ?>
-<!--                            <ul class="dropdown">-->
-<!--                                <li class="expanded color-2 show-for-small"><a href="/etudiant" title="">Espace étudiant</a>-->
-<!--                                <li class="first leaf" target="_blank"><a href="http://lee.univ-nc.nc/cgi-bin/WebObjects/ipWeb.woa" target="_blank">Notes</a></li>-->
-<!--                                <li class="last leaf" target="_blank"><a href="http://tic.univ-nc.nc/" target="_blank">Campus virtuel</a></li>-->
-<!--                            </ul>-->
+                        <!--                            <ul class="dropdown">-->
+                        <!--                                <li class="expanded color-2 show-for-small"><a href="/etudiant" title="">Espace étudiant</a>-->
+                        <!--                                <li class="first leaf" target="_blank"><a href="http://lee.univ-nc.nc/cgi-bin/WebObjects/ipWeb.woa" target="_blank">Notes</a></li>-->
+                        <!--                                <li class="last leaf" target="_blank"><a href="http://tic.univ-nc.nc/" target="_blank">Campus virtuel</a></li>-->
+                        <!--                            </ul>-->
                 </section>
             </nav>
         </div>
@@ -70,8 +70,8 @@ require_once('fonctions.php');
             <div class="small-8 columns">
                 <h1 id="page-title" class="title">
                     <?php
-                    $page = substr(substr(strrchr($_SERVER['SCRIPT_NAME'], "/"), 1),0,-4);
-                    switch($page) {
+                    $page = substr(substr(strrchr($_SERVER['SCRIPT_NAME'], "/"), 1), 0, -4);
+                    switch ($page) {
                         case "cv":
                             $page = "Mon CV";
                             break;
@@ -82,14 +82,9 @@ require_once('fonctions.php');
             </div>
             <div class="small-4 columns">
                 <?php
-                    if (isset($_SESSION['connected'])) {
-                        if ($_SESSION['connected']=="etud") {
-                            echo '<div class="text-right" style="margin-top:50px;">Bonjour '.$_SESSION['identifiant'].' | <a href="./logout">Déconnexion</a></div>';
-                        }
-                        if ($_SESSION['connected']=="ent") {
-                            echo '<div class="text-right" style="margin-top:50px;">Bonjour '.$_SESSION['identifiant'].' | <a href="./logout">Déconnexion</a></div>';
-                        }
-                    }
+                if (isset($_SESSION['connected'])) {
+                    echo '<div class="text-right" style="margin-top:50px;">Bonjour ' . $_SESSION['identifiant'] . ' | <a href="./logout">Déconnexion</a></div>';
+                }
                 ?>
 
             </div>

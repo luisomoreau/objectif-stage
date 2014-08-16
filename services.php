@@ -41,37 +41,30 @@ if ($_SESSION['connected'] === "etud") {
         </div>
     </div>
 <?php
-} else if ($_SESSION['type'] === "admin") {
+} else if ($_SESSION['connected'] === "admin") {
     ?>
-    <div class="col_23 float_l">
-        <h1>Services</h1>
-        <a href="listeentreprises">
-            <button class="big_button">Liste des entreprises</button>
-        </a>
-        <a href="listeetudiants">
-            <button class="big_button">Liste des étudiants</button>
-        </a>
-        <a href="listestages">
-            <button class="big_button">Liste des stages</button>
-        </a>
-        <a href="listemails">
-            <button class="big_button">Liste des emails</button>
-        </a>
-        <!--<a href="statistiques"><button class="big_button" >Statistiques</button></a>-->
-        <a href="mail">
-            <button class="big_button">Envoyer un mail</button>
-        </a>
-        <a href="pma">
-            <button class="big_button">phpMyAdmin</button>
-        </a>
+    <div class="row">
+        <div class="large-4 columns">
+            <a href="./listeentreprises" class="large button expand">Liste des entreprises</a>
+        </div>
+        <div class="large-4 columns">
+            <a href="./listeetudiants" class="large button expand">Liste des étudiants</a>
+        </div>
+        <div class="large-4 columns">
+            <a href="./listestages" class="large button expand">Liste des stages</a>
+        </div>
     </div>
-    <div class="col_13 float_r">
-        <div class="cleaner h20"></div>
-        <h4>Informations</h4>
-
-        <p>En tant qu'administrateur, vous avez accés à toutes les données de la plateforme.</p>
+    <div class="row">
+        <div class="large-4 columns">
+            <a href="./listemails" class="large button expand">Liste des emails</a>
+        </div>
+        <div class="large-4 columns">
+            <a href="./mail" class="large button expand">Envoyer un mail</a>
+        </div>
+        <div class="large-4 columns">
+            <a href="./pma" class="large button expand">phpMyAdmin</a>
+        </div>
     </div>
-    <div class="cleaner h10"></div>
 <?php
 } else {
     header('Location: ./');

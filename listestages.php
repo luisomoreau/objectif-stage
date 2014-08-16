@@ -63,6 +63,7 @@ $user = getInfos();
                 </div>
                 <div class="large-12 columns">
                     <h4>Options</h4>
+
                     <div class="row">
                         <div class="large-3 columns">
                             <div class="row collapse">
@@ -71,25 +72,25 @@ $user = getInfos();
                                 </div>
                                 <div class="small-8 columns">
                                     <select id="annee" name="annee">
-                                         <?php
-                                         switch ($user->annee) {
-                                             case "L1":
-                                                 echo ' <option value="l1" selected>L1</option>
+                                        <?php
+                                        switch ($user->annee) {
+                                            case "L1":
+                                                echo ' <option value="l1" selected>L1</option>
                                                         <option value="l2">L2</option>
                                                         <option value="l3">L3</option>';
-                                                 break;
-                                             case "L2":
-                                                 echo ' <option value="l1">L1</option>
+                                                break;
+                                            case "L2":
+                                                echo ' <option value="l1">L1</option>
                                                         <option value="l2" selected>L2</option>
                                                         <option value="l3">L3</option>';
-                                                 break;
-                                             case "L3":
-                                                 echo ' <option value="l1">L1</option>
+                                                break;
+                                            case "L3":
+                                                echo ' <option value="l1">L1</option>
                                                         <option value="l2">L2</option>
                                                         <option value="l3" selected>L3</option>';
-                                                 break;
-                                         }
-                                         ?>
+                                                break;
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -113,7 +114,7 @@ $user = getInfos();
                                     <span class="prefix">Début du stage</span>
                                 </div>
                                 <div class="small-6 columns">
-                                    <input type="date" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA">
+                                    <input type="text" class="date_picker" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA" value="<?php if (isset($_GET['dateDebut'])) echo $_GET['dateDebut']; ?>">
                                 </div>
                             </div>
                         </div>
@@ -123,14 +124,15 @@ $user = getInfos();
                                     <span class="prefix">Durée du stage</span>
                                 </div>
                                 <div class="small-6 columns">
-                                    <input type="number" id="duree" name="duree" placeholder="En jours">
+                                    <input type="number" id="duree" name="duree" placeholder="En jours" value="<?php if (isset($_GET['duree'])) echo $_GET['duree']; ?>">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <br />
+            <br/>
+
             <div class="row">
                 <div class="large-centered large-6 columns">
                     <input class="large button expand" id="envoyer" type="submit" value="Rechercher"/>
@@ -156,7 +158,7 @@ $user = getInfos();
                 $baseQuery .= " AND remuStage=1";
             }
             if (isset($_GET['annee'])) {
-                switch($_GET['annee']) {
+                switch ($_GET['annee']) {
                     case "l1":
                         $baseQuery .= " AND l1Stage = 1";
                         break;
@@ -172,18 +174,33 @@ $user = getInfos();
                 //$baseQuery .= " AND filiereStage = \"".$_GET['filiere']."\"";
             }
             if (isset($_GET['dateDebut'])) {
-                //$baseQuery .= " AND dateDebutStage = \"".$_GET['dateDebut']."\"";
+                $baseQuery .= " AND dateDebutStage>STR_TO_DATE(?, '%d/%m/%Y')";
             }
-            if (isset($_GET['duree'])) {
-                //$baseQuery .= " AND dureeStage = \"".$_GET['duree']."\"";
+            if (isset($_GET['duree']) && ($_GET['duree']!=='')) {
+                $baseQuery .= " AND dureeStage < ? ";
             }
             $baseQuery .= " ORDER BY dateDebutStage DESC";
+            //echo $baseQuery;
             if (!($stmt = $mysqli->prepare($baseQuery))) {
                 echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
             }
             if (isset($_GET['champ_rech'])) {
                 $search = '%' . $_GET['champ_rech'] . '%';
-                $stmt->bind_param('ssss', $search, $search, $search, $search);
+                if (isset($_GET['duree']) && ($_GET['duree']!=='')) {
+                    if (isset($_GET['dateDebut'])) {
+                        $stmt->bind_param('sssssi', $search, $search, $search, $search,  $_GET['dateDebut'], $_GET['duree']);
+                    } else {
+                        $stmt->bind_param('ssssi', $search, $search, $search, $search, $_GET['duree']);
+                    }
+                } else {
+                    if (isset($_GET['dateDebut'])) {
+                        $stmt->bind_param('sssss', $search, $search, $search, $search,$_GET['dateDebut']);
+                    } else {
+                        $stmt->bind_param('ssss', $search, $search, $search, $search);
+                    }
+
+                }
+
             } else {
                 $vide = '%%';
                 if (!($stmt->bind_param('ssss', $vide, $vide, $vide, $vide))) {
@@ -197,7 +214,7 @@ $user = getInfos();
             $stmt->bind_result($idStage, $nomStage, $lieuStage, $sujetStage, $dateDebutStage, $dureeStage);
             $stmt->store_result();
             if ($stmt->num_rows > 0) {
-                echo "<table>";
+                echo '<table style="width: 100%">';
                 echo "<thead><tr><th>Nom du stage</th><th>Lieu</th><th>Sujet</th><th>Début du stage</th><th>Durée du stage</th><th>Options</th></tr></thead><tbody>";
                 while ($stmt->fetch()) {
                     echo '<tr onclick="document.location.href=\'infostage?id=' . $idStage . '\'">';

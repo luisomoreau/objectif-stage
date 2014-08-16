@@ -1,52 +1,132 @@
 <?php
-include('nontraite.php');
-include ('all.header.php');
-if ($_SESSION[type] != "admin") {
+include('all.header.php');
+if ($_SESSION['connected'] != "admin") {
     header('Location : /');
     die();
 }
 ?>
-        <h1>Liste des étudiants</h1>
-        <div id="col">
-            <h3>Recherche</h3>
-            <form action="listeetudiants" method="GET" id="recherche">
-          		<input placeholder="Nom, prénom" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php echo $_GET[champ_rech]; ?>" />&nbsp;&nbsp;
-                <input type="checkbox" name="trouveStage" id="trouveStage" value="1" <?php if(isset($_GET[trouveStage])) { echo 'checked="checked"';}?>/>
-                <label class="checkbox" for="trouveStage" >A trouvé un stage</label>&nbsp;&nbsp;
-                <input type="checkbox" name="valid" id="valid" value="1" <?php if($_GET[valid]!=0) { echo 'checked="checked"';}?>/>
-                <label class="checkbox" for="valid" >Compte valide</label>
-                <div class="cleaner h10"></div>
-                <div class="centrer">
-                    <button type="submit">Rechercher</button>  
-                </div>  
-            </form>
+    <div class="row panel">
+        <div class="row">
+            <div class="small-12 columns">
+                <h3>Recherche</h3>
+            </div>
         </div>
-        <div class="cleaner h20"></div>
-        <h4>Résultats</h4>
+        <form action="listeetudiants" method="GET" id="recherche">
+            <div class="row">
+                <div class="large-6 column">
+                    <input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100"
+                           value="<?php if (isset($_GET['champ_rech'])) {
+                               echo $_GET['champ_rech'];
+                           } ?>"/>
+                </div>
+                <div class="large-6 column">
+                    <div class="row collapse">
+                        <div class="small-8 columns">
+                            <span class="prefix">Afficher les étudiants ayant trouvé un stage</span>
+                        </div>
+                        <div class="small-4 columns">
+                            <div class="switch">
+                                <input id="trouveStage" name="trouveStage" type="radio"
+                                       value="0" <?php if (!isset($_GET['trouveStage']) || $_GET['trouveStage'] == 0) {
+                                    echo "checked";
+                                } ?>>
+                                <label for="trouveStage" onclick="" class="text-center">Non</label>
+                                <input id="trouveStage" name="trouveStage" type="radio"
+                                       value="1" <?php if (isset($_GET['trouveStage']) && $_GET['trouveStage'] == 1) {
+                                    echo "checked";
+                                } ?>>
+                                <label for="trouveStage" onclick="" class="text-center">Oui</label>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+
+            <div class="row">
+                <div class="large-centered large-6 columns">
+                    <input class="large button expand" id="envoyer" type="submit" value="Rechercher"/>
+                </div>
+            </div>
+        </form>
+    </div>
 <?php
-$query = "SELECT * FROM etudiants WHERE (nomEtud LIKE '%".$_GET[champ_rech]."%' OR prenomEtud LIKE '%".$_GET[champ_rech]."%')";
-if (isset($_GET[trouveStage])) {
-    $query.= " AND trouveStageEtud = 1";
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, filiereEtud, nbCandEtud, anneeEtud FROM etudiants WHERE (nomEtud LIKE ? OR prenomEtud LIKE ?)'))) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
-// Exécution de la requète
-$result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-// Affichage des colones
-$data = mysqli_fetch_assoc($result);
-if ($data == NULL) {
-    echo "Aucun résultat";
+if (isset($_GET['champ_rech'])) {
+    $search = "%" . $_GET['champ_rech'] . "%";
 } else {
-    echo "<table>";
-    echo "<tr><th>Nom</th><th>Prénom</th><th>Licence</th><th>Candidatures</th></tr>";
-    // Exécution de la requète pour les valeures
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-    // Remplissage du tableau
-    while($data = mysqli_fetch_assoc($result)) {
-        echo '<tr onclick="document.location.href=\'majinfo?idEtud='.$data[idEtud].'\'">';
-        echo "<td>$data[nomEtud]</td><td>$data[prenomEtud]</td><td>$data[licenceEtud]</td><td>$data[nbCandEtud]</td>";
-        echo '</tr>';
-    }
-    // On ferme le tableau
-    echo "</table>";
+    $search = "%%";
 }
-include ('all.footer.php');
+
+$stmt->bind_param('ss', $search, $search);
+if (!($stmt->execute())) {
+    echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+
+
+//if (isset($_GET['trouveStage'])) {
+//    $query.= " AND trouveStageEtud = 1";
+//}
+
+//if ($data == NULL) {
+//    echo "Aucun résultat";
+//} else {
+//    echo "<table>";
+//    echo "<tr><th>Nom</th><th>Prénom</th><th>Licence</th><th>Candidatures</th></tr>";
+//    // Exécution de la requète pour les valeures
+//    // Remplissage du tableau
+//    while($data = mysqli_fetch_assoc($result)) {
+//        echo '<tr onclick="document.location.href=\'majinfo?idEtud='.$data['idEtud'].'\'">';
+//        echo "<td>$data[nomEtud]</td><td>$data[prenomEtud]</td><td>$data[licenceEtud]</td><td>$data[nbCandEtud]</td>";
+//        echo '</tr>';
+//    }
+//    // On ferme le tableau
+//    echo "</table>";
+//}
+
+$stmt->bind_result($nomEtud, $prenomEtud, $licenceEtud, $nbCandEtud, $anneeEtud);
+$stmt->store_result();
+if ($stmt->num_rows > 0) {
+    ?>
+    <div class="row">
+        <div class="small-12">
+            <table style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Licence</th>
+                    <th>Année</th>
+                    <th>Candidatures</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                while ($stmt->fetch()) {
+                    echo '<tr>';
+                    echo '<td>' . $nomEtud . '</td><td>' . $prenomEtud . '</td><td>' . $licenceEtud . '</td>';
+                    echo '<td>'.$anneeEtud.'</td><td>' . $nbCandEtud . '</td>';
+                    echo '</tr>';
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php
+} else {
+    ?>
+    <div class="row">
+        <div class="small-12 columns text-center">
+            <h3>Pas de résultat</h3>
+        </div>
+    </div>
+<?php
+}
+$stmt->close();
+include('all.footer.php');
 ?>

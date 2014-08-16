@@ -74,5 +74,6 @@ if ($stmt->num_rows > 0) {
     </div>
 <?php
 }
+$stmt->close();
 include('all.footer.php');
 ?>
