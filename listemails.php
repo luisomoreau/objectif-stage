@@ -1,49 +1,83 @@
 <?php
-include ('all.header.php');
-if ($_SESSION['connected']!=="admin") {
+include('all.header.php');
+if ($_SESSION['connected'] !== "admin") {
     header('Location : /');
     die();
 }
 if (isset($_GET['idMail'])) {
     $query = "DELETE FROM Mail WHERE idMail='$_GET[idMail])'";
     // Exécution de la requète
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
+    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: " . mysqli_error($dblink));
 }
 ?>
-        <h1>Liste des E-mails envoyés via la plateforme</h1>
-        <div id="col">
-            <h3>Recherche</h3>
-            <form action="listemails" method="GET" id="recherche">
-          		<input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php echo $_GET['champ_rech']; ?>" /> <button id="recherche" type="submit">Rechercher</button>
-            </form>
-        </div>
-        <div class="cleaner h20"></div>
-        <h4>Résultats</h4>
-<?php
-$query = "SELECT * FROM Mail WHERE (destinataireMail LIKE '%".$_GET['champ_rech']."%'  OR sujetMail LIKE '%".$_GET['champ_rech']."%' OR messageMail LIKE '%".$_GET['champ_rech']."%' OR expediteurMail LIKE '%".$_GET['champ_rech']."%') ORDER BY dateEnvoiMail DESC";
-// Exécution de la requète
-$result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-// Affichage des colones
-$data = mysqli_fetch_assoc($result);
-if ($data == NULL) {
-    echo "Aucun résultat";
-} else {
-    echo "<table>";
-    echo "<tr><th>Destinataire</th><th>Expediteur</th><th>Sujet</th><th>Date</th></tr>";
-    // Exécution de la requète pour les valeures
-    $result = mysqli_query($dblink, $query) or die("Erreur lors de la requète SQL: ".mysqli_error($dblink));
-    // Remplissage du tableau
-    while($data = mysqli_fetch_assoc($result)) {
-        echo '<tr onclick="document.location.href=\'listemails?id='.$data['idMail'].'\'">';
-        echo "<td>$data[destinataireMail]</td><td>$data[expediteurMail]</td><td>$data[sujetMail]</td><td>".utf8_encode (strftime("%#d %B %Y - %Hh%M",strtotime($data['dateEnvoiMail'])))."</td>";
-        echo '</tr>';
-    }
-    // On ferme le tableau
-    echo "</table>";
-}
+    <h1>Liste des E-mails envoyés via la plateforme</h1>
+    <div id="col">
+        <h3>Recherche</h3>
 
-if (isset($_GET[id])) {
-    echo '<div class="cleaner h20"></div>';
+        <form action="listemails" method="GET" id="recherche">
+            <input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100" value="<?php if (isset($_GET['champ_rech'])) echo $_GET['champ_rech']; ?>"/>
+            <button id="recherche" type="submit">Rechercher</button>
+        </form>
+    </div>
+    <div class="cleaner h20"></div>
+    <h4>Résultats</h4>
+<?php
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+if (!($stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail FROM Mail WHERE destinataireMail
+                                LIKE ?  OR sujetMail LIKE ? OR messageMail LIKE ? OR expediteurMail LIKE ? ORDER BY dateEnvoiMail DESC'))
+) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+if (isset($_GET['champ_rech'])) {
+    $search = "%" . $_GET['champ_rech'] . "%";
+} else {
+    $search = "%%";
+}
+$stmt->bind_param('ssss', $search, $search, $search, $search);
+if (!($stmt->execute())) {
+    echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+$stmt->bind_result($idMail, $destinataireMail, $expediteurMail, $sujetMail, $dateEnvoiMail, $messageMail);
+$stmt->store_result();
+if ($stmt->num_rows > 0) {
+    ?>
+    <div class="row">
+        <div class="small-12">
+            <table style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Destinataire</th>
+                    <th>Expediteur</th>
+                    <th>Sujet</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                while ($stmt->fetch()) {
+                    echo '<tr onclick="document.location.href=\'listemails?id='.$idMail.'\'"> ';
+                    echo '<td>' . $destinataireMail . '</td><td>' . $expediteurMail . '</td><td>' . $sujetMail . '</td>';
+                    echo '<td>' . strftime("%#d %B %Y à %Hh%M",strtotime($dateEnvoiMail)) . '</td>';
+                    echo '</tr>';
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php
+    $stmt->close();
+} else {
+    ?>
+    <div class="row">
+        <div class="small-12 columns text-center">
+            <h3>Pas de résultat</h3>
+        </div>
+    </div>
+<?php
+}
+if (isset($_GET['id'])) {
+
     echo "<h4>Détails</h4>";
     echo '<a href="listemails?idMail='.$_GET['id'].'"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce message?\');">Supprimer le message</button></a>';
     $query = "SELECT * FROM Mail WHERE idMail='$_GET[id]'";
@@ -64,7 +98,6 @@ if (isset($_GET[id])) {
     } else {
         echo '<a href="'.$data['cvMail'].'" target="_blank">CV</a>';
     }
-    
     echo '</div><div class="col_23 float_r">';
     echo "<h5>Sujet</h5>".$data['sujetMail'];
     echo '<div class="cleaner h10"></div>';
@@ -72,5 +105,4 @@ if (isset($_GET[id])) {
     echo "</div>";
 }
 
-include ('all.footer.php');
-?>
+include('all.footer.php');
