@@ -93,6 +93,9 @@ include('all.header.php');
             }
         }
     }
+
+    //@todo check lng lat
+
     $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
     if (!($stmt = $mysqli->prepare('INSERT INTO entreprises (nomEnt, mailEnt, mdpEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'))) {

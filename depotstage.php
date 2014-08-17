@@ -86,6 +86,7 @@ $stmt->close();
             </div>
         </div>
         <br>
+
         <div class="row">
             <div class="large-12 columns">
                 <label for="detailsStage">Details du stage</label>
@@ -114,28 +115,75 @@ $stmt->close();
                             $stmt->bind_result($diplome_sise, $diplome_nom);
                             $stmt->store_result();
                             while ($stmt->fetch()) {
-                                echo ' <option value="'.$diplome_sise.'">'.$diplome_nom.'</option>';
+                                echo ' <option value="' . $diplome_sise . '">' . $diplome_nom . '</option>';
                             }
                             $stmt->close();
                             ?>
                         </select>
                     </div>
                 </div>
-                <br />
-                <div class="row collapse">
-                    <div class="large-8 columns">
-                        <span class="prefix">Niveau</span>
+                <br/>
+
+                <div class="row">
+
+                    <div class="large-4 columns">
+                        <div class="row collapse">
+                            <div class="small-8 columns">
+                                <span class="prefix">Stage L1</span>
+                            </div>
+                            <div class="small-4 columns">
+                                <div class="switch">
+                                    <input id="stageL1" name="stageL1" type="radio" value="0" checked>
+                                    <label for="stageL1" onclick="" class="text-center">Non</label>
+
+                                    <input id="stageL1" name="stageL1" type="radio" value="1">
+                                    <label for="stageL1" onclick="" class="text-center">Oui</label>
+
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="large-4 columns">
+                        <div class="row collapse">
+                            <div class="small-8 columns">
+                                <span class="prefix">Stage L2</span>
+                            </div>
+                            <div class="small-4 columns">
+                                <div class="switch">
+                                    <input id="stageL2" name="stageL2" type="radio" value="0" checked>
+                                    <label for="stageL2" onclick="" class="text-center">Non</label>
+
+                                    <input id="stageL2" name="stageL2" type="radio" value="1">
+                                    <label for="stageL2" onclick="" class="text-center">Oui</label>
+
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="large-4 columns">
-                        <select name="niveauStage" required>
-                            <option selected="selected" disabled="disabled" value="">Niveau</option>
-                            <option>Stage L2</option>
-                            <option>Stage L3</option>
-                            <option>Projet Tuteuré</option>
-                        </select>
+                        <div class="row collapse">
+                            <div class="small-8 columns">
+                                <span class="prefix">Stage L3</span>
+                            </div>
+                            <div class="small-4 columns">
+                                <div class="switch">
+                                    <input id="stageL3" name="stageL3" type="radio" value="0" checked>
+                                    <label for="stageL3" onclick="" class="text-center">Non</label>
+
+                                    <input id="stageL3" name="stageL3" type="radio" value="1">
+                                    <label for="stageL3" onclick="" class="text-center">Oui</label>
+
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <br />
+                <br/>
+
                 <div class="row collapse">
                     <div class="small-8 columns">
                         <span class="prefix">Stage rémunéré</span>
