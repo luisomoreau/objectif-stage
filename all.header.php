@@ -126,6 +126,9 @@ require_once('fonctions.php');
                         case "statistiques":
                             $page = "Statistiques";
                             break;
+                        case "profiletudiant":
+                            $page = "Profil de l'étudiant";
+                            break;
                     }
                     echo $page;
                     ?>
