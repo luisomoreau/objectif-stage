@@ -24,8 +24,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         header('location: ./');
         die();
     } else {
-        die("ERREUR LOGIN NOT FOUND: ".$_POST['identifiant']." and ".$mdp);
-        //header('location: ./loginent');
+        header('location: ./loginent?erreur');
     }
 } else {
     ?>
@@ -37,6 +36,11 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     <form method="post">
         <div class="row">
             <div class="small-12 large-6 large-centered columns">
+                <?php
+                    if (isset($_GET['erreur'])) {
+                        echo '<h4><span style="color:red">Erreur, identifiants incorrects !</span></h4>';
+                    }
+                ?>
                 <input placeholder="Votre identifiant (E-mail)" type="email" name="identifiant" id="identifiant" maxlength="100" required="required"/>
             </div>
         </div>
