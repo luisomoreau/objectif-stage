@@ -193,12 +193,12 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
         // Requète SQL
         if ($_SESSION['connected'] === "admin") {
             $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
-                                        FROM Entreprises
+                                        FROM entreprises
                                         WHERE idEnt=?');
             $stmt->bind_param('i', $_GET['idEnt']);
         } else {
             $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
-                                        FROM Entreprises
+                                        FROM entreprises
                                         WHERE idEnt=?');
             $stmt->bind_param('i', $_SESSION['id']);
         }
