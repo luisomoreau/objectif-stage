@@ -4,6 +4,24 @@ include('logincheck.php');
 
 print_r($_POST);
 
+if (strlen($_POST['filiereStage'])<1000) {
+    $filiereStage=strip_tags($_POST['filiereStage']);
+} else {
+    realDie();
+}
+
+$mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
+$stmt = $mysqli->prepare('SELECT COUNT(*) FROM diplomes WHERE diplome_sise=?');
+$stmt->bind_param('s', $filiereStage);
+$stmt->execute();
+$stmt->bind_result($count);
+$stmt->fetch();
+$stmt->close();
+
+if ($count<1) {
+    realDie();
+}
+
 if (validateDate($_POST['dateDebut'])) {
     $dateDebut = $_POST['dateDebut'];
 } else {
@@ -22,15 +40,17 @@ if (validateDate($_POST['dateLimite'])) {
     realDie();
 }
 
+if (!(strtotime(str_replace('/', '-', $_POST['dateFin']))>strtotime(str_replace('/', '-', $_POST['dateDebut']))
+    && strtotime(str_replace('/', '-', $_POST['dateDebut']))>=strtotime(str_replace('/', '-', $_POST['dateLimite'])))) {
+    echo "<a href=\"javascript:history.go(-1)\">Dates incohérantes veuillez les modifier en cliquant ici</a>";
+    die();
+}
+
 if ($_POST['remStage'] == 1 || $_POST['remStage'] == 0) {
     $remStage=$_POST['remStage'];
 } else {
     realDie();
 }
-
-//@todo check filiere
-$filiereStage=$_POST['filiereStage'];
-//@todo check niveau
 
 if ($_POST['stageL1'] == 1 || $_POST['stageL1'] == 0) {
     $stageL1=$_POST['stageL1'];
@@ -61,11 +81,6 @@ if (strlen($_POST['sujetStage'])<1000) {
     realDie();
 }
 
-if (strlen($_POST['sujetStage'])<1000) {
-    $sujetStage=strip_tags($_POST['sujetStage']);
-} else {
-    realDie();
-}
 $_POST['lngStage']=floatval($_POST['lngStage']);
 $_POST['latStage']=floatval($_POST['latStage']);
 if (is_float($_POST['lngStage'])) {
@@ -110,14 +125,19 @@ if (strlen($_POST['nomStage'])<200) {
     realDie();
 }
 
-echo time($_POST['dateDebut']);
-echo time($_POST['dateFin']);
+$datediff = strtotime(str_replace('/', '-', $_POST['dateFin'])) - strtotime(str_replace('/', '-', $_POST['dateDebut']));
+$dureeStage= floor($datediff/(60*60*24));
 
-/*$mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
-if (!($stmt = $mysqli->prepare('INSERT INTO stages(idStage, idEnt, nomStage, nomContactStage, prenomContactStage, mailContactStage, lieuStage, latStage, lngStage, dateAjoutStage, dateDebutStage, dateFinStage, dateLimiteStage, dureeStage, sujetStage, detailsStage, competencesStage, l1Stage, l2Stage, l3Stage, filiereStage, remuStage) VALUES '))) {
+$mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
+if (!($stmt = $mysqli->prepare('INSERT INTO stages(idEnt, nomStage, nomContactStage, prenomContactStage, mailContactStage, lieuStage, latStage,
+                                lngStage, dateDebutStage, dateFinStage, dateLimiteStage, dureeStage,
+                                sujetStage, detailsStage, l1Stage, l2Stage, l3Stage, filiereStage, remuStage)
+                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
-$stmt->bind_param('s', $idTest);
+$stmt->bind_param('iissssssssssisssiiiss', $_SESSION["id"], $idEnt, $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage,
+    $lngStage, $dateDebutStage, $dateFinStage, $dateLimiteStage, $dureeStage,
+    $sujetStage, $detailsStage, $l1Stage, $l2Stage, $l3Stage, $filiereStage, $remuStage);
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
@@ -125,4 +145,4 @@ $stmt->bind_result($test);
 while ($stmt->fetch()) {
     echo $test;
 }
-$stmt->close();*/
+$stmt->close();
