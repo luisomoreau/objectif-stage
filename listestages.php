@@ -89,6 +89,11 @@ $user = getInfos();
                                                         <option value="l2">L2</option>
                                                         <option value="l3" selected>L3</option>';
                                                 break;
+                                            default:
+                                                echo ' <option value="l1">L1</option>
+                                                        <option value="l2">L2</option>
+                                                        <option value="l3">L3</option>';
+                                                break;
                                         }
                                         ?>
                                     </select>
@@ -114,7 +119,11 @@ $user = getInfos();
                                         $stmt->bind_result($diplome_sise, $diplome_nom);
                                         $stmt->store_result();
                                         while ($stmt->fetch()) {
-                                            echo ' <option value="'.$diplome_sise.'">'.$diplome_nom.'</option>';
+                                            echo '<option value="'.$diplome_sise.'"';
+                                            if ((isset($_GET['filiere']) && $_GET['filiere'] == $diplome_sise) || $user->filiere == $diplome_sise) {
+                                                echo ' selected';
+                                            }
+                                            echo '>'.$diplome_nom.'</option>';
                                         }
                                         $stmt->close();
                                         ?>
@@ -134,11 +143,11 @@ $user = getInfos();
                         </div>
                         <div class="large-2 columns">
                             <div class="row collapse">
-                                <div class="small-7 columns">
-                                    <span class="prefix">Durée du stage</span>
+                                <div class="small-8 columns">
+                                    <span class="prefix">Durée du stage <b>></b></span>
                                 </div>
-                                <div class="small-5 columns">
-                                    <input type="number" id="duree" name="duree" placeholder="En jours" value="<?php if (isset($_GET['duree'])) echo $_GET['duree']; ?>">
+                                <div class="small-4 columns">
+                                    <input type="number" id="duree" name="duree" placeholder="jours" value="<?php if (isset($_GET['duree'])) echo $_GET['duree']; ?>">
                                 </div>
                             </div>
                         </div>
@@ -157,7 +166,6 @@ $user = getInfos();
     <div class="row">
         <div class="small-12">
             <?php
-            //@todo filiere
             $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
             $baseQuery = 'SELECT idStage, nomStage, lieuStage, sujetStage, dateDebutStage, dureeStage
                         FROM stages
@@ -185,13 +193,13 @@ $user = getInfos();
                 }
             }
             if (isset($_GET['filiere'])) {
-                //$baseQuery .= " AND filiereStage = \"".$_GET['filiere']."\"";
+                $baseQuery .= " AND filiereStage = \"".$_GET['filiere']."\"";
             }
             if (isset($_GET['dateDebut'])) {
                 $baseQuery .= " AND dateDebutStage>STR_TO_DATE(?, '%d/%m/%Y')";
             }
             if (isset($_GET['duree']) && ($_GET['duree']!=='')) {
-                $baseQuery .= " AND dureeStage < ? ";
+                $baseQuery .= " AND dureeStage > ? ";
             }
             $baseQuery .= " ORDER BY dateDebutStage DESC";
             //echo $baseQuery;
@@ -234,7 +242,6 @@ $user = getInfos();
                     echo '<tr onclick="document.location.href=\'infostage?id=' . $idStage . '\'">';
                     echo "<td>$nomStage</td><td>$lieuStage</td><td>$sujetStage</td><td>" . utf8_encode(strftime("%#d %B %Y", strtotime($dateDebutStage))) . "</td><td>$dureeStage jours</td>";
                     echo '<td><a href="infostage?id=' . $idStage . '">Plus d\'infos</a></td>';
-                    /** Mettre des petites images choc logo des languages **/
                     echo "</tr>";
                 }
 
