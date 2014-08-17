@@ -72,8 +72,41 @@ require_once('fonctions.php');
                     <?php
                     $page = substr(substr(strrchr($_SERVER['SCRIPT_NAME'], "/"), 1), 0, -4);
                     switch ($page) {
+                        case "index":
+                            $page = "Accueil";
+                            break;
+                        case "services":
+                            $page = "Services";
+                            break;
+                        case "majinfo":
+                            $page = "Mes infos";
+                            break;
+                        case "entreprises":
+                            $page = "Portail entreprises";
+                            break;
+                        case "loginent":
+                            $page = "Connexion";
+                            break;
+                        case "inscription":
+                            $page = "Inscription";
+                            break;
+                        case "compte":
+                            $page = "Mon compte";
+                            break;
                         case "cv":
                             $page = "Mon CV";
+                            break;
+                        case "listestages":
+                            $page = "Liste des stages";
+                            break;
+                        case "listeentreprises":
+                            $page = "Liste des entreprises";
+                            break;
+                        case "depotstage":
+                            $page = "Dépôt";
+                            break;
+                        case "messtages":
+                            $page = "Mes stages";
                             break;
                     }
                     echo $page;
