@@ -94,7 +94,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         include('all.footer.php');
         die();
     }
-    //header('Location: compte');
+    header('Location: compte');
     die();
 
 } else if ($_SESSION['connected'] == "ent" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEnt']))) {

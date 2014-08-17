@@ -24,7 +24,8 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         header('location: ./');
         die();
     } else {
-        header('location: ./loginent');
+        die("ERREUR LOGIN NOT FOUND");
+        //header('location: ./loginent');
     }
 } else {
     ?>
