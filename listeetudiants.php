@@ -62,12 +62,12 @@ if (isset($_GET['champ_rech'])) {
 
 if (isset($_GET['trouveStage']) && $_GET['trouveStage'] == 1) {
     $trouveStage = 0;
-    if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise'))) {
+    if (!($stmt = $mysqli->prepare('SELECT idEtud, nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('sssi', $search, $search, $search, $trouveStage);
 } else {
-    if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND filiereEtud = diplome_sise'))) {
+    if (!($stmt = $mysqli->prepare('SELECT idEtud, nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND filiereEtud = diplome_sise'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('sss', $search, $search, $search);
@@ -79,7 +79,7 @@ if (!($stmt->execute())) {
 }
 
 
-$stmt->bind_result($nomEtud, $prenomEtud, $licenceEtud, $nbCandEtud, $anneeEtud);
+$stmt->bind_result($idEtud, $nomEtud, $prenomEtud, $licenceEtud, $nbCandEtud, $anneeEtud);
 $stmt->store_result();
 if ($stmt->num_rows > 0) {
     ?>
@@ -93,6 +93,7 @@ if ($stmt->num_rows > 0) {
                     <th>Licence</th>
                     <th>Année</th>
                     <th>Candidatures</th>
+                    <th>Profil</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,6 +102,7 @@ if ($stmt->num_rows > 0) {
                     echo '<tr>';
                     echo '<td>' . $nomEtud . '</td><td>' . $prenomEtud . '</td><td>' . $licenceEtud . '</td>';
                     echo '<td>' . $anneeEtud . '</td><td>' . $nbCandEtud . '</td>';
+                    echo '<td><a href="profiletudiant?id=' . $idEtud . '">Lien</a></td>';
                     echo '</tr>';
                 }
                 ?>
