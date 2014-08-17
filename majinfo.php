@@ -147,7 +147,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                         <span class="prefix">Date de naissance</span>
                     </div>
                     <div class="small-9 columns">
-                        <input type="text" name="naissanceEtud" id="naissanceEtud" class="date_picker" value="<?php echo date("d/m/Y", strtotime($naissanceEtud)); ?>" maxlength="10">
+                        <input type="text" name="naissanceEtud" id="naissanceEtud" class="date_picker" value="<?php if ($naissanceEtud!=null) echo date("d/m/Y", strtotime($naissanceEtud)); ?>" maxlength="10">
                     </div>
                 </div>
             </div>

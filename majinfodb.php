@@ -21,11 +21,15 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         }
     }
 
-    if (!validateDate($naissanceEtud)) {
-        header('Location: ./');
-        die();
+    if ($naissanceEtud!='') {
+        if (!validateDate($naissanceEtud)) {
+            header('Location: ./');
+            die();
+        } else {
+            $naissanceEtud = date("Y-m-d", strtotime(str_replace('/', '-', $naissanceEtud)));
+        }
     } else {
-        $naissanceEtud = date("Y-m-d", strtotime(str_replace('/', '-', $naissanceEtud)));
+        $naissanceEtud=null;
     }
 
     //check erreurs
@@ -33,27 +37,21 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         header('Location: ./');
         die();
     }
-    if (!(filter_var($mailPersoEtud, FILTER_VALIDATE_EMAIL))) {
-        include('all.footer.php');
-        ?>
-        <script>
-            alert('Email perso non valide');
-            history.back();
-        </script>
-        <?php
-        die();
+    if ($mailPersoEtud!='') {
+        if (!(filter_var($mailPersoEtud, FILTER_VALIDATE_EMAIL))) {
+            include('all.footer.php');
+            ?>
+            <script>
+                alert('Email perso non valide');
+                history.back();
+            </script>
+            <?php
+            die();
+        }
+    } else {
+        $mailPersoEtud=null;
     }
     if (strlen($telSecEtud) != 6) {
-        /*
-                include('all.footer.php');
-                ?>
-                <script>
-                    alert('Le telephone ne contient pas 6 chiffres');
-                    history.back();
-                </script>
-                <?php
-                die();
-        */
         $telSecEtud = null;
     } else {
         if (!preg_match("/[0-9]/", $telSecEtud)) {
