@@ -22,7 +22,7 @@ if ($_SESSION['connected'] !== "admin" && $_SESSION['connected'] !== "ent") {
                 <div class="large-6 column">
                     <div class="row collapse">
                         <div class="small-8 columns">
-                            <span class="prefix">Afficher les étudiants ayant trouvé un stage</span>
+                            <span class="prefix">Afficher seulement les étudiants en recherche de stage</span>
                         </div>
                         <div class="small-4 columns">
                             <div class="switch">
@@ -53,22 +53,27 @@ if ($_SESSION['connected'] !== "admin" && $_SESSION['connected'] !== "ent") {
     </div>
 <?php
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise'))) {
-    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-}
+
 if (isset($_GET['champ_rech'])) {
     $search = "%" . $_GET['champ_rech'] . "%";
 } else {
     $search = "%%";
 }
 
-if (isset($_GET['trouveStage'])) {
-    $trouveStage = $_GET['trouveStage'];
-} else {
+if (isset($_GET['trouveStage']) && $_GET['trouveStage'] == 1) {
     $trouveStage = 0;
+    if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise'))) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    $stmt->bind_param('ssi', $search, $search, $trouveStage);
+} else {
+    if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ?) AND filiereEtud = diplome_sise'))) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    $stmt->bind_param('ss', $search, $search);
 }
 
-$stmt->bind_param('ssi', $search, $search, $trouveStage);
+
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
