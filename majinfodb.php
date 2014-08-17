@@ -80,8 +80,8 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
     }
     //protection injection scripte à faire + date check @todo
     if ($_SESSION['connected'] === "admin") {
-        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, telSecEtud=?, naissanceEtud=?, trouveStageEtud=? WHERE mailEtud=?');
-        $stmt->bind_param('sssis', $mailPersoEtud, $telSecEtud, $naissanceEtud, $trouveStageEtud, $_POST['mailEtud']);
+        $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, telSecEtud=?, naissanceEtud=?, trouveStageEtud=? WHERE userEtud=?');
+        $stmt->bind_param('sssis', $mailPersoEtud, $telSecEtud, $naissanceEtud, $trouveStageEtud, $_POST['userEtud']);
     } else {
         $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, telSecEtud=?, naissanceEtud=?, trouveStageEtud=? WHERE userEtud=?');
         $stmt->bind_param('sssis', $mailPersoEtud, $telSecEtud, $naissanceEtud, $trouveStageEtud, $_SESSION['identifiant']);
