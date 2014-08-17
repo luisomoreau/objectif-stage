@@ -157,7 +157,7 @@ $stmt->close();
                         <span class="prefix">Date début stage</span>
                     </div>
                     <div class="large-6 columns">
-                        <input type="text" class="span2 date_picker" value="01/01/2014">
+                        <input type="text" class="span2 date_picker" name="dateDebut" value="01/01/2014">
                     </div>
                 </div>
                 <div class="row collapse">
@@ -165,7 +165,7 @@ $stmt->close();
                         <span class="prefix">Date fin stage</span>
                     </div>
                     <div class="large-6 columns">
-                        <input type="text" class="span2 date_picker" value="01/01/2014">
+                        <input type="text" class="span2 date_picker" name="dateFin" value="01/01/2014">
                     </div>
                 </div>
                 <div class="row collapse">
@@ -173,7 +173,7 @@ $stmt->close();
                         <span class="prefix">Date limite stage</span>
                     </div>
                     <div class="large-6 columns">
-                        <input type="text" class="span2 date_picker" value="01/01/2014">
+                        <input type="text" class="span2 date_picker" name="dateLimite" value="01/01/2014">
                     </div>
                 </div>
             </div>
