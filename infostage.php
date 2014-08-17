@@ -90,7 +90,7 @@ if ($l2Stage==1) {
             <p><?php echo $prenomContactStage." ". $nomContactStage." - ".$mailContactStage?></p>
             <p><?php echo "Téléphone : ".$telEnt;
                 if($telSecEnt!=NULL) {
-                    echo " ou ".$data['telSecEnt'];
+                    echo " ou ".$telSecEnt;
                 }
                 ?></p>
             <p><?php echo nl2br($adresseEnt); ?></p>
