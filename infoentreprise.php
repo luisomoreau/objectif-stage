@@ -1,5 +1,6 @@
 <?php
 include('all.header.php');
+include('logincheck.php');
 if (!isset($_GET['id'])) {
     header('Location: index');
     die();

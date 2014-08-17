@@ -21,7 +21,6 @@ $stmt->store_result();
 ?>
 <div class="row">
     <div class="small-12">
-        <h3>Mes stages</h3>
 <?php
 if ($stmt->num_rows > 0) {
     echo '<table style="width: 100%">';

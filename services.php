@@ -4,11 +4,6 @@ include('logincheck.php');
 if ($_SESSION['connected'] === "etud") {
     ?>
     <section class="row">
-        <div class="small-12 columns">
-            <h1>Les Services</h1>
-        </div>
-    </section>
-    <section class="row">
         <div class="large-6 column">
             <a href="./listestages" class="large button expand">Liste des stages</a>
         </div>
@@ -19,11 +14,6 @@ if ($_SESSION['connected'] === "etud") {
 <?php
 } else if ($_SESSION['connected'] === "ent") {
     ?>
-    <div class="row">
-        <div class="large-12 columns">
-            <h1>Les services proposés pas la plateforme</h1>
-        </div>
-    </div>
     <div class="row">
         <div class="large-6 columns">
             <a href="./listestages" class="large button expand">Liste des stages</a>

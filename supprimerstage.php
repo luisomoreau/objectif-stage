@@ -1,8 +1,8 @@
 <?php
 include('all.header.php');
 include('logincheck.php');
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if ($_SESSION['connected'] == 'admin') {
-    $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
     if (!($stmt = $mysqli->prepare('DELETE FROM stages WHERE idStage=?'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
