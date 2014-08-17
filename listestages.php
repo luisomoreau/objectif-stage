@@ -73,26 +73,35 @@ $user = getInfos();
                                 <div class="small-7 columns">
                                     <select id="annee" name="annee">
                                         <?php
-                                        switch ($user->annee) {
+                                        if (isset($user->annee)) {
+                                            $select_annee = $user->annee;
+                                        } else {
+                                            if (isset($_GET['annee'])) {
+                                                $select_annee = $_GET['annee'];
+                                            } else {
+                                                $select_annee = "NULL";
+                                            }
+                                        }
+                                        switch ($select_annee) {
                                             case "L1":
-                                                echo ' <option value="l1" selected>L1</option>
-                                                        <option value="l2">L2</option>
-                                                        <option value="l3">L3</option>';
+                                                echo ' <option value="L1" selected>L1</option>
+                                                        <option value="L2">L2</option>
+                                                        <option value="L3">L3</option>';
                                                 break;
                                             case "L2":
-                                                echo ' <option value="l1">L1</option>
-                                                        <option value="l2" selected>L2</option>
-                                                        <option value="l3">L3</option>';
+                                                echo ' <option value="L1">L1</option>
+                                                        <option value="L2" selected>L2</option>
+                                                        <option value="L3">L3</option>';
                                                 break;
                                             case "L3":
-                                                echo ' <option value="l1">L1</option>
-                                                        <option value="l2">L2</option>
-                                                        <option value="l3" selected>L3</option>';
+                                                echo ' <option value="L1">L1</option>
+                                                        <option value="L2">L2</option>
+                                                        <option value="L3" selected>L3</option>';
                                                 break;
                                             default:
-                                                echo ' <option value="l1">L1</option>
-                                                        <option value="l2">L2</option>
-                                                        <option value="l3">L3</option>';
+                                                echo ' <option value="L1">L1</option>
+                                                        <option value="L2">L2</option>
+                                                        <option value="L3">L3</option>';
                                                 break;
                                         }
                                         ?>
@@ -100,7 +109,7 @@ $user = getInfos();
                                 </div>
                             </div>
                         </div>
-                        <div class="large-6 columns">
+                        <div class="large-5 columns">
                             <div class="row collapse">
                                 <div class="small-2 columns">
                                     <span class="prefix">Filière</span>
@@ -120,7 +129,7 @@ $user = getInfos();
                                         $stmt->store_result();
                                         while ($stmt->fetch()) {
                                             echo '<option value="'.$diplome_sise.'"';
-                                            if ((isset($_GET['filiere']) && $_GET['filiere'] == $diplome_sise) || $user->filiere == $diplome_sise) {
+                                            if ((isset($_GET['filiere']) && $_GET['filiere'] == $diplome_sise) || (isset($user->filiere) && $user->filiere == $diplome_sise)) {
                                                 echo ' selected';
                                             }
                                             echo '>'.$diplome_nom.'</option>';
@@ -131,10 +140,10 @@ $user = getInfos();
                                 </div>
                             </div>
                         </div>
-                        <div class="large-2 columns">
+                        <div class="large-3 columns">
                             <div class="row collapse">
                                 <div class="small-7 columns">
-                                    <span class="prefix">Début du stage</span>
+                                    <span class="prefix">Début du stage <b><</b></span>
                                 </div>
                                 <div class="small-5 columns">
                                     <input type="text" class="date_picker" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA" value="<?php if (isset($_GET['dateDebut'])) echo $_GET['dateDebut']; ?>">
@@ -181,13 +190,13 @@ $user = getInfos();
             }
             if (isset($_GET['annee'])) {
                 switch ($_GET['annee']) {
-                    case "l1":
+                    case "L1":
                         $baseQuery .= " AND l1Stage = 1";
                         break;
-                    case "l2":
+                    case "L2":
                         $baseQuery .= " AND l2Stage = 1";
                         break;
-                    case "l3":
+                    case "L3":
                         $baseQuery .= " AND l3Stage = 1";
                         break;
                 }
