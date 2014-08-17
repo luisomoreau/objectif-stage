@@ -5,7 +5,10 @@ $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['connected'] === "admin")) {
     // Requète SQL
     if ($_SESSION['connected'] === "admin") {
-        if (!($stmt = $mysqli->prepare('SELECT * FROM etudiants WHERE idEtud=?'))) {
+        if (!($stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud
+                                            FROM etudiants, diplomes
+                                            WHERE idEtud=?
+                                            AND diplome_sise = filiereEtud'))) {
             echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
         $stmt->bind_param('i', $_GET['idEtud']);
@@ -20,16 +23,9 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
     $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $filiereEtud, $civiliteEtud, $naissanceEtud, $telEtud, $telSecEtud);
     $stmt->fetch();
     $stmt->close();
-    //var_dump($naissanceEtud);
-    echo '<section class="row">
-            <div class="small-12 columns">
-                <h1>';
-    if ($_SESSION['connected'] === "admin") {
-        echo '<a href="supprimercompte?idEtud=' . $_GET['idEtud'] . '"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a>';
+    if ($mailEtud=='') {
+        realDie();
     }
-    echo '</h1>
-            </div>
-         </section>';
     ?>
     <form action="majinfodb" method="POST" enctype="multipart/form-data">
         <div class="row">
@@ -49,7 +45,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                         <span class="prefix">Mail UNC</span>
                     </div>
                     <div class="small-9 columns">
-                        <input type="text" name="mailEtud" id="mailEtud" maxlength="100" required="required" value="<?php echo $mailEtud; ?>" disabled="disabled">
+                        <input type="text" id="mailEtud" maxlength="100" required="required" value="<?php echo $mailEtud; ?>" disabled="disabled">
                     </div>
                 </div>
 
@@ -184,9 +180,15 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                 <input class="large button expand" id="envoyer" type="submit" value="Enregistrer mes informations"/>
             </div>
         </div>
-
     </form>
-<?php
+    <?php if ($_SESSION['connected'] === "admin") { ?>
+        <div class="row">
+            <div class="small-12 columns text-center">
+                <a class="button" href="supprimercompte?idEtud=<?php echo $_GET['idEtud']?>" onclick="return confirm('Êtes-vous sur de vouloir supprimer définitivement ce compte?');">Supprimer ce compte</a>
+            </div>
+        </div>
+
+    <?php }
 } else {
     if ($_SESSION['connected'] == "ent" || (isset($_GET['idEnt']) && $_SESSION['connected'] === "admin")) {
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
