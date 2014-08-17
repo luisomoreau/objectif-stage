@@ -101,8 +101,8 @@ include('all.header.php');
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    $stmt->bind_param('ssssssssss', $_POST['nomEnt'], $_POST['mailEnt'], $_POST['mdpEnt'], $_POST['nomContactEnt'],
-                            $_POST['prenomContactEnt'], $_POST['telEnt'], $_POST['telSecEnt'],$_POST['adresseEnt'],$_POST['latEnt'],$_POST['lngEnt']);
+    $stmt->bind_param('ssssssssss', $_POST['nomEnt'], $_POST['mailEnt'], $_POST['mdpEnt'], ucfirst(mb_strtolower($_POST['nomContactEnt'], 'UTF-8')),
+        ucfirst(mb_strtolower($_POST['prenomContactEnt'], 'UTF-8')), $_POST['telEnt'], $_POST['telSecEnt'],$_POST['adresseEnt'],$_POST['latEnt'],$_POST['lngEnt']);
     if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         echo "Erreur, le mail est déjà utilisé";

@@ -82,7 +82,7 @@ require_once('fonctions.php');
                             $page = "Détail du stage";
                             break;
                         case "services":
-                            $page = "Services";
+                            $page = "Nos services";
                             break;
                         case "majinfo":
                             $page = "Mes infos";
