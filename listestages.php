@@ -84,22 +84,27 @@ $user = getInfos();
                                         }
                                         switch ($select_annee) {
                                             case "L1":
-                                                echo ' <option value="L1" selected>L1</option>
+                                                echo ' <option value="all" selected>Toutes</option>
+                                                        <option value="L1" selected>L1</option>
                                                         <option value="L2">L2</option>
                                                         <option value="L3">L3</option>';
                                                 break;
                                             case "L2":
-                                                echo ' <option value="L1">L1</option>
+                                                echo ' <option value="all" selected>Toutes</option>
+                                                        <option value="L1">L1</option>
                                                         <option value="L2" selected>L2</option>
                                                         <option value="L3">L3</option>';
                                                 break;
                                             case "L3":
-                                                echo ' <option value="L1">L1</option>
+                                                echo ' <option value="all" selected>Toutes</option>
+                                                        <option value="L1">L1</option>
                                                         <option value="L2">L2</option>
                                                         <option value="L3" selected>L3</option>';
                                                 break;
                                             default:
-                                                echo ' <option value="L1">L1</option>
+                                                echo '
+                                                         <option value="all" selected>Toutes</option>
+                                                         <option value="L1">L1</option>
                                                         <option value="L2">L2</option>
                                                         <option value="L3">L3</option>';
                                                 break;
@@ -128,11 +133,11 @@ $user = getInfos();
                                         $stmt->bind_result($diplome_sise, $diplome_nom);
                                         $stmt->store_result();
                                         while ($stmt->fetch()) {
-                                            echo '<option value="'.$diplome_sise.'"';
+                                            echo '<option value="' . $diplome_sise . '"';
                                             if ((isset($_GET['filiere']) && $_GET['filiere'] == $diplome_sise) || (isset($user->filiere) && $user->filiere == $diplome_sise)) {
                                                 echo ' selected';
                                             }
-                                            echo '>'.$diplome_nom.'</option>';
+                                            echo '>' . $diplome_nom . '</option>';
                                         }
                                         $stmt->close();
                                         ?>
@@ -146,7 +151,8 @@ $user = getInfos();
                                     <span class="prefix">Début du stage <b><</b></span>
                                 </div>
                                 <div class="small-5 columns">
-                                    <input type="text" class="date_picker" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA" value="<?php if (isset($_GET['dateDebut'])) echo $_GET['dateDebut']; ?>">
+                                    <input type="text" class="date_picker" id="dateDebut" name="dateDebut" placeholder="JJ/MM/AAAA"
+                                           value="<?php if (isset($_GET['dateDebut'])) echo $_GET['dateDebut']; ?>">
                                 </div>
                             </div>
                         </div>
@@ -201,12 +207,12 @@ $user = getInfos();
                 }
             }
             if (isset($_GET['filiere'])) {
-                $baseQuery .= " AND filiereStage = \"".$_GET['filiere']."\"";
+                $baseQuery .= " AND filiereStage = \"" . $_GET['filiere'] . "\"";
             }
             if (isset($_GET['dateDebut'])) {
                 $baseQuery .= " AND dateDebutStage>STR_TO_DATE(?, '%d/%m/%Y')";
             }
-            if (isset($_GET['duree']) && ($_GET['duree']!=='')) {
+            if (isset($_GET['duree']) && ($_GET['duree'] !== '')) {
                 $baseQuery .= " AND dureeStage > ? ";
             }
             $baseQuery .= " ORDER BY dateDebutStage DESC";
@@ -216,7 +222,7 @@ $user = getInfos();
             }
             if (isset($_GET['champ_rech'])) {
                 $search = '%' . $_GET['champ_rech'] . '%';
-                if (isset($_GET['duree']) && ($_GET['duree']!=='')) {
+                if (isset($_GET['duree']) && ($_GET['duree'] !== '')) {
                     if (isset($_GET['dateDebut'])) {
                         $stmt->bind_param('ssssi', $search, $search, $search, $_GET['dateDebut'], $_GET['duree']);
                     } else {
