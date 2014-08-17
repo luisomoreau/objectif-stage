@@ -137,7 +137,7 @@ if (($_SESSION['connected'] == 'ent' || $_SESSION['connected'] == 'admin') && is
 
     <div class="row ">
         <div class="large-12 text-center columns">
-            <?php if ($trouveStageEtud == "1") { ?>
+            <?php if ($trouveStageEtud == '0') { ?>
                 <h3>Je suis à la recherche d'un stage</h3>
             <?php } else { ?>
                 <h3>J'ai trouvé un stage</h3>
@@ -158,6 +158,7 @@ if (($_SESSION['connected'] == 'ent' || $_SESSION['connected'] == 'admin') && is
     ?>
 
 <?php
+    include('all.footer.php');
 } else {
     realDie();
 }
