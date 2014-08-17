@@ -30,6 +30,11 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./messtages" class="large button expand">Mes stages</a>
         </div>
     </div>
+    <div class="row">
+        <div class="large-6 columns">
+            <a href="./listeetudiants.php" class="large button expand">Liste des étudiants</a>
+        </div>
+    </div>
 <?php
 } else if ($_SESSION['connected'] === "admin") {
     ?>

@@ -1,6 +1,6 @@
 <?php
 include('all.header.php');
-if ($_SESSION['connected'] != "admin") {
+if ($_SESSION['connected'] !== "admin" && $_SESSION['connected'] !== "ent") {
     header('Location : /');
     die();
 }
@@ -53,7 +53,7 @@ if ($_SESSION['connected'] != "admin") {
     </div>
 <?php
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, filiereEtud, nbCandEtud, anneeEtud FROM etudiants WHERE (nomEtud LIKE ? OR prenomEtud LIKE ?)'))) {
+if (!($stmt = $mysqli->prepare('SELECT nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise'))) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
 if (isset($_GET['champ_rech'])) {
@@ -62,7 +62,13 @@ if (isset($_GET['champ_rech'])) {
     $search = "%%";
 }
 
-$stmt->bind_param('ss', $search, $search);
+if (isset($_GET['trouveStage'])) {
+    $trouveStage = $_GET['trouveStage'];
+} else {
+    $trouveStage = 0;
+}
+
+$stmt->bind_param('ssi', $search, $search, $trouveStage);
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
