@@ -2,7 +2,7 @@
 include('all.header.php');
 include('logincheck.php');
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEtud']))) {
+if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && isset($_POST['userEtud']))) {
     /** MAJ ETUDIANT **/
 
     if (!isset($_POST['mailPersoEtud']) or !isset($_POST['telSecEtud'])) {
@@ -73,7 +73,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         if (exif_imagetype($_FILES['profilpic']['tmp_name']) != false) {
             if ($_FILES['profilpic']['size'] <= 2097152) {
                 if ($_SESSION['connected'] === "admin") {
-                    imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_POST['mailEtud']) . ".png");
+                    imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_POST['userEtud']) . ".png");
                 } else {
                     imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_SESSION['identifiant']) . ".png");
                 }

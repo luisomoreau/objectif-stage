@@ -5,7 +5,7 @@ $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['connected'] === "admin")) {
     // Requète SQL
     if ($_SESSION['connected'] === "admin") {
-        if (!($stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud
+        if (!($stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud, userEtud
                                             FROM etudiants, diplomes
                                             WHERE idEtud=?
                                             AND diplome_sise = filiereEtud'))) {
@@ -13,14 +13,14 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
         }
         $stmt->bind_param('i', $_GET['idEtud']);
     } else {
-        $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud
+        $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud, userEtud
                                             FROM etudiants, diplomes
                                             WHERE userEtud=?
                                             AND diplome_sise = filiereEtud');
         $stmt->bind_param('s', $_SESSION['identifiant']);
     }
     $stmt->execute();
-    $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $filiereEtud, $civiliteEtud, $naissanceEtud, $telEtud, $telSecEtud);
+    $stmt->bind_result($mailEtud, $mailPersoEtud, $nomEtud, $prenomEtud, $trouveStageEtud, $licenceEtud, $filiereEtud, $civiliteEtud, $naissanceEtud, $telEtud, $telSecEtud, $userEtud);
     $stmt->fetch();
     $stmt->close();
     if ($mailEtud=='') {
@@ -30,14 +30,19 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
     <form action="majinfodb" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="large-4 columns text-center">
-                <img src="fichiers/profile/<?php echo md5($_SESSION['identifiant']) . ".png" ?>" alt="Photo de profile" onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
+                <?php if (isset($_GET['idEtud'])) {
+                    ?><img src="fichiers/profile/<?php echo md5($userEtud) . ".png" ?>" alt="Photo de profile" onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/><?php
+                } else {
+                    ?><img src="fichiers/profile/<?php echo md5($_SESSION['identifiant']) . ".png" ?>" alt="Photo de profile" onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/><?php
+                }?>
+
                 <br/>
                 <label for="profilpic">Modifier votre photo de profil</label>
                 <input type="file" name="profilpic" id="profilpic"/>
             </div>
             <div class="large-8 columns">
                 <?php if ($_SESSION['connected'] === "admin") {
-                    echo '<input type="hidden" name="mailEtud" value="' . $mailEtud . '" />';
+                    echo '<input type="hidden" name="userEtud" value="' . $userEtud . '" />';
                 } ?>
 
                 <div class="row collapse">
