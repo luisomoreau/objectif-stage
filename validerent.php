@@ -51,5 +51,15 @@ if ($_SESSION['connected'] !== "admin") {
         </div>
     </div>
 <?php
+    } else {
+?>
+        <div class="row">
+            <div class="small-12">
+                <h4>Pas d'entreprises à valider</h4>
+            </div>
+        </div>
+<?php
     }
 }
+include('all.footer.php');
+?>

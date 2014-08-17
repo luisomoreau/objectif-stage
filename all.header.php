@@ -117,6 +117,9 @@ require_once('fonctions.php');
                         case "validerent":
                             $page = "Valider une entreprise";
                             break;
+                        case "statistiques":
+                            $page = "Statistiques";
+                            break;
                     }
                     echo $page;
                     ?>

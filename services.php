@@ -69,6 +69,9 @@ if ($_SESSION['connected'] === "etud") {
         <div class="large-4 columns">
             <a href="./validerent" class="large button expand">Valider une entreprise</a>
         </div>
+        <div class="large-4 columns">
+            <a href="./statistiques" class="large button expand">Statistiques</a>
+        </div>
     </div>
 <?php
 } else {
