@@ -17,20 +17,20 @@ $stmt->fetch();
 $stmt->close();
 
 
-if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
+if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin" || $idStage == null) {
     header('Location: messtages');
     die();
 }
 
 
 ?>
-<?php if ($_SESSION['connected'] === "admin") echo '<input type="hidden" name="idEnt" value="' . $idEnt . '" />'; ?>
     <div class="row">
         <div class="large-12 columns">
             <h1>Déposer un stage</h1>
         </div>
     </div>
 <form action="majstagedb" method="POST" id="depoStage">
+    <input type="hidden" name="idStage" value="<?php echo $_GET['id']; ?>">
 <div class="row">
     <div class="large-6 columns">
         <div class="row collapse">
@@ -38,7 +38,7 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
                 <span class="prefix">Intitulé du stage</span>
             </div>
             <div class="small-6 large-9 columns">
-                <input type="text" name="nomStage" id="nomStage" maxlength="200" value="<?php echo $nomStage; ?>"required/>
+                <input type="text" name="nomStage" id="nomStage" maxlength="200" value="<?php echo $nomStage; ?>" required/>
             </div>
         </div>
         <div class="row collapse">
@@ -123,7 +123,7 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
                     $stmt->bind_result($diplome_sise, $diplome_nom);
                     $stmt->store_result();
                     while ($stmt->fetch()) {
-                        if ($filiereStage==$diplome_sise) {
+                        if ($filiereStage == $diplome_sise) {
                             echo ' <option value="' . $diplome_sise . '" selected>' . $diplome_nom . '</option>';
                         } else {
                             echo ' <option value="' . $diplome_sise . '">' . $diplome_nom . '</option>';
@@ -146,10 +146,10 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
                     </div>
                     <div class="small-4 columns">
                         <div class="switch">
-                            <input id="stageL1" name="stageL1" type="radio" value="0" <?php if($l1Stage==0) echo 'checked';?>>
+                            <input id="stageL1" name="stageL1" type="radio" value="0" <?php if ($l1Stage == 0) echo 'checked'; ?>>
                             <label for="stageL1" onclick="" class="text-center">Non</label>
 
-                            <input id="stageL1" name="stageL1" type="radio" value="1" <?php if($l1Stage==1) echo 'checked';?>>
+                            <input id="stageL1" name="stageL1" type="radio" value="1" <?php if ($l1Stage == 1) echo 'checked'; ?>>
                             <label for="stageL1" onclick="" class="text-center">Oui</label>
 
                             <span></span>
@@ -165,10 +165,10 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
                     </div>
                     <div class="small-4 columns">
                         <div class="switch">
-                            <input id="stageL2" name="stageL2" type="radio" value="0" <?php if($l2Stage==0) echo 'checked';?>>
+                            <input id="stageL2" name="stageL2" type="radio" value="0" <?php if ($l2Stage == 0) echo 'checked'; ?>>
                             <label for="stageL2" onclick="" class="text-center">Non</label>
 
-                            <input id="stageL2" name="stageL2" type="radio" value="1" <?php if($l2Stage==1) echo 'checked';?>>
+                            <input id="stageL2" name="stageL2" type="radio" value="1" <?php if ($l2Stage == 1) echo 'checked'; ?>>
                             <label for="stageL2" onclick="" class="text-center">Oui</label>
 
                             <span></span>
@@ -183,10 +183,10 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
                     </div>
                     <div class="small-4 columns">
                         <div class="switch">
-                            <input id="stageL3" name="stageL3" type="radio" value="0" <?php if($l3Stage==0) echo 'checked';?>>
+                            <input id="stageL3" name="stageL3" type="radio" value="0" <?php if ($l3Stage == 0) echo 'checked'; ?>>
                             <label for="stageL3" onclick="" class="text-center">Non</label>
 
-                            <input id="stageL3" name="stageL3" type="radio" value="1" <?php if($l3Stage==1) echo 'checked';?>>
+                            <input id="stageL3" name="stageL3" type="radio" value="1" <?php if ($l3Stage == 1) echo 'checked'; ?>>
                             <label for="stageL3" onclick="" class="text-center">Oui</label>
 
                             <span></span>
@@ -202,9 +202,9 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
             </div>
             <div class="small-4 columns">
                 <div class="switch">
-                    <input id="remStage" name="remStage" type="radio" value="0" <?php if($remuStage==0) echo 'checked';?>>
+                    <input id="remStage" name="remStage" type="radio" value="0" <?php if ($remuStage == 0) echo 'checked'; ?>>
                     <label for="remStage" onclick="" class="text-center">Non</label>
-                    <input id="remStage" name="remStage" type="radio" value="1" <?php if($remuStage==1) echo 'checked';?>>
+                    <input id="remStage" name="remStage" type="radio" value="1" <?php if ($remuStage == 1) echo 'checked'; ?>>
                     <label for="remStage" onclick="" class="text-center">Oui</label>
                     <span></span>
                 </div>
@@ -245,11 +245,7 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin") {
 </div>
 <div class="row">
     <div class="small-12 large-6 large-centered columns text-center">
-        <form action="supprimerstage" method="POST" id="recherche">
-            <?php if ($_SESSION['connected'] === "admin") echo '<input type="hidden" name="idEnt" value="' . $idStage . '" />'; ?>
-            <input type="hidden" name="idStage" value="<?php echo $_GET['id']; ?>"/>
-            <input class="button" id="envoyer" name="submit" type="submit" value="Supprimer le stage" onclick="return confirm('Êtes-vous sur de vouloir supprimer définitivement ce stage?');"/>
-        </form>
+        <a class="button" href="./supprimerstage?id=<?php echo $_GET['id']; ?>" onclick="return confirm('Êtes-vous sur de vouloir supprimer définitivement ce stage?');">Supprimer ce stage</a>
     </div>
 </div>
 

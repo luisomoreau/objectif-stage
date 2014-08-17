@@ -1,186 +1,200 @@
 <?php
-include('nontraite.php');
-include('all.header.php'); 
-if ($_SESSION[type]!=="entreprises" && $_SESSION[type]!=="admin") {
-    header('Location: /');
-    die(); 
-} 
-if (!isset($_POST[idStage]) or !isset($_POST[typeStage]) or !isset($_POST[latStage]) or !isset($_POST[lngStage]) or!isset($_POST[nomStage]) or !isset($_POST[nomContactStage]) or !isset($_POST[prenomContactStage]) or !isset($_POST[mailContactStage]) or !isset($_POST[lieuStage]) or !isset($_POST[dateJourDebutStage]) or !isset($_POST[dateMoisDebutStage]) or !isset($_POST[dateAnneeDebutStage]) or !isset($_POST[dateJourFinStage]) or !isset($_POST[dateMoisFinStage]) or !isset($_POST[dateAnneeFinStage]) or !isset($_POST[dateJourLimiteStage]) or !isset($_POST[dateMoisLimiteStage]) or !isset($_POST[dateAnneeLimiteStage]) or !isset($_POST[sujetStage]) or !isset($_POST[detailsStage])) {
-    header('Location: /');
-    die(); 
+include('all.header.php');
+include('logincheck.php');
+
+if ($_SESSION['connected'] == 'etud' || !isset($_POST['nomStage']) || !isset($_POST['prenomContactStage']) || !isset($_POST['nomContactStage']) || !isset($_POST['mailContactStage'])
+    || !isset($_POST['lieuStage']) || !isset($_POST['latStage']) || !isset($_POST['stageL1']) || !isset($_POST['stageL2']) || !isset($_POST['stageL3'])
+    || !isset($_POST['lngStage']) || !isset($_POST['sujetStage']) || !isset($_POST['detailsStage']) || !isset($_POST['filiereStage']) || !isset($_POST['remStage'])
+    || !isset($_POST['dateDebut']) || !isset($_POST['dateFin']) || !isset($_POST['dateLimite']) || !isset($_POST['idStage'])
+) {
+    realDie();
+}
+if (strlen($_POST['filiereStage']) < 1000) {
+    $filiereStage = strip_tags($_POST['filiereStage']);
+} else {
+    realDie();
 }
 
-if (($_POST[dateAnneeDebutStage]>2100) || $_POST[dateAnneeDebutStage]<2000) {
-        header('Location: /');
-        die(); 
-}
-if (($_POST[dateMoisDebutStage]>12) || $_POST[dateMoisDebutStage]<1) {
-        header('Location: /');
-        die(); 
-}
-if (($_POST[dateJourDebutStage]>31) || $_POST[dateJourDebutStage]<1) {
-        header('Location: /');
-        die(); 
-}
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+$stmt = $mysqli->prepare('SELECT COUNT(*) FROM diplomes WHERE diplome_sise=?');
+$stmt->bind_param('s', $filiereStage);
+$stmt->execute();
+$stmt->bind_result($count);
+$stmt->fetch();
+$stmt->close();
 
-$dateDebutStage = "$_POST[dateAnneeDebutStage]-$_POST[dateMoisDebutStage]-$_POST[dateJourDebutStage]";
-//echo "Date de naissance concat: $dateDebutStage<br /><br />";
-//echo strtotime($dateDebutStage)."<br />";
-
-if (($_POST[dateAnneeFinStage]>2100) || $_POST[dateAnneeFinStage]<2000) {
-        header('Location: /');
-        die(); 
-}
-if (($_POST[dateMoisFinStage]>12) || $_POST[dateMoisFinStage]<1) {
-        header('Location: /');
-        die(); 
-}
-if (($_POST[dateJourFinStage]>31) || $_POST[dateJourFinStage]<1) {
-        header('Location: /');
-        die(); 
+if ($count < 1) {
+    realDie();
 }
 
-$dateFinStage = "$_POST[dateAnneeFinStage]-$_POST[dateMoisFinStage]-$_POST[dateJourFinStage]";
-//echo "Date de naissance concat: $dateFinStage<br /><br />";
-//echo strtotime($dateFinStage)."<br />";
-
-/******Durée stage********/
-
-$dureeStage=(strtotime($dateFinStage)-strtotime($dateDebutStage))/3600/24;
-//echo $dureeStage;
-
-if (($_POST[dateAnneeLimiteStage]>2100) || $_POST[dateAnneeLimiteStage]<2000) {
-        header('Location: /');
-        die();
-}
-if (($_POST[dateMoisLimiteStage]>12) || $_POST[dateMoisLimiteStage]<1) {
-        header('Location: /');
-        die();
-}
-if (($_POST[dateJourLimiteStage]>31) || $_POST[dateJourLimiteStage]<1) {
-         header('Location: /');
-        die();
+if (validateDate($_POST['dateDebut'])) {
+    $dateDebut = $_POST['dateDebut'];
+} else {
+    realDie();
 }
 
-$dateLimiteStage = "$_POST[dateAnneeLimiteStage]-$_POST[dateMoisLimiteStage]-$_POST[dateJourLimiteStage]";
-//echo "Date de naissance concat: $dateLimiteStage<br /><br />";
-//echo strtotime($dateLimiteStage)."<br />";
+if (validateDate($_POST['dateFin'])) {
+    $dateFin = $_POST['dateFin'];
+} else {
+    realDie();
+}
 
-/****** Dates non valides ******/
+if (validateDate($_POST['dateLimite'])) {
+    $dateLimite = $_POST['dateLimite'];
+} else {
+    realDie();
+}
 
-if ((strtotime($dateLimiteStage)>strtotime($dateDebutStage)) || (strtotime($dateDebutStage)>strtotime($dateFinStage))) {
-    include('all.footer.php');
-    ?>
-    <script>
-        alert('Dates incohérentes');
-        history.back();
-    </script>
-    <?php        
+if (!(strtotime(str_replace('/', '-', $_POST['dateFin'])) > strtotime(str_replace('/', '-', $_POST['dateDebut']))
+    && strtotime(str_replace('/', '-', $_POST['dateDebut'])) >= strtotime(str_replace('/', '-', $_POST['dateLimite'])))
+) {
+    echo "<a href=\"javascript:history.go(-1)\">Dates incohérantes veuillez les modifier en cliquant ici</a>";
     die();
 }
 
-// On prépare les variables à insérer dans la BDD, on remplace par NULL si vide. (Entre simples quotes sinon)
-foreach($_POST as $col=>$val) {
-        //echo $col." => ".$val."<br />";
-        if(empty($val)) {
-            $$col = "";
-        } else {
-            $$col = "$val";
-        }
-}   
-
-/*************check erreurs !!!***************/
-
-if(($typeStage!=="Stage L2") && ($typeStage!=="Stage L3") && ($typeStage!=="Projet Tuteuré")) {
-        header('Location: index');
-        die(); 
-}
-if (strlen($nomStage)>200) {
-        header('Location: index');
-        die(); 
-}
-if (strlen($nomContactStage)>50) {
-        header('Location: index');
-        die(); 
-}
-if (strlen($prenomContactStage)>50) {
-        header('Location: index');
-        die(); 
-}
-if ((strlen($mailContactStage)>100) || !(filter_var( $mailContactStage, FILTER_VALIDATE_EMAIL ))) {
-        header('Location: index');
-        die(); 
-}
-if (strlen($lieuStage)>255) {
-        header('Location: index');
-        die(); 
-}
-if (strlen($sujetStage)>1000) {
-        header('Location: index');
-        die(); 
-}
-if (strlen($detailsStage)>1000) {
-        header('Location: index');
-        die(); 
-}
-if ($htmlcssStage!=1) { $htmlcssStage=0; }
-if ($phpStage!=1) { $phpStage=0; }
-if ($sqlStage!=1) { $sqlStage=0; }
-if ($javaStage!=1) { $javaStage=0; }
-if ($cStage!=1) { $cStage=0; }
-if ($csStage!=1) { $csStage=0; }
-if (strlen($langageAutreStage)>255) {
-        header('Location: index');
-        die(); 
-}
-
-/***********insertion bdd******************/
-
-if (empty($langageAutreStage)) {
-    $langageAutreStage = "NULL";
-}
-if ($_SESSION[type] === "admin") {
-    $idEnt = $_POST[idEnt];
+if ($_POST['remStage'] == 1 || $_POST['remStage'] == 0) {
+    $remStage = $_POST['remStage'];
 } else {
-    $idEnt = $_SESSION[idEnt];
+    realDie();
 }
 
-$lieuStage=str_replace("'","\'",$lieuStage);
-$idEnt=str_replace("'","\'",$idEnt);
-$nomStage=str_replace("'","\'",$nomStage);
-$nomContactStage=str_replace("'","\'",$nomContactStage);
-$prenomContactStage=str_replace("'","\'",$prenomContactStage);
-$mailContactStage=str_replace("'","\'",$mailContactStage);
-$lngStage=str_replace("'","\'",$lngStage);
-$latStage=str_replace("'","\'",$latStage);
-$sujetStage=str_replace("'","\'",$sujetStage);
-$detailsStage=str_replace("'","\'",$detailsStage);
-$langageAutreStage=str_replace("'","\'",$langageAutreStage);
-
-// Requète SQL    
-$query = "UPDATE stages SET nomStage='$nomStage', typeStage='$typeStage', nomContactStage='$nomContactStage',
-         prenomContactStage='$prenomContactStage', mailContactStage='$mailContactStage', lieuStage='$lieuStage', latStage='$latStage',
-         lngStage='$lngStage', dateDebutStage='$dateDebutStage', dateFinStage='$dateFinStage', dateLimiteStage='$dateLimiteStage', 
-         dureeStage='$dureeStage', sujetStage='$sujetStage', detailsStage='$detailsStage', htmlcssStage='$htmlcssStage', phpStage='$phpStage', 
-         sqlStage='$sqlStage', javaStage='$javaStage', cStage='$cStage', csStage='$csStage', langageAutreStage='$langageAutreStage' 
-         WHERE idStage='$idStage'
-         AND idEnt='$idEnt'";
-         
-
-//echo "<br />".$query."<br />";  
-// Exécution de la requète
-$result = mysqli_query($dblink, $query);
-if (!$result) {
-    echo "Erreur lors de la mise à jour";
-    include('all.footer.php');
-    die();
-}  
-if ($_SESSION[type] === "admin") { 
-    header('Location: listestages');
+if ($_POST['stageL1'] == 1 || $_POST['stageL1'] == 0) {
+    $stageL1 = $_POST['stageL1'];
 } else {
-    header('Location: messtages');  
+    realDie();
 }
-die(); 
+if ($_POST['stageL2'] == 1 || $_POST['stageL2'] == 0) {
+    $stageL2 = $_POST['stageL2'];
+} else {
+    realDie();
+}
+if ($_POST['stageL3'] == 1 || $_POST['stageL3'] == 0) {
+    $stageL3 = $_POST['stageL3'];
+} else {
+    realDie();
+}
 
-include('all.footer.php');
-?>
+if (is_numeric($_POST['idStage'])) {
+    $idStage = strip_tags($_POST['idStage']);
+} else {
+    realDie();
+}
+
+
+if (strlen($_POST['detailsStage']) < 1000) {
+    $detailsStage = strip_tags($_POST['detailsStage']);
+} else {
+    realDie();
+}
+
+if (strlen($_POST['sujetStage']) < 1000) {
+    $sujetStage = strip_tags($_POST['sujetStage']);
+} else {
+    realDie();
+}
+
+$_POST['lngStage'] = floatval($_POST['lngStage']);
+$_POST['latStage'] = floatval($_POST['latStage']);
+if (is_float($_POST['lngStage'])) {
+    $lngStage = $_POST['lngStage'];
+} else {
+    realDie();
+}
+
+if (is_float($_POST['latStage'])) {
+    $latStage = $_POST['latStage'];
+} else {
+    realDie();
+}
+
+if (strlen($_POST['lieuStage']) < 255) {
+    $lieuStage = strip_tags($_POST['lieuStage']);
+} else {
+    realDie();
+}
+
+if (filter_var($_POST['mailContactStage'], FILTER_VALIDATE_EMAIL)) {
+    $mailContactStage = $_POST['mailContactStage'];
+} else {
+    realDie();
+}
+
+if (strlen($_POST['nomContactStage']) < 50) {
+    $nomContactStage = strip_tags($_POST['nomContactStage']);
+} else {
+    realDie();
+}
+
+if (strlen($_POST['prenomContactStage']) < 50) {
+    $prenomContactStage = strip_tags($_POST['prenomContactStage']);
+} else {
+    realDie();
+}
+
+if (strlen($_POST['nomStage']) < 200) {
+    $nomStage = strip_tags($_POST['nomStage']);
+} else {
+    realDie();
+}
+
+$datediff = strtotime(str_replace('/', '-', $_POST['dateFin'])) - strtotime(str_replace('/', '-', $_POST['dateDebut']));
+$dureeStage = floor($datediff / (60 * 60 * 24));
+
+$mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+if ($_SESSION['connected'] == 'admin') {
+    if (!($stmt = $mysqli->prepare("UPDATE stages SET nomStage=?, nomContactStage=?, prenomContactStage=?, mailContactStage=?, lieuStage=?, latStage=?,
+                                lngStage=?, dateDebutStage=STR_TO_DATE(?, '%d/%m/%Y'), dateFinStage=STR_TO_DATE(?, '%d/%m/%Y'), dateLimiteStage=STR_TO_DATE(?, '%d/%m/%Y'), dureeStage=?,
+                                sujetStage=?, detailsStage=?, l1Stage=?, l2Stage=?, l3Stage=?, filiereStage=?, remuStage=? WHERE idStage=?"))
+    ) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    $stmt->bind_param('ssssssssssissiiissi', $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage, $lngStage, $dateDebut, $dateFin, $dateLimite, $dureeStage, $sujetStage,
+        $detailsStage, $stageL1, $stageL2, $stageL3, $filiereStage, $remStage, $idStage);
+    if (!($stmt->execute())) {
+        ?>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Echec lors de dépot de votre stage veuillez réessayer !</p>
+            </div>
+        </div>
+    <?php
+    } else {
+        ?>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Votre stage a bien été déposé !</p>
+            </div>
+        </div>
+    <?php
+    }
+    $stmt->close();
+} else {
+    if (!($stmt = $mysqli->prepare("UPDATE stages SET nomStage=?, nomContactStage=?, prenomContactStage=?, mailContactStage=?, lieuStage=?, latStage=?,
+                                lngStage=?, dateDebutStage=STR_TO_DATE(?, '%d/%m/%Y'), dateFinStage=STR_TO_DATE(?, '%d/%m/%Y'), dateLimiteStage=STR_TO_DATE(?, '%d/%m/%Y'), dureeStage=?,
+                                sujetStage=?, detailsStage=?, l1Stage=?, l2Stage=?, l3Stage=?, filiereStage=?, remuStage=? WHERE idStage=? AND idEnt=?"))
+    ) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    $stmt->bind_param('ssssssssssissiiissii', $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage, $lngStage, $dateDebut, $dateFin, $dateLimite, $dureeStage, $sujetStage,
+        $detailsStage, $stageL1, $stageL2, $stageL3, $filiereStage, $remStage, $idStage, $_SESSION['id']);
+    if (!($stmt->execute())) {
+        ?>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Echec lors de dépot de votre stage veuillez réessayer !</p>
+            </div>
+        </div>
+    <?php
+    } else {
+        ?>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Votre stage a bien été déposé !</p>
+            </div>
+        </div>
+    <?php
+    }
+    $stmt->close();
+}
+
+die();

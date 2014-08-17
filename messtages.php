@@ -1,5 +1,10 @@
 <?php
 include('all.header.php');
+include('logincheck.php');
+
+if ($_SESSION['connected']!='ent') {
+    realDie();
+}
 // Chargement des paramètres de la DB
       
 $idEnt = $_SESSION['id'];
