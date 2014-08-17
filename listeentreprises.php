@@ -1,5 +1,6 @@
 <?php
 include('all.header.php');
+include('logincheck.php');
 ?>
     <div class="row panel">
         <div class="large-12 columns">

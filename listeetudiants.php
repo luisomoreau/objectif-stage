@@ -68,26 +68,6 @@ if (!($stmt->execute())) {
 }
 
 
-//if (isset($_GET['trouveStage'])) {
-//    $query.= " AND trouveStageEtud = 1";
-//}
-
-//if ($data == NULL) {
-//    echo "Aucun résultat";
-//} else {
-//    echo "<table>";
-//    echo "<tr><th>Nom</th><th>Prénom</th><th>Licence</th><th>Candidatures</th></tr>";
-//    // Exécution de la requète pour les valeures
-//    // Remplissage du tableau
-//    while($data = mysqli_fetch_assoc($result)) {
-//        echo '<tr onclick="document.location.href=\'majinfo?idEtud='.$data['idEtud'].'\'">';
-//        echo "<td>$data[nomEtud]</td><td>$data[prenomEtud]</td><td>$data[licenceEtud]</td><td>$data[nbCandEtud]</td>";
-//        echo '</tr>';
-//    }
-//    // On ferme le tableau
-//    echo "</table>";
-//}
-
 $stmt->bind_result($nomEtud, $prenomEtud, $licenceEtud, $nbCandEtud, $anneeEtud);
 $stmt->store_result();
 if ($stmt->num_rows > 0) {
@@ -109,7 +89,7 @@ if ($stmt->num_rows > 0) {
                 while ($stmt->fetch()) {
                     echo '<tr>';
                     echo '<td>' . $nomEtud . '</td><td>' . $prenomEtud . '</td><td>' . $licenceEtud . '</td>';
-                    echo '<td>'.$anneeEtud.'</td><td>' . $nbCandEtud . '</td>';
+                    echo '<td>' . $anneeEtud . '</td><td>' . $nbCandEtud . '</td>';
                     echo '</tr>';
                 }
                 ?>
