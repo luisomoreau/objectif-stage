@@ -134,7 +134,12 @@ require_once('fonctions.php');
             <div class="small-4 columns">
                 <?php
                 if (isset($_SESSION['connected'])) {
-                    echo '<div class="text-right" style="margin-top:50px;">Bonjour ' . $_SESSION['identifiant'] . ' | <a href="./logout">Déconnexion</a></div>';
+                    if ($_SESSION['connected'] == "etud") {
+                        $user = getInfos();
+                        echo '<div class="text-right" style="margin-top:50px;">Bonjour ' . $user->prenom . ' | <a href="./logout">Déconnexion</a></div>';
+                    } else {
+                        echo '<div class="text-right" style="margin-top:50px;">Bonjour ' . $_SESSION['identifiant'] . ' | <a href="./logout">Déconnexion</a></div>';
+                    }
                 }
                 ?>
 
