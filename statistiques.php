@@ -26,10 +26,10 @@ if ($_SESSION['connected'] !== "admin") {
         <div class="large-12 columns">
             <h5><b>Nombre total d'étudiants inscrits:</b> <?php echo $totalEtud; ?></h5>
             <h5><b>Nombre total d'entreprises inscrites:</b> <?php echo $totalEnt; ?></h5>
-            <h5><b>Nombre total d'offres de stages:</b> <?php echo $totalOffres; ?></h5>
-            <h5><b>Nombre d'étudiants qui n'ont pas encore trouvé de stages:</b> <?php echo $rechercheStage; ?></h5>
-            <h5><b>Nombre d'étudiants qui ont trouvé un stages:</b> <?php echo $trouveStage; ?></h5>
-            <h5><b>Nombre d'offre de stages toujours valides</b> <?php echo $offresValide; ?></h5>
+            <h5><b>Nombre total d'offres de stages:</b> <?php echo $totalOffres; ?></h5><br />
+            <h5><b>Nombre d'étudiants qui n'ont pas encore trouvé de stages:</b> <?php echo $rechercheStage." (".round($rechercheStage*100/$totalEtud)."%)"; ?></h5>
+            <h5><b>Nombre d'étudiants qui ont trouvé un stages:</b> <?php echo $trouveStage." (".round($trouveStage*100/$totalEtud)."%)" ?></h5>
+            <h5><b>Nombre d'offre de stages toujours valides</b> <?php echo $offresValide." (".round($offresValide*100/$totalOffres)."%)" ?></h5>
         </div>
     </div>
 <?php
