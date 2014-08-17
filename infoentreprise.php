@@ -20,11 +20,11 @@ $stmt->close();
 ?>
     <div class="row panel">
         <div class="row">
-            <?php if ($_SESSION['connected'] == "admin") echo '<h1><a href="majinfo?idEnt=' . $_GET['id'] . '"><button class="float_r">Modifier l\'entreprise</button></a></h1>' ?>
+
             <div class="large-4 columns text-center">
                 <img src="fichiers/profile/<?php echo md5($mailEnt) . ".png" ?>" alt="Logo de l'entreprise" onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
             </div>
-            <div class="large-8 columns">
+            <div class="large-6 columns">
                 <h4>Nom</h4>
 
                 <p><em><?php echo $nomEnt; ?></em></p>
@@ -46,6 +46,13 @@ $stmt->close();
                 <h4>Adresse</h4>
 
                 <p><?php echo nl2br($adresseEnt); ?></p>
+            </div>
+            <div class="large-2 columns">
+                <?php if ($_SESSION['connected'] == "admin") {
+
+                    echo '<a href="majinfo?idEnt='.$_GET['id'] .'"class="button">Modifier l\'entreprise</a>';
+
+                }?>
             </div>
         </div>
         <div class="row">

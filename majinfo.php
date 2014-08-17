@@ -5,18 +5,15 @@ $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['connected'] === "admin")) {
     // Requète SQL
     if ($_SESSION['connected'] === "admin") {
-        //$query = "SELECT * FROM Etudiants WHERE idEtud='$_GET[idEtud]'";
         if (!($stmt = $mysqli->prepare('SELECT * FROM etudiants WHERE idEtud=?'))) {
             echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
         $stmt->bind_param('i', $_GET['idEtud']);
     } else {
-        //$query = "SELECT * FROM Etudiants WHERE mailEtud='$_SESSION[identifiant]'";
         $stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud
                                             FROM etudiants, diplomes
                                             WHERE userEtud=?
                                             AND diplome_sise = filiereEtud');
-
         $stmt->bind_param('s', $_SESSION['identifiant']);
     }
     $stmt->execute();
@@ -88,25 +85,6 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                         </div>
                     </div>
                 </div>
-
-                <!--                <div class="row collapse">-->
-                <!--                    <div class="small-3 columns">-->
-                <!--                        <span class="prefix">Prenom</span>-->
-                <!--                    </div>-->
-                <!--                    <div class="small-9 columns">-->
-                <!--                        <input type="text" name="prenomEtud" id="prenomEtud" maxlength="50" required="required" value="--><?php //echo $prenomEtud;?><!--" disabled="disabled">-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!---->
-                <!--                <div class="row collapse">-->
-                <!--                    <div class="small-3 columns">-->
-                <!--                        <span class="prefix">Nom</span>-->
-                <!--                    </div>-->
-                <!--                    <div class="small-9 columns">-->
-                <!--                        <input type="text" name="nomEtud" id="nomEtud" maxlength="50" required="required" value="--><?php //echo $nomEtud;?><!--" disabled="disabled">-->
-                <!--                    </div>-->
-                <!--                </div>-->
-
                 <div class="row">
                     <div class="large-2 columns">
                         <div class="row collapse">
@@ -199,23 +177,6 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                 </div>
             </div>
         </div>
-
-        <!--        <div class="row">-->
-        <!--            <div class="small-12 large-3 large-centered columns">-->
-        <!--                <div class="row collapse">-->
-        <!--                    <div class="small-8 columns">-->
-        <!--                        <span class="prefix">Avez-vous trouvé un stage?</span>-->
-        <!--                    </div>-->
-        <!--                    <div class="small-4 columns">-->
-        <!--                        <select name="trouveStageEtud" id="trouveStageEtud">-->
-        <!--                            <option>Non</option>-->
-        <!--                            <option>Oui</option>-->
-        <!--                        </select>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-
         <br/>
 
         <div class="row">
@@ -231,26 +192,25 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
         // Requète SQL
         if ($_SESSION['connected'] === "admin") {
-            $stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
+            $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
                                         FROM Entreprises
                                         WHERE idEnt=?');
             $stmt->bind_param('i', $_GET['idEnt']);
         } else {
-            $stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
+            $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
                                         FROM Entreprises
                                         WHERE idEnt=?');
             $stmt->bind_param('i', $_SESSION['id']);
         }
         $stmt->execute();
-        $stmt->bind_result($nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt);
+        $stmt->bind_result($idEnt, $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt);
         $stmt->fetch();
         $stmt->close();
-        if ($_SESSION['connected'] === "admin") echo '<h1><a href="supprimercompte?idEnt=' . $_GET['idEnt'] . '"><button class="float_r" onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</button></a></h1>' ?>
-
+        ?>
         <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('#mdpEnt') && checkPass('#mdpEnt','#mdpEnt2'))">
             <div class="row">
                 <div class="large-4 text-center columns">
-                    <?php if ($_SESSION['connected'] === "admin") echo '<input type="hidden" name="mailEnt" value=' . $mailEnt . ' />'; ?>
+                    <?php if ($_SESSION['connected'] === "admin") echo '<input type="hidden" name="idEnt" value=' . $idEnt . ' />'; ?>
                     <label for="profilpic">Modifier le logo de l'entreprise :<br/>
                         <img src="fichiers/profile/<?php echo md5($mailEnt) . ".png" ?>" alt="Logo de l'entreprise" id="logo"
                              onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
@@ -330,7 +290,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                             <span class="prefix">Tel secondaire</span>
                         </div>
                         <div class="small-6 columns">
-                            <input placeholder="Secondaire" type="tel" maxlength="6" name="telSecEnt" id="telSecEnt" value="<?php if($telSecEnt!=='NULL') echo $telSecEnt; ?>"
+                            <input placeholder="Secondaire" type="tel" maxlength="6" name="telSecEnt" id="telSecEnt" value="<?php if ($telSecEnt !== 'NULL') echo $telSecEnt; ?>"
                                    onkeyup="verif_nombre(this)"/>
                         </div>
                     </div>
@@ -355,73 +315,91 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                     </script>
                 </div>
             </div>
-            <br />
+            <br/>
+
             <div class="row">
                 <div class="small-12 large-6 large-centered columns">
                     <input class="large button expand" id="envoyer" type="submit" value="Mettre à jour mes informations"/>
                 </div>
             </div>
+            <div class="row">
+                <div class="small-12 large-6 large-centered text-center columns">
+                    <?php
+                    if ($_SESSION['connected'] === "admin") {
+                        echo '<a href="supprimercompte?idEnt=' . $_GET['idEnt'] . '" class="button"
+                        onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement ce compte?\');">Supprimer le compte</a>';
+                    }
+                    ?>
+                </div>
+            </div>
         </form>
     <?php
     } else if ($_SESSION['connected'] === "admin") { //@todo admin
-        $mysqli = new mysqli($sqlserver,$sqlid,$sqlpwd,$sqldb);
-        if (!($stmt = $mysqli->prepare('SELECT nomAdmin, prenomAdmin, mailAdmin
-                                        FROM Administrateurs WHERE idAdmin=?'))) {
-            echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-        }
+        $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+        $stmt = $mysqli->prepare('SELECT nomAdmin, prenomAdmin, mailAdmin
+                                        FROM Administrateurs WHERE idAdmin=?');
         $stmt->bind_param('i', $_SESSION['id']);
-        if (!($stmt->execute())) {
-            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
-        }
+        $stmt->execute();
         $stmt->bind_result($nomAdmin, $prenomAdmin, $mailAdmin);
         $stmt->fetch();
         $stmt->close();
 
         ?>
-        <h1>Profil Administrateur</h1>
-        <form action="majinfodb" method="POST" enctype="multipart/form-data" onsubmit="return (checkPatern('#mdpAdmin') && checkPass('#mdpAdmin','#mdpAdmin2'))">
-            <div class="col_23 float_l">
-                <label for="mailAdmin">Identifiant (Non modifiable)</label>
-                <input placeholder="<?php echo $mailAdmin; ?>" type="text" name="mailAdmin" id="mailAdmin" maxlength="100" required disabled="disabled"/>
-
-                <div class="cleaner h10"></div>
-
-                <label for="mdpAdmin">Mot de passe (Un chiffre, une majuscule, une minuscule, minimum 6 caractères)</label>
-                <input type="password" name="mdpAdmin" id="mdpAdmin" maxlength="25" required onkeyup="checkPatern('#mdpAdmin'); return false;" value="Defaut123"/>
-                <span id="confirmPatern" class="confirmPatern"></span>
-
-                <div class="cleaner h10"></div>
-
-                <label for="mdpAdmin2">Confirmer mot de passe</label>
-                <input type="password" name="mdpAdmin2" id="mdpAdmin2" maxlength="25" required onkeyup="checkPass('#mdpAdmin','#mdpAdmin2'); return false;" value="Defaut123"/>
-                <span id="confirmMessage" class="confirmMessage"></span>
-
-                <div class="cleaner h10"></div>
-
-                <label for="prenomAdmin">Prenom</label>
-                <input type="text" name="prenomAdmin" id="prenomAdmin" maxlength="50" required value="<?php echo $prenomAdmin; ?>"/>
-
-                <div class="cleaner h10"></div>
-
-                <label for="nomAdmin">Nom</label>
-                <input type="text" name="nomAdmin" id="nomAdmin" maxlength="50" required value="<?php echo $nomAdmin; ?>"/>
-
-                <div class="cleaner h10"></div>
-
+        <form action="majinfodb" method="POST" onsubmit="return (checkPatern('#mdpAdmin') && checkPass('#mdpAdmin','#mdpAdmin2'))">
+            <div class="row collapse">
+                <div class="small-6 columns">
+                    <span class="prefix">Identifiant (Non modifiable) :</span>
+                </div>
+                <div class="small-6 columns">
+                    <input type="text" value="<?php echo $mailAdmin; ?>" required disabled/>
+                </div>
             </div>
+            <div class="row collapse">
+                <div class="small-6 columns">
+                    <span class="prefix">Mot de passe :</span>
+                </div>
+                <div class="small-6 columns">
+                    <input type="password" name="mdpAdmin" id="mdpAdmin" maxlength="25" required onkeyup="checkPatern('#mdpAdmin'); return false;" value="Defaut123"/>
 
-            <div class="col_13 float_r">
-                <label for="profilpic">Modifier ma photo de profile - <a href="javascript:window.location.reload()">Actualiser</a><br/>
-                    <img src="fichiers/profile/<?php echo md5($mailAdmin) . ".png" ?>" alt="Photo de profile" class="img_float_l img_frame"
-                         onerror='this.onerror = null; this.src="./fichiers/profile/default.png"'/>
-                </label>
-                <input type="file" name="profilpic" id="profilpic"/>
-
-                <div class="cleaner h10"></div>
+                    <div class="row">
+                        <div class="small-12 columns confirmPatern">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="cleaner h40"></div>
-            <div class="centrer">
-                <button id="envoyer" type="submit">Enregistrer mes informations</button>
+            <div class="row collapse">
+                <div class="small-6 columns">
+                    <span class="prefix">Confirmer le mot de passe :</span>
+                </div>
+                <div class="small-6 columns">
+                    <input type="password" name="mdpAdmin2" id="mdpAdmin2" maxlength="25" required onkeyup="checkPass('#mdpAdmin','#mdpAdmin2'); return false;" value="Defaut123"/>
+
+                    <div class="row">
+                        <div class="small-12 columns confirmMessage">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row collapse">
+                <div class="small-6 columns">
+                    <span class="prefix">Prénom :</span>
+                </div>
+                <div class="small-6 columns">
+                    <input type="text" name="prenomAdmin" id="prenomAdmin" maxlength="50" required value="<?php echo $prenomAdmin; ?>"/>
+                </div>
+            </div>
+            <div class="row collapse">
+                <div class="small-6 columns">
+                    <span class="prefix">Nom :</span>
+                </div>
+                <div class="small-6 columns">
+                    <input type="text" name="nomAdmin" id="nomAdmin" maxlength="50" required value="<?php echo $nomAdmin; ?>"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 large-6 large-centered columns">
+                    <input class="large button expand" id="envoyer" type="submit" value="Mettre à jour mes informations"/>
+                </div>
             </div>
         </form>
 

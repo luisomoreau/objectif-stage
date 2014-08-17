@@ -137,7 +137,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
             die();
         } else { //mdp valide et bonne taille
             $password = $_POST['mdpEnt'];
-            $_POST['mdpEnt'] = hash('sha512', $salt . $_POST['mdpEnt']);
+            $mdpEnt = $_POST['mdpEnt'] = hash('sha512', $salt . $_POST['mdpEnt']);
             $_POST['mdpEnt2'] = hash('sha512', $salt . $_POST['mdpEnt2']);
             if (!($_POST['mdpEnt'] === $_POST['mdpEnt2'])) {
                 header('Location: ./');
@@ -223,22 +223,28 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
                                             telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?
-                                        WHERE mailEnt=?');
-            $stmt->bind_param('ssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_POST['mailEnt']);
+                                        WHERE idEnt=?');
+            $stmt->bind_param('ssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_POST['idEnt']);
         } else {
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
                                             telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?
                                         WHERE idEnt=?');
-            $stmt->bind_param('sssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_SESSION['idEnt']);
+            $stmt->bind_param('sssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_SESSION['id']);
         }
     } else { //@todo admin
         if ($_SESSION['connected'] === "admin") {
-            $query = "UPDATE entreprises SET nomEnt = '$nomEnt', mailEnt='$mailEnt', nomContactEnt='$nomContactEnt', prenomContactEnt='$prenomContactEnt',
-             telEnt='$telEnt', telSecEnt=$telSecEnt, adresseEnt='$adresseEnt', latEnt='$latEnt', lngEnt='$lngEnt', mdpEnt='$mdpEnt' WHERE mailEnt='$_POST[mailEnt]'";
+            $stmt = $mysqli->prepare('UPDATE entreprises
+                                        SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
+                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, mdpEnt=?
+                                        WHERE idEnt=?');
+            $stmt->bind_param('sssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $mdpEnt, $_POST['idEnt']);
         } else {
-            $query = "UPDATE entreprises SET nomEnt = '$nomEnt', mailEnt='$mailEnt', nomContactEnt='$nomContactEnt', prenomContactEnt='$prenomContactEnt',
-             telEnt='$telEnt', telSecEnt=$telSecEnt, adresseEnt='$adresseEnt', latEnt='$latEnt', lngEnt='$lngEnt', mdpEnt='$mdpEnt' WHERE mailEnt='$_SESSION[identifiant]'";
+            $stmt = $mysqli->prepare('UPDATE entreprises
+                                        SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
+                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, mdpEnt=?
+                                        WHERE idEnt=?');
+            $stmt->bind_param('ssssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $mdpEnt, $_SESSION['id']);
         }
         if ($_SESSION['connected'] != "admin") $_SESSION['mdp'] = $mdpEnt;
     }
@@ -246,7 +252,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->close();
-    header('Location: ./compte');
+    header('Location: ' . $_SERVER["HTTP_REFERER"]);
     die();
 
 } else if ($_SESSION['connected'] === "admin") {
@@ -262,7 +268,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
             die();
         } else { //mdp valide et bonne taille
             $password = $_POST['mdpAdmin'];
-            $_POST['mdpAdmin'] = hash('sha512', $salt . $_POST['mdpAdmin']);
+            $mdpAdmin = $_POST['mdpAdmin'] = hash('sha512', $salt . $_POST['mdpAdmin']);
             $_POST['mdpAdmin2'] = hash('sha512', $salt . $_POST['mdpAdmin2']);
             if (!($_POST['mdpAdmin'] === $_POST['mdpAdmin2'])) {
                 header('Location: ./');
@@ -284,28 +290,19 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         $prenomAdmin = $_POST['prenomAdmin'];
     }
 
-    // Upload et check logo
-    if ($_FILES['profilpic']['error'] <= 0) {
-        if (exif_imagetype($_FILES['profilpic']['tmp_name']) != false) {
-            if ($_FILES['profilpic']['size'] <= 2097152) {
-                imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_SESSION['mail']) . ".png");
-            }
-        }
-    }
-
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
     if ($_POST['mdpAdmin'] === "Defaut123") {
         $stmt = $mysqli->prepare('UPDATE administrateurs SET nomAdmin=?, prenomAdmin=? WHERE idAdmin=?');
         $stmt->bind_param('ssi', $nomAdmin, $prenomAdmin, $_SESSION['id']);
     } else {
         $stmt = $mysqli->prepare('UPDATE administrateurs SET nomAdmin=?, prenomAdmin=?, mdpAdmin=? WHERE idAdmin=?');
-        $stmt->bind_param('ssis', $nomAdmin, $prenomAdmin, $_POST['mdpAdmin'], $_SESSION['id']);
+        $stmt->bind_param('ssis', $nomAdmin, $prenomAdmin, $mdpAdmin, $_SESSION['id']);
     }
     if (!($stmt->execute())) {
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->close();
-    header('Location: compte');
+    header('Location: ./compte');
     die();
 
 } else {
