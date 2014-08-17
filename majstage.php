@@ -21,14 +21,7 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin" || $idStage
     header('Location: messtages');
     die();
 }
-
-
 ?>
-    <div class="row">
-        <div class="large-12 columns">
-            <h1>Déposer un stage</h1>
-        </div>
-    </div>
 <form action="majstagedb" method="POST" id="depoStage">
     <input type="hidden" name="idStage" value="<?php echo $_GET['id']; ?>">
 <div class="row">
@@ -240,7 +233,7 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin" || $idStage
 </div>
 <div class="row">
     <div class="small-12 large-6 large-centered columns">
-        <input class="large button expand" id="envoyer" name="submit" type="submit" value="Déposer le stage"/>
+        <input class="large button expand" id="envoyer" name="submit" type="submit" value="Mettre à jour le stage"/>
     </div>
 </div>
 <div class="row">

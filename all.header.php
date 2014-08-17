@@ -75,6 +75,12 @@ require_once('fonctions.php');
                         case "index":
                             $page = "Accueil";
                             break;
+                        case "majstage":
+                            $page = "Mettre à jour un stage";
+                            break;
+                        case "infostage":
+                            $page = "Détail du stage";
+                            break;
                         case "services":
                             $page = "Services";
                             break;
