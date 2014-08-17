@@ -5,7 +5,7 @@ if (!isset($_GET['id'])) {
     die();
 }
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, prenomContactEnt, nomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
+if (!($stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, prenomContactEnt, nomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt, valideEnt
                                 FROM entreprises WHERE idEnt=?'))
 ) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -14,7 +14,7 @@ $stmt->bind_param('i', $_GET['id']);
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
-$stmt->bind_result($nomEnt, $mailEnt, $prenomContactEnt, $nomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt);
+$stmt->bind_result($nomEnt, $mailEnt, $prenomContactEnt, $nomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $valideEnt);
 $stmt->fetch();
 $stmt->close();
 ?>
@@ -48,11 +48,14 @@ $stmt->close();
                 <p><?php echo nl2br($adresseEnt); ?></p>
             </div>
             <div class="large-2 columns">
-                <?php if ($_SESSION['connected'] == "admin") {
-
-                    echo '<a href="majinfo?idEnt='.$_GET['id'] .'"class="button">Modifier l\'entreprise</a>';
-
-                }?>
+                <?php
+                    if ($_SESSION['connected'] == "admin") {
+                        if ($valideEnt == 0) {
+                            echo '<a href="validerent?idEnt='.$_GET['id'] .'"class="button">Valider l\'entreprise</a>';
+                        }
+                        echo '<a href="majinfo?idEnt='.$_GET['id'] .'"class="button">Modifier l\'entreprise</a>';
+                    }
+                ?>
             </div>
         </div>
         <div class="row">

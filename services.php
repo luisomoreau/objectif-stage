@@ -65,6 +65,11 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./pma" class="large button expand">phpMyAdmin</a>
         </div>
     </div>
+    <div class="row">
+        <div class="large-4 columns">
+            <a href="./validerent" class="large button expand">Valider une entreprise</a>
+        </div>
+    </div>
 <?php
 } else {
     header('Location: ./');

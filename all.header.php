@@ -108,6 +108,15 @@ require_once('fonctions.php');
                         case "messtages":
                             $page = "Mes stages";
                             break;
+                        case "listeetudiants":
+                            $page = "Liste des étudiants";
+                            break;
+                        case "listemails":
+                            $page = "Liste des mails";
+                            break;
+                        case "validerent":
+                            $page = "Valider une entreprise";
+                            break;
                     }
                     echo $page;
                     ?>
