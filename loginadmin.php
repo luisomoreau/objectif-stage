@@ -3,7 +3,6 @@ $loginreq = 0;
 include('all.header.php');
 if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-
     $mdp = hash('sha512', $salt . $_POST['mdp']);
     if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idAdmin, nomAdmin, prenomAdmin, mailAdmin FROM administrateurs WHERE mailAdmin=? AND mdpAdmin=?'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;

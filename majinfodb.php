@@ -208,7 +208,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
     if ($_FILES['profilpic']['error'] <= 0) {
         if (exif_imagetype($_FILES['profilpic']['tmp_name']) != false) {
             if ($_FILES['profilpic']['size'] <= 2097152) {
-                imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_POST['mailEnt']) . ".png");
+                imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($mailEnt) . ".png");
             }
         }
     }
@@ -287,14 +287,13 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
     } else {
         $prenomAdmin = $_POST['prenomAdmin'];
     }
-
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
     if ($_POST['mdpAdmin'] === "Defaut123") {
         $stmt = $mysqli->prepare('UPDATE administrateurs SET nomAdmin=?, prenomAdmin=? WHERE idAdmin=?');
         $stmt->bind_param('ssi', $nomAdmin, $prenomAdmin, $_SESSION['id']);
     } else {
         $stmt = $mysqli->prepare('UPDATE administrateurs SET nomAdmin=?, prenomAdmin=?, mdpAdmin=? WHERE idAdmin=?');
-        $stmt->bind_param('ssis', $nomAdmin, $prenomAdmin, $mdpAdmin, $_SESSION['id']);
+        $stmt->bind_param('sssi', $nomAdmin, $prenomAdmin, $mdpAdmin, $_SESSION['id']);
     }
     if (!($stmt->execute())) {
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
