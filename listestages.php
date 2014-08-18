@@ -186,7 +186,8 @@ $user = getInfos();
                         FROM stages
                         WHERE (nomStage LIKE ?
                         OR sujetStage LIKE ?
-                        OR detailsStage LIKE ?)';
+                        OR detailsStage LIKE ?
+                        OR lieuStage LIKE ?)';
             if (!isset($_GET['expStage']) || $_GET['expStage'] == 0) {
                 $baseQuery .= " AND TO_DAYS(NOW()) < TO_DAYS(dateLimiteStage)";
             }
@@ -224,22 +225,22 @@ $user = getInfos();
                 $search = '%' . $_GET['champ_rech'] . '%';
                 if (isset($_GET['duree']) && ($_GET['duree'] !== '')) {
                     if (isset($_GET['dateDebut'])) {
-                        $stmt->bind_param('ssssi', $search, $search, $search, $_GET['dateDebut'], $_GET['duree']);
+                        $stmt->bind_param('sssssi', $search, $search, $search, $search, $_GET['dateDebut'], $_GET['duree']);
                     } else {
-                        $stmt->bind_param('sssi', $search, $search, $search, $_GET['duree']);
+                        $stmt->bind_param('ssssi', $search, $search, $search, $search, $_GET['duree']);
                     }
                 } else {
                     if (isset($_GET['dateDebut'])) {
-                        $stmt->bind_param('ssss', $search, $search, $search, $_GET['dateDebut']);
+                        $stmt->bind_param('sssss', $search, $search, $search, $search, $_GET['dateDebut']);
                     } else {
-                        $stmt->bind_param('sss', $search, $search, $search);
+                        $stmt->bind_param('ssss', $search, $search, $search,$search);
                     }
 
                 }
 
             } else {
                 $vide = '%%';
-                if (!($stmt->bind_param('sss', $vide, $vide, $vide))) {
+                if (!($stmt->bind_params('sss', $vide, $vide, $vide,$vide))) {
                     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
                 }
             }
