@@ -21,7 +21,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         }
     }
 
-    if ($naissanceEtud!='') {
+    if ($naissanceEtud != '') {
         if (!validateDate($naissanceEtud)) {
             header('Location: ./');
             die();
@@ -29,7 +29,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
             $naissanceEtud = date("Y-m-d", strtotime(str_replace('/', '-', $naissanceEtud)));
         }
     } else {
-        $naissanceEtud=null;
+        $naissanceEtud = null;
     }
 
     //check erreurs
@@ -37,7 +37,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         header('Location: ./');
         die();
     }
-    if ($mailPersoEtud!='') {
+    if ($mailPersoEtud != '') {
         if (!(filter_var($mailPersoEtud, FILTER_VALIDATE_EMAIL))) {
             include('all.footer.php');
             ?>
@@ -49,7 +49,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
             die();
         }
     } else {
-        $mailPersoEtud=null;
+        $mailPersoEtud = null;
     }
     if (strlen($telSecEtud) != 6) {
         $telSecEtud = null;
@@ -69,7 +69,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
     // Upload et check logo 
     if ($_FILES['profilpic']['error'] <= 0) {
         if (exif_imagetype($_FILES['profilpic']['tmp_name']) != false) {
-            if ($_FILES['profilpic']['size'] <= 2097152) {
+            if ($_FILES['profilpic']['size'] <= $tailleMax) {
                 if ($_SESSION['connected'] === "admin") {
                     imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($_POST['userEtud']) . ".png");
                 } else {
@@ -92,7 +92,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         include('all.footer.php');
         die();
     }
-    header('Location: '.$_SERVER["HTTP_REFERER"] );
+    header('Location: ' . $_SERVER["HTTP_REFERER"]);
     die();
 
 } else if ($_SESSION['connected'] == "ent" || ($_SESSION['connected'] === "admin" && isset($_POST['mailEnt']))) {
@@ -204,11 +204,13 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         die();
     }
 
-    // Upload et check logo 
     if ($_FILES['profilpic']['error'] <= 0) {
         if (exif_imagetype($_FILES['profilpic']['tmp_name']) != false) {
-            if ($_FILES['profilpic']['size'] <= 2097152) {
+            if ($_FILES['profilpic']['size'] <= $tailleMax) {
                 imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/" . md5($mailEnt) . ".png");
+            } else {
+                echo 'image rop lourde';
+                die();
             }
         }
     }
@@ -299,7 +301,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->close();
-    header('Location: '.$_SERVER["HTTP_REFERER"] );
+    header('Location: ' . $_SERVER["HTTP_REFERER"]);
     die();
 
 } else {

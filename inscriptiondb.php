@@ -88,7 +88,7 @@ include('all.header.php');
     }
     if ( $_FILES['profilpic']['error'] <= 0 ) {
         if ( exif_imagetype($_FILES['profilpic']['tmp_name']) != false ) {
-            if ( $_FILES['profilpic']['size'] <= 2097152 ) {
+            if ( $_FILES['profilpic']['size'] <= $tailleMax ) {
                 imageToPng($_FILES['profilpic']['tmp_name'], 500, "fichiers/profile/".md5($_POST['mailEnt']).".png");
             }
         }
