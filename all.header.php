@@ -78,6 +78,9 @@ require_once('fonctions.php');
                         case "majstage":
                             $page = "Mettre à jour un stage";
                             break;
+                        case "inscriptiondb":
+                            $page = "Finalisation de l'inscription";
+                            break;
                         case "infostage":
                             $page = "Détail du stage";
                             break;

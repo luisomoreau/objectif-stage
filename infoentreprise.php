@@ -41,7 +41,7 @@ $stmt->close();
                     ?></p>
 
                 <p><strong>E-mail</strong>: <?php echo $mailEnt;
-                    if (($_SESSION['connected'] == "admin") || $_SESSION['connected'] == "etud") {
+                    if ( $_SESSION['connected'] == "etud") {
                         echo ' - <a href="mail?cible=ent&mail=' . $mailEnt . '">Contacter l\'entreprise</a></p>';
                     } ?>
                 <h4>Adresse</h4>
