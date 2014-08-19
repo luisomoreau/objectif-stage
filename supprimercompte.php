@@ -30,6 +30,8 @@ include('all.footer.php');
     <?php
     if (isset($_GET['idEtud'])) {
         echo 'window.location = "listeetudiants";';
+    } else if (isset($_GET['nonvalide'])) {
+        echo 'window.location = "validerent";';
     } else {
         echo 'window.location = "listeentreprises";';
     }
