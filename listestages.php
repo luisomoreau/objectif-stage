@@ -233,14 +233,14 @@ $user = getInfos();
                     if (isset($_GET['dateDebut'])) {
                         $stmt->bind_param('sssss', $search, $search, $search, $search, $_GET['dateDebut']);
                     } else {
-                        $stmt->bind_param('ssss', $search, $search, $search,$search);
+                        $stmt->bind_param('ssss', $search, $search, $search, $search);
                     }
 
                 }
 
             } else {
                 $vide = '%%';
-                if (!($stmt->bind_params('sss', $vide, $vide, $vide,$vide))) {
+                if (!($stmt->bind_param('ssss', $vide, $vide, $vide, $vide))) {
                     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
                 }
             }
