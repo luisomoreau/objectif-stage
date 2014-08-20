@@ -51,7 +51,7 @@ require_once('fonctions.php');
                         if (isset($_SESSION['connected'])) {
                             echo '
                                     <li class="expanded color-2" title=""><a href="./services" title="" class="has-icon"><i class="fi-address-book"></i>Services</a></li>
-                                    <li class="leaf color-3"><a href="./documents" class="has-icon"><i class="fi-page"></i>documents</a></li>
+                                    <li class="leaf color-3"><a href="https://ent.univ-nc.nc/etudiant" class="has-icon"><i class="fi-page"></i>documents</a></li>
                                     <li class="last leaf color-4"><a href="./compte" class="has-icon"><i class="fi-torso"></i>Mon compte</a></li></ul>
                                 ';
                         }
