@@ -9,7 +9,7 @@ if ($user == null) {
 if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && isset($_POST['sujet']) && isset($_POST['message'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
     //Si l'étudiant envoie un mail on ajoute 1 à ses candidatures
-    $stmt = $mysqli->prepare('UPDATE Etudiants SET nbCandEtud=nbCandEtud+1 WHERE userEtud=?');
+    $stmt = $mysqli->prepare('UPDATE etudiants SET nbCandEtud=nbCandEtud+1 WHERE userEtud=?');
     $stmt->bind_param('s', $_SESSION['identifiant']);
     $stmt->execute();
     $stmt->close();
@@ -51,7 +51,7 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     }
     if ($exist > 0) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
-            $stmt = $mysqli->prepare('INSERT INTO Mail (idEtud, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
+            $stmt = $mysqli->prepare('INSERT INTO mail (idEtud, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
                         VALUES (?,?,?,?,?,?)');
             $stmt->bind_param('isssss', $_SESSION['idEtud'], $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe);
             $stmt->execute();
