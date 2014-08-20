@@ -21,10 +21,10 @@ if ($_SESSION['connected'] !== "admin") {
         $stmt->fetch();
         $stmt->close();
 
-        email($mail_account, $mail_pwd, $mailEnt, 'Objectif stage : '.$_POST['nomEnt'].' est en attente de validation',
-            'Bonjour,<br><br>Votre entreprise '.$_POST['nomEnt'].' a bien été validée vous pouvez à présent vous connecter.<br><br><a href="https://stages.univ-nc.nc/">Lien vers la plateforme de stages</a>',
-            'Plateforme Objectif stage',
-            'stages@univ-nc.nc', '0');
+        email($mail_account, $mail_pwd, $mailEnt, 'Objectif stage : Votre entreprise a été validée',
+            'Bonjour,<br><br>Votre entreprise a bien été validée vous pouvez à présent vous connecter.<br><br><a href="https://stages.univ-nc.nc/">Lien vers la plateforme de stages</a>',
+            'stages@univ-nc.nc',
+            'Plateforme Objectif stage', '0');
     }
 
     $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt = 0');

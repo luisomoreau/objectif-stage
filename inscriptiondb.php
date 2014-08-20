@@ -123,10 +123,10 @@ if (!($stmt->execute())) {
         </div>
     </div>
 <?php
-    email($mail_account, $mail_pwd, 'stages@univ-nc.nc', 'Objectif stage : '.$_POST['nomEnt'].' est en attente de validation',
+    email($mail_account, $mail_pwd, 'stages@univ-nc.nc', 'Objectif stage : L\'entreprise '.$_POST['nomEnt'].' est en attente de validation',
         'Bonjour,<br><br>L\'entreprise '.$_POST['nomEnt'].' est en attente de validation, veuillez vous connecter pour valider son compte.<br><br><a href="https://stages.univ-nc.nc/loginadmin">Lien vers le panel admin</a>',
-        'Plateforme Objectif stage',
-        'stages@univ-nc.nc', '0');
+        'stages@univ-nc.nc',
+        'Plateforme Objectif stage', '0');
 }
 $stmt->close();
 include('all.footer.php');
