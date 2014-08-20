@@ -22,7 +22,7 @@ if ($_SESSION['connected'] !== "admin") {
         $stmt->close();
 
         email($mail_account, $mail_pwd, $mailEnt, 'Objectif stage : '.$_POST['nomEnt'].' est en attente de validation',
-            'Bonjour,<br>Votre entreprise '.$_POST['nomEnt'].' a bien été validée vous pouvez à présent vous connecter.<br><br><a href="https://stages.univ-nc.nc/">Lien vers la plateforme de stages</a>',
+            'Bonjour,<br><br>Votre entreprise '.$_POST['nomEnt'].' a bien été validée vous pouvez à présent vous connecter.<br><br><a href="https://stages.univ-nc.nc/">Lien vers la plateforme de stages</a>',
             'Plateforme Objectif stage',
             'stages@univ-nc.nc', '0');
     }
