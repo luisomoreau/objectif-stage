@@ -4,23 +4,31 @@ include('logincheck.php');
 if ($_SESSION['connected'] !== "admin") {
     realDie();
 } else {
+    $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
     if (isset($_GET['idEnt'])) {
-        $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-        if (!($stmt = $mysqli->prepare('UPDATE entreprises SET valideEnt=1 WHERE idEnt = ?'))) {
+        $stmt = $mysqli->prepare('UPDATE entreprises SET valideEnt=1 WHERE idEnt = ?');
+        $stmt->bind_param('i', $_GET['idEnt']);
+        $stmt->execute();
+
+        if (!($stmt = $mysqli->prepare('SELECT mailEnt FROM entreprises WHERE idEnt=?'))) {
             echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
         $stmt->bind_param('i', $_GET['idEnt']);
         if (!($stmt->execute())) {
             echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }
+        $stmt->bind_result($mailEnt);
+        $stmt->fetch();
+        $stmt->close();
+
+        email($mail_account, $mail_pwd, $mailEnt, 'Objectif stage : '.$_POST['nomEnt'].' est en attente de validation',
+            'Bonjour,<br>Votre entreprise '.$_POST['nomEnt'].' a bien été validée vous pouvez à présent vous connecter.<br><br><a href="https://stages.univ-nc.nc/">Lien vers la plateforme de stages</a>',
+            'Plateforme Objectif stage',
+            'stages@univ-nc.nc', '0');
     }
-    $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt = 0'))) {
-        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-    }
-    if (!($stmt->execute())) {
-        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
-    }
+
+    $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt = 0');
+    $stmt->execute();
     $stmt->bind_result($idEnt, $nomEnt, $telEnt, $adresseEnt);
     $stmt->store_result();
     if ($stmt->num_rows > 0) {
