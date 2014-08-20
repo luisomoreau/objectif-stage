@@ -119,7 +119,7 @@ if (!($stmt->execute())) {
     ?>
     <div class="row">
         <div class="large-12 columns">
-            <h3>Votre compte a bien été créé, vous devez attendre qu'il soit validé par l'administrateur.</h3>
+            <h3>Votre compte a bien été créé. Vous serez averti par mail dès que celui-ci aura été validé.</h3>
         </div>
     </div>
 <?php
