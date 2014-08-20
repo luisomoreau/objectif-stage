@@ -19,6 +19,7 @@ require_once('fonctions.php');
     <script src="js/javascript.js"></script>
     <script src="js/vendor/custom.modernizr.js"></script>
     <script src="js/foundation-datepicker.js"></script>
+    <link rel="shortcut icon" href="/css/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 <!--.page -->
