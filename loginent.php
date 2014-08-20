@@ -5,7 +5,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 
     $mdp = hash('sha512', $salt . $_POST['mdp']);
-    if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idEnt, nomEnt FROM entreprises WHERE mailEnt=? AND mdpEnt=?'))) {
+    if (!($stmt = $mysqli->prepare('SELECT COUNT(*), idEnt, nomEnt, valideEnt FROM entreprises WHERE mailEnt=? AND mdpEnt=?'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('ss', $_POST['identifiant'], $mdp);
@@ -13,16 +13,19 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         echo "Erreur, le mail est déjà utilisé";
     }
-    $stmt->bind_result($exist, $id, $nom);
+    $stmt->bind_result($exist, $id, $nom, $valide);
     $stmt->fetch();
     $stmt->close();
     if ($exist) {
-        echo $id;
-        $_SESSION['identifiant'] = $nom;
-        $_SESSION['id'] = $id;
-        $_SESSION["connected"] = "ent";
-        header('location: ./');
-        die();
+        if (!$valide) {
+            header('location: ./loginent?nonvalide');
+        } else {
+            $_SESSION['identifiant'] = $nom;
+            $_SESSION['id'] = $id;
+            $_SESSION["connected"] = "ent";
+            header('location: ./');
+            die();
+        }
     } else {
         header('location: ./loginent?erreur');
     }
@@ -39,6 +42,9 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
                 <?php
                     if (isset($_GET['erreur'])) {
                         echo '<h4><span style="color:red">Erreur, identifiants incorrects !</span></h4>';
+                    }
+                    if (isset($_GET['nonvalide'])) {
+                        echo '<h4><span style="color:red">Erreur, votre compte n\'a pas encore été validé.</span></h4>';
                     }
                 ?>
                 <input placeholder="Votre identifiant (E-mail)" type="email" name="identifiant" id="identifiant" maxlength="100" required="required"/>

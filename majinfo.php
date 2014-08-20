@@ -319,7 +319,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                     <label>Localisez votre entreprise : </label>
                     <input id="lat" type="hidden" name="latEnt" value="<?php echo $latEnt; ?>"/>
                     <input id="lng" type="hidden" name="lngEnt" value="<?php echo $lngEnt; ?>"/>
-                    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
+                    <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
                             type="text/javascript"></script>
                     <div id="map" style=" height: 320px"><br/></div>
                     <script>
