@@ -1,6 +1,6 @@
 <?php
 include('all.header.php');
-require_once('logincheck.php');
+include('logincheck.php');
 $user = getInfos();
 ?>
     <div class="row panel">

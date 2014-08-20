@@ -1,5 +1,6 @@
 <?php
 include('all.header.php');
+include('logincheck.php');
 if ($_SESSION['connected'] !== "ent") {
     header('Location: ./');
     die();

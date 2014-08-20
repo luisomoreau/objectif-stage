@@ -1,5 +1,4 @@
 <?php
-$loginreq = 0;
 include('all.header.php');
 if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
