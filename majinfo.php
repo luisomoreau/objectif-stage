@@ -349,7 +349,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
     } else if ($_SESSION['connected'] === "admin") { //@todo admin
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
         $stmt = $mysqli->prepare('SELECT nomAdmin, prenomAdmin, mailAdmin
-                                        FROM Administrateurs WHERE idAdmin=?');
+                                        FROM administrateurs WHERE idAdmin=?');
         $stmt->bind_param('i', $_SESSION['id']);
         $stmt->execute();
         $stmt->bind_result($nomAdmin, $prenomAdmin, $mailAdmin);
