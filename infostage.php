@@ -110,6 +110,7 @@ if ($niveauStage=='') {
                 <p><?php echo "Téléphone : " . $telEnt;
                     if (!is_null($telSecEnt)) {
                         echo " ou " . $telSecEnt;
+                        var_dump($telSecEnt);
                     }
                     ?></p>
 
