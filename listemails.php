@@ -120,20 +120,6 @@ if (isset($_GET['id'])) {
                     <input type="text" value="<?php echo $sujetMail; ?>" disabled>
                 </div>
             </div>
-            <div class="row">
-                <div class="large-12 large-centered text-right columns">
-                    <?php if ($cvMail == "") {
-                        echo '<a class="button">Pas de pièce jointe</a>';
-                    } else {
-                        echo '<a href="' . $cvMail . '" target="_blank" class="button">Voir la pièce jointe</a>';
-                    } ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="large-10 large-centered columns">
-                    <?php echo $messageMail; ?>
-                </div>
-            </div>
             <br>
         </div>
     </div>

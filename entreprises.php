@@ -18,24 +18,32 @@ if (!(isset($_SESSION['connected']))) {
     </section>';
 }
 
-echo '    <section class="row">
-        <div class="large-12">
+?>
+    <div class="row">
+        <div class="large- columns">
+            <h3>Vous êtes une entreprise</h3>
+
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc congue sem lorem, id elementum libero fringilla sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at suscipit purus. Etiam ut eleifend velit. Morbi molestie, leo ac condimentum tempus, neque ipsum fringilla neque, nec ultrices libero ante vel est. Donec purus tellus, suscipit sit amet erat eget, posuere auctor turpis. Nam aliquam, turpis ac adipiscing placerat, nibh enim posuere nulla, ac molestie orci erat vitae elit. Integer at tellus nec nunc euismod blandit. Sed imperdiet ac sapien lobortis suscipit. Nullam vehicula et erat ac mollis. Etiam nec consectetur orci, nec hendrerit ante. Nullam auctor at odio in convallis. Proin accumsan nibh sit amet nisi vulputate, ac sodales tortor mattis.
+                Vous recherchez des compétences adaptées à vos besoins ? N’hésitez pas à déposer vos offres de stages directement en ligne à destination des étudiants de l'Université de la
+                Nouvelle-Calédonie.
             </p>
+
             <p>
-                Sed imperdiet, turpis et consequat commodo, metus ipsum lacinia odio, et scelerisque elit libero vitae lacus. Aenean bibendum purus vitae tempor iaculis. Fusce auctor tristique arcu, consectetur malesuada erat pulvinar et. Nulla eget rhoncus dui, ac ornare urna. Etiam gravida tristique diam at luctus. Curabitur mattis, justo vel sollicitudin facilisis, lectus mi vulputate augue, non commodo ipsum nibh nec nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla eget nisl quis nisi luctus condimentum. Aenean nec ligula turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus convallis vel dui in semper.
+                Vos offres seront systématiquement relues et accompagnées par nos soins. Leur diffusion sera renforcée vers les étudiants des formations les plus en rapport avec vos attentes.
             </p>
+
             <p>
-                Vivamus auctor urna ut laoreet scelerisque. Quisque ac nibh enim. Aliquam vel consequat dolor, condimentum ultrices est. Duis viverra turpis risus. Phasellus et diam nisl. Morbi posuere laoreet sapien, ac lobortis neque pulvinar nec. In hac habitasse platea dictumst. Integer ut neque vel leo commodo consequat vitae eget dolor. Etiam sit amet turpis adipiscing nulla sagittis adipiscing non at sem. Aliquam posuere, justo nec commodo interdum, magna erat euismod diam, eget egestas purus nisi a nisl. Nullam vestibulum magna quam, vitae vulputate mi lacinia quis. In in mauris at libero varius laoreet.
+                Suite à votre inscription, vous recevrez un mail de confirmation dès que votre compte aura été validé. Vous pourrez ensuite vous connecter.
             </p>
+
             <p>
-                Nullam enim erat, mollis a dictum pellentesque, tincidunt ac ligula. Nulla vitae bibendum velit. In nec diam leo. Suspendisse iaculis enim ut nunc mattis, vitae laoreet lorem tempor. Sed non dapibus quam. Nulla vel dolor venenatis, commodo est eget, pretium metus. Ut ut arcu tortor. Cras sed sem a neque pharetra accumsan. Donec quis dolor tellus. Cras mollis tortor arcu, nec vestibulum nibh tincidunt sit amet.
+                Le bureau d’aide à l’insertion professionnelle (BAIP) se tient à votre disposition pour vous accompagner dans vos démarches vers et avec nos étudiants.
             </p>
-            <p>
-                Curabitur eros mauris, convallis id posuere eu, placerat quis felis. Maecenas sit amet purus blandit, euismod felis sed, pulvinar elit. Donec turpis enim, tincidunt et leo at, fermentum pharetra massa. In quis sapien est. Praesent condimentum ultricies magna, non eleifend ligula ultricies ac. Donec ultrices dui pellentesque congue feugiat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam ultricies interdum odio vel placerat.
+
+            <p class="text-right">
+                Contact BAIP : 290 191 ou baip@univ-nc.nc
             </p>
         </div>
-    </section>';
+    </div>
+<?php
 include("all.footer.php");
-?>

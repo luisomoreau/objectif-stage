@@ -142,4 +142,3 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     }
 }
 include('all.footer.php');
-?>

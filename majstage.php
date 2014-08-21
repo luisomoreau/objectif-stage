@@ -71,7 +71,7 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin" || $idStage
         <input id="lat" type="hidden" name="latStage" value=""/>
         <input id="lng" type="hidden" name="lngStage" value=""/>
 
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
+        <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAYxu_N0zElJPTPoVD1f3ih-IrrINGwMIU"
                 type="text/javascript"></script>
         <div id="map" style=" height: 250px"><br/></div>
         <script type="text/javascript">

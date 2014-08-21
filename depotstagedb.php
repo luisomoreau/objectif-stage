@@ -2,10 +2,11 @@
 include('all.header.php');
 include('logincheck.php');
 
-if ($_SESSION['connected']!='ent' || !isset($_POST['nomStage']) || !isset($_POST['prenomContactStage']) || !isset($_POST['nomContactStage']) || !isset($_POST['mailContactStage'])
+if ($_SESSION['connected'] != 'ent' || !isset($_POST['nomStage']) || !isset($_POST['prenomContactStage']) || !isset($_POST['nomContactStage']) || !isset($_POST['mailContactStage'])
     || !isset($_POST['lieuStage']) || !isset($_POST['latStage']) || !isset($_POST['stageL1']) || !isset($_POST['stageL2']) || !isset($_POST['stageL3'])
     || !isset($_POST['lngStage']) || !isset($_POST['sujetStage']) || !isset($_POST['detailsStage']) || !isset($_POST['filiereStage']) || !isset($_POST['remStage'])
-    || !isset($_POST['dateDebut']) || !isset($_POST['dateFin']) || !isset($_POST['dateLimite'])) {
+    || !isset($_POST['dateDebut']) || !isset($_POST['dateFin']) || !isset($_POST['dateLimite'])
+) {
     realDie();
 }
 if (strlen($_POST['filiereStage']) < 1000) {
@@ -151,15 +152,13 @@ if (!($stmt->execute())) {
             <p>Echec lors de dépot de votre stage veuillez réessayer !</p>
         </div>
     </div>
-    <?php
+<?php
 } else {
-    ?>
-    <div class="row">
-        <div class="large-12 columns">
-            <p>Votre stage a bien été déposé !</p>
-        </div>
-    </div>
-    <?php
+    header('Location: ./messtages');
+    email($mail_account, $mail_pwd, 'stages@univ-nc.nc', 'Objectif stage : L\'entreprise ' . $_SESSION['identifiant'] . ' a déposé un nouveau stage',
+        'Bonjour,<br><br>L\'entreprise ' . $_SESSION['identifiant'] . ' a déposé un nouveau stage ayant pour sujet : ' . $sujetStage . '.<br><br><a href="https://stages.univ-nc.nc/admin">Lien vers le panel admin</a>',
+        'stages@univ-nc.nc',
+        'Plateforme Objectif stage', '0');
 }
 $stmt->close();
 die();

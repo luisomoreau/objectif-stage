@@ -207,7 +207,7 @@ $user = getInfos();
                         break;
                 }
             }
-            if (isset($_GET['filiere'])) {
+            if (isset($_GET['filiere']) && $_GET['filiere']!=1000000) {
                 $baseQuery .= " AND filiereStage = \"" . $_GET['filiere'] . "\"";
             }
             if (isset($_GET['dateDebut'])) {
