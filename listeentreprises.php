@@ -30,7 +30,7 @@ if (isset($_GET['champ_rech'])) {
     $search = '%' . $_GET['champ_rech'] . '%';
     $stmt->bind_param('sss', $search, $search, $search);
 } else {
-    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises'))) {
+    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt=1'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
 }
