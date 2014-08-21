@@ -108,7 +108,7 @@ if ($niveauStage=='') {
                 <p><?php echo $prenomContactStage . " " . $nomContactStage . " - " . $mailContactStage ?></p>
 
                 <p><?php echo "Téléphone : " . $telEnt;
-                    if ($telSecEnt != NULL) {
+                    if (!is_null($telSecEnt)) {
                         echo " ou " . $telSecEnt;
                     }
                     ?></p>
