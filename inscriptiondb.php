@@ -124,7 +124,7 @@ if (!($stmt->execute())) {
     </div>
 <?php
     email($mail_account, $mail_pwd, 'stages@univ-nc.nc', 'Objectif stage : L\'entreprise '.$_POST['nomEnt'].' est en attente de validation',
-        'Bonjour,<br><br>L\'entreprise '.$_POST['nomEnt'].' est en attente de validation, veuillez vous connecter pour valider son compte.<br><br><a href="https://stages.univ-nc.nc/loginadmin">Lien vers le panel admin</a>',
+        'Bonjour,<br><br>L\'entreprise '.$_POST['nomEnt'].' est en attente de validation, veuillez vous connecter pour valider son compte.<br><br><a href="https://stages.univ-nc.nc/admin">Lien vers le panel admin</a>',
         'stages@univ-nc.nc',
         'Plateforme Objectif stage', '0');
 }
