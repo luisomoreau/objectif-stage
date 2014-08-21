@@ -130,7 +130,7 @@ if (($_SESSION['connected'] == 'ent' || $_SESSION['connected'] == 'admin') && is
                 <div class="small-9 columns">
                     <input type="text" name="naissanceEtud" id="naissanceEtud" class="date_picker" value="<?php if ($naissanceEtud != 'NULL') {
                         echo date("d/m/Y", strtotime($naissanceEtud));
-                    } ?>" maxlength="10" disabled>
+                    } ?>" maxlength="10" disabled><?php var_dump($naissanceEtud);?>
                 </div>
             </div>
         </div>
