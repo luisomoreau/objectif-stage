@@ -7,7 +7,7 @@ if ($_SESSION['connected'] !== "admin") {
 }
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if (isset($_GET['idMail'])) {
-    $stmt = $mysqli->prepare('DELETE FROM Mail WHERE idMail=?');
+    $stmt = $mysqli->prepare('DELETE FROM mail WHERE idMail=?');
     $stmt->bind_param('s', $_GET['idMail']);
     $stmt->execute();
     $stmt->close();
@@ -29,7 +29,7 @@ if (isset($_GET['idMail'])) {
         </div>
     </div>
 <?php
-$stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail FROM Mail WHERE destinataireMail
+$stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail FROM mail WHERE destinataireMail
                                 LIKE ?  OR sujetMail LIKE ? OR messageMail LIKE ? OR expediteurMail LIKE ? ORDER BY dateEnvoiMail DESC');
 if (isset($_GET['champ_rech'])) {
     $search = "%" . $_GET['champ_rech'] . "%";
@@ -78,7 +78,7 @@ if ($stmt->num_rows > 0) {
 <?php
 }
 if (isset($_GET['id'])) {
-    $stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail, cvMail, idEtud FROM Mail WHERE idMail=?');
+    $stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail, cvMail, idEtud FROM mail WHERE idMail=?');
     $stmt->bind_param('i', $_GET['id']);
     $stmt->execute();
     $stmt->bind_result($idMail, $destinataireMail, $expediteurMail, $sujetMail, $dateEnvoiMail, $messageMail, $cvMail, $idEtud);
