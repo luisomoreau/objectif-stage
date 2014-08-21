@@ -120,12 +120,12 @@ if ($niveauStage=='') {
                     <div class="large-6 columns">
                         <h4>Début du stage</h4>
 
-                        <p><?php echo utf8_encode(strftime("%A %#d %B %Y", strtotime($dateDebutStage))) ?></p>
+                        <p><?php echo strftime("%A %#d %B %Y", strtotime($dateDebutStage)) ?></p>
                     </div>
                     <div class="large-6 columns">
                         <h4>Fin du stage</h4>
 
-                        <p> <?php echo utf8_encode(strftime("%A %#d %B %Y", strtotime($dateFinStage))) ?></p>
+                        <p> <?php echo strftime("%A %#d %B %Y", strtotime($dateFinStage)) ?></p>
                     </div>
                 </div>
                 <div class="row">
