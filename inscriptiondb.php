@@ -95,8 +95,6 @@ if ($_FILES['profilpic']['error'] <= 0) {
     }
 }
 
-//@todo check lng lat
-
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if (!($stmt = $mysqli->prepare('INSERT INTO entreprises (nomEnt, mailEnt, mdpEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'))

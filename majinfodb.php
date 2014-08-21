@@ -78,7 +78,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
             }
         }
     }
-    //protection injection scripte à faire + date check @todo
+
     if ($_SESSION['connected'] === "admin") {
         $stmt = $mysqli->prepare('UPDATE etudiants SET mailPersoEtud=?, telSecEtud=?, naissanceEtud=?, trouveStageEtud=? WHERE userEtud=?');
         $stmt->bind_param('sssis', $mailPersoEtud, $telSecEtud, $naissanceEtud, $trouveStageEtud, $_POST['userEtud']);
@@ -232,7 +232,7 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
                                         WHERE idEnt=?');
             $stmt->bind_param('sssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_SESSION['id']);
         }
-    } else { //@todo admin
+    } else {
         if ($_SESSION['connected'] === "admin") {
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,

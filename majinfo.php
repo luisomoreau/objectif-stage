@@ -346,7 +346,7 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
             </div>
         </form>
     <?php
-    } else if ($_SESSION['connected'] === "admin") { //@todo admin
+    } else if ($_SESSION['connected'] === "admin") {
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
         $stmt = $mysqli->prepare('SELECT nomAdmin, prenomAdmin, mailAdmin
                                         FROM administrateurs WHERE idAdmin=?');
