@@ -39,7 +39,7 @@ if ($stmt->num_rows > 0) {
     ?>
     <div class="row">
         <div class="small-12 columns text-center">
-            <h3>Vous n'avez pas de stages</h3>
+            <h3>Vous n'avez pas de stage</h3>
         </div>
     </div>
 <?php

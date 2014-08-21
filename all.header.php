@@ -79,6 +79,12 @@ require_once('fonctions.php');
                         case "majstage":
                             $page = "Mettre à jour un stage";
                             break;
+                        case "infoentreprise":
+                            $page = "Informations sur l'entreprise";
+                            break;
+                        case "mail":
+                            $page = "Envoyer un mail";
+                            break;
                         case "inscriptiondb":
                             $page = "Finalisation de l'inscription";
                             break;
