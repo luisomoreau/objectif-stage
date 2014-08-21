@@ -108,9 +108,8 @@ if ($niveauStage=='') {
                 <p><?php echo $prenomContactStage . " " . $nomContactStage . " - " . $mailContactStage ?></p>
 
                 <p><?php echo "Téléphone : " . $telEnt;
-                    if (!is_null($telSecEnt)) {
+                    if ($telSecEnt!='NULL') {
                         echo " ou " . $telSecEnt;
-                        var_dump($telSecEnt);
                     }
                     ?></p>
 
@@ -138,7 +137,7 @@ if ($niveauStage=='') {
                     <div class="large-6 columns">
                         <h4>Contacter avant le</h4>
 
-                        <p> <?php echo utf8_encode(strftime("%A %#d %B %Y", strtotime($dateLimiteStage))) ?></p>
+                        <p> <?php echo strftime("%A %#d %B %Y", strtotime($dateLimiteStage)) ?></p>
                     </div>
                 </div>
                 <div class="row">
