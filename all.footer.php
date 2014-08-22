@@ -7,8 +7,8 @@
 <footer class="l-footer panel" role="contentinfo">
     <div class="row">
 
-        <div class="copyright large-6 large-centered text-center columns">
-            &copy; 2014 &quot;Objectif stage&quot; All rights reserved.
+        <div class="copyright large-8 large-centered text-center columns">
+            &copy; 2014 &quot;Objectif stage&quot; All rights reserved. Developped by <?php if(mt_rand(0,1)) echo "Bruno CREMADES && Nicolas BRENGARD"; else echo "Nicolas BRENGARD && Bruno CREMADES";?>
         </div>
     </div>
 </footer>

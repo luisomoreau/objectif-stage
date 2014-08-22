@@ -41,6 +41,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
                 <?php
                     if (isset($_GET['erreur'])) {
                         echo '<h4><span style="color:red">Erreur, identifiants incorrects !</span></h4>';
+                        echo '<a class="right" href="./rstpwd">Mot de passe oublié ?</a><br><br>';
                     }
                     if (isset($_GET['nonvalide'])) {
                         echo '<h4><span style="color:red">Erreur, votre compte n\'a pas encore été validé.</span></h4>';

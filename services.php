@@ -62,7 +62,7 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listemails" class="large button expand">Liste des emails</a>
         </div>
         <div class="large-4 columns">
-            <a href="./mail" class="large button expand">Envoyer un mail</a>
+            <a href="./mailadmin" class="large button expand">Envoyer un mail</a>
         </div>
         <div class="large-4 columns">
             <a href="./statistiques" class="large button expand">Statistiques</a>
