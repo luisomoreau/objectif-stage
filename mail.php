@@ -51,9 +51,9 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     }
     if ($exist > 0) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
-            $stmt = $mysqli->prepare('INSERT INTO mail (idEtud, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail, idEnt)
+            $stmt = $mysqli->prepare('INSERT INTO mail (idEtud, idEnt, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
                         VALUES (?,?,?,?,?,?,?)');
-            $stmt->bind_param('isssssi', $_SESSION['idEtud'], $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe, $idEnt);
+            $stmt->bind_param('isssssi', $_SESSION['idEtud'], $idEnt, $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe);
             $stmt->execute();
             $stmt->close();
             echo "lalalala :$idEnt";
