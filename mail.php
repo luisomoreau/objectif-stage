@@ -33,23 +33,23 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     //check si le mail existe
     $exist = 0;
     if ($_POST['cible'] == 'stage') {
-        $stmt = $mysqli->prepare('SELECT COUNT(*), E.idEnt FROM stages,entreprises as E WHERE stages.idEnt=entreprises.idEnt AND mailContactStage=?');
+        $stmt = $mysqli->prepare('SELECT E.idEnt FROM stages,entreprises as E WHERE stages.idEnt=entreprises.idEnt AND mailContactStage=?');
         $stmt->bind_param('s', $_POST['dest']);
         $stmt->execute();
-        $stmt->bind_result($exist, $idEnt);
+        $stmt->bind_result($idEnt);
         $stmt->fetch();
         $stmt->close();
     } else {
         if ($_POST['cible'] == 'ent') {
-            $stmt = $mysqli->prepare('SELECT COUNT(*), idEnt FROM entreprises WHERE mailEnt=?');
+            $stmt = $mysqli->prepare('SELECT idEnt FROM entreprises WHERE mailEnt=?');
             $stmt->bind_param('i', $_POST['dest']);
             $stmt->execute();
-            $stmt->bind_result($exist, $idEnt);
+            $stmt->bind_result($idEnt);
             $stmt->fetch();
             $stmt->close();
         }
     }
-    if ($exist > 0) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
+    if (!is_null($idEnt)) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
             $stmt = $mysqli->prepare('INSERT INTO mail (idEtud, idEnt, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
                         VALUES (?,?,?,?,?,?,?)');
