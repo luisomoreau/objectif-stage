@@ -14,7 +14,7 @@ if (isset($_POST['email']) && isset($_POST['captcha'])) {
             $clef = hash('sha512', $mailEnt.$mdpEnt);
             $dayNumber = date("z");
             if (email($mail_account, $mail_pwd, $destinataire, "Objectif stage : réinitialisation de votre mot de passe",
-                "Bonjour,<br><br>Vous avez effectué une demande de réinitialisation de votre mot de passe, si c'est le cas, veuillez cliquer sur ce lien :<br><br><a href=\"https://stages.univ-nc.nc/rstpwd?clef=$clef.$dayNumber;\">Lien vers votre compte (pensez à changer votre mot de passe)</a>",
+                "Bonjour,<br><br>Vous avez effectué une demande de réinitialisation de votre mot de passe, si c'est le cas, veuillez cliquer sur ce lien :<br><br><a href=\"https://stages.univ-nc.nc/rstpwd?clef=$clef$dayNumber&id=$idEnt\">Lien vers votre compte (pensez à changer votre mot de passe)</a>",
                 "stages@univ-nc.nc", 'Plateforme Objectif stage', '0')) {
                 ?>
                 <div class="row">
@@ -45,10 +45,10 @@ if (isset($_POST['email']) && isset($_POST['captcha'])) {
        realDie();
     }
 } else {
-    if (isset($_GET['clef'])) {
+    if (isset($_GET['clef']) && isset($_GET['id'])) {
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-        $stmt = $mysqli->prepare('SELECT idEnt, mailEnt, mdpEnt FROM entreprises WHERE mailEnt=?');
-        $stmt->bind_param('s', $_POST['email']);
+        $stmt = $mysqli->prepare('SELECT idEnt, mailEnt, mdpEnt FROM entreprises WHERE idEnt=?');
+        $stmt->bind_param('s', $_GET['id']);
         $stmt->execute();
         $stmt->bind_result($idEnt, $mailEnt, $mdpEnt);
         $stmt->fetch();
