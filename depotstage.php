@@ -104,7 +104,7 @@ $stmt->close();
                 </div>
                 <div class="large-9 columns">
                     <select name="filiereStage" required>
-                        <option value="" disabled selected>Filières</option>
+                        <option value="" disabled selected>Choisir une filière</option>
                         <?php
                         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
                         if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1'))) {

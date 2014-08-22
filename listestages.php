@@ -121,7 +121,7 @@ $user = getInfos();
                                 </div>
                                 <div class="small-10 columns">
                                     <select id="filiere" name="filiere">
-                                        <option selected="selected" disabled="disabled" value="">Filière</option>
+                                        <option selected="selected" disabled="disabled" value="">Choisir une filière</option>
                                         <?php
                                         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
                                         $stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1');
