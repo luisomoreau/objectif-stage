@@ -29,9 +29,10 @@ if (isset($_GET['idMail'])) {
         </div>
     </div>
 <?php
-$stmt = $mysqli->prepare('SELECT idMail, destinataireMail, sujetMail, dateEnvoiMail, messageMail FROM mail as M, etudiants as Etud, entreprises as Ent
-                            WHERE  M.idEnt=Ent.idEnt AND M.userEtud=Etud.userEtud AND (destinataireMail
-                                LIKE ?  OR sujetMail LIKE ? OR messageMail LIKE ? OR prenomEtud LIKE ? OR nomEtud LIKE ?) ORDER BY dateEnvoiMail DESC');
+$stmt = $mysqli->prepare('SELECT idMail, destinataireMail, sujetMail, dateEnvoiMail, messageMail, nomEnt, prenomEtud, nomEtud
+                          FROM mail as M, etudiants as Etud, entreprises as Ent
+                          WHERE  M.idEnt=Ent.idEnt AND M.userEtud=Etud.userEtud
+                          AND (destinataireMail LIKE ?  OR sujetMail LIKE ? OR messageMail LIKE ? OR prenomEtud LIKE ? OR nomEtud LIKE ?) ORDER BY dateEnvoiMail DESC');
 if (isset($_GET['champ_rech'])) {
     $search = "%" . $_GET['champ_rech'] . "%";
 } else {
