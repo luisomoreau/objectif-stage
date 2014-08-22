@@ -183,8 +183,7 @@ $user = getInfos();
                         WHERE (nomStage LIKE ?
                         OR sujetStage LIKE ?
                         OR detailsStage LIKE ?
-                        OR lieuStage LIKE ?)
-                        ORDER BY dateLimiteStage ASC';
+                        OR lieuStage LIKE ?)';
             if (!isset($_GET['expStage']) || $_GET['expStage'] == 0) {
                 $baseQuery .= " AND TO_DAYS(NOW()) < TO_DAYS(dateLimiteStage)";
             }
@@ -213,7 +212,7 @@ $user = getInfos();
             if (isset($_GET['duree']) && ($_GET['duree'] !== '')) {
                 $baseQuery .= " AND dureeStage > ? ";
             }
-            $baseQuery .= " ORDER BY dateDebutStage DESC";
+            $baseQuery .= " ORDER BY dateLimiteStage ASC";
             //echo $baseQuery;
             if (!($stmt = $mysqli->prepare($baseQuery))) {
                 echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
