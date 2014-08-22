@@ -4,7 +4,6 @@ settings.*.php
 settings.php
 fonctions.php
 logincheck.php
-logincheck2.php
 /CAS/certificate.pem
 config.php
 
