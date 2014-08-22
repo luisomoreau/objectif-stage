@@ -59,7 +59,7 @@ if (isset($_POST['email']) && isset($_POST['captcha'])) {
             $_SESSION['identifiant'] = $nom;
             $_SESSION['id'] = $idEnt;
             $_SESSION["connected"] = "ent";
-            header('location: ./');
+            header('location: ./majinfo');
             die();
         } else {
             realDie();
