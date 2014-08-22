@@ -57,11 +57,6 @@ require_once('fonctions.php');
                                 ';
                         }
                         ?>
-                        <!--                            <ul class="dropdown">-->
-                        <!--                                <li class="expanded color-2 show-for-small"><a href="/etudiant" title="">Espace étudiant</a>-->
-                        <!--                                <li class="first leaf" target="_blank"><a href="http://lee.univ-nc.nc/cgi-bin/WebObjects/ipWeb.woa" target="_blank">Notes</a></li>-->
-                        <!--                                <li class="last leaf" target="_blank"><a href="http://tic.univ-nc.nc/" target="_blank">Campus virtuel</a></li>-->
-                        <!--                            </ul>-->
                 </section>
             </nav>
         </div>
@@ -138,6 +133,9 @@ require_once('fonctions.php');
                             break;
                         case "profiletudiant":
                             $page = "Profil de l'étudiant";
+                            break;
+                        case "rstpwd":
+                            $page = "Réinitialisation du mot de passe";
                             break;
                     }
                     echo $page;
