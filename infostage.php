@@ -86,7 +86,7 @@ if ($niveauStage=='') {
                     <div class="small-6 columns">
                         <h4>Filière</h4>
 
-                        <p><?php echo $filiereStage ?></p>
+                        <p><?php echo utf8_encode($filiereStage) ?></p>
                     </div>
                     <div class="small-6 columns">
                         <h4>Niveau</h4>

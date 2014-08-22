@@ -183,7 +183,8 @@ $user = getInfos();
                         WHERE (nomStage LIKE ?
                         OR sujetStage LIKE ?
                         OR detailsStage LIKE ?
-                        OR lieuStage LIKE ?)';
+                        OR lieuStage LIKE ?)
+                        ORDER BY dateLimiteStage ASC';
             if (!isset($_GET['expStage']) || $_GET['expStage'] == 0) {
                 $baseQuery .= " AND TO_DAYS(NOW()) < TO_DAYS(dateLimiteStage)";
             }
