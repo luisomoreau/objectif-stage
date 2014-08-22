@@ -46,7 +46,7 @@ $stmt->close();
                     } ?>
                 <h4>Informations complémentaires</h4>
 
-                <p><?php echo nl2br($detailsEnt); ?></p>
+                <p><?php if ($detailsEnt !== 'NULL') echo nl2br($detailsEnt); else echo "Aucune." ?></p>
 
                 <h4>Adresse</h4>
 
