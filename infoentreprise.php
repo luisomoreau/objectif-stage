@@ -44,13 +44,14 @@ $stmt->close();
                     if ( $_SESSION['connected'] == "etud") {
                         echo ' - <a href="mail?cible=ent&mail=' . $mailEnt . '">Contacter l\'entreprise</a></p>';
                     } ?>
+                <h4>Informations complémentaires</h4>
+
+                <p><?php echo nl2br($detailsEnt); ?></p>
+
                 <h4>Adresse</h4>
 
                 <p><?php echo nl2br($adresseEnt); ?></p>
 
-                <h4>Informations complémentaires</h4>
-
-                <p><?php echo nl2br($detailsEnt); ?></p>
             </div>
             <div class="large-2 columns">
                 <?php

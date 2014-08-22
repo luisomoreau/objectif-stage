@@ -310,14 +310,15 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
             </div>
             <div class="row">
                 <div class="large-12 columns">
-                    <label for="adresseEnt">Adresse</label>
-                    <textarea name="adresseEnt" id="adresseEnt" maxlength="255" required><?php echo $adresseEnt; ?></textarea>
+                    <label for="details">Informations complémentaires</label>
+                    <textarea name="details" id="details" maxlength="1000"><?php if ($detailsEnt !== 'NULL') echo $detailsEnt; ?></textarea>
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="large-12 columns">
-                    <label for="adresseEnt">Informations complémentaires</label>
-                    <textarea name="details" id="details" maxlength="1000"><?php if ($detailsEnt !== 'NULL') echo $detailsEnt; ?></textarea>
+                    <label for="adresseEnt">Adresse</label>
+                    <textarea name="adresseEnt" id="adresseEnt" maxlength="255" required><?php echo $adresseEnt; ?></textarea>
                 </div>
             </div>
             <div class="row">
