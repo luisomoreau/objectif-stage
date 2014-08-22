@@ -42,7 +42,7 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     } else {
         if ($_POST['cible'] == 'ent') {
             $stmt = $mysqli->prepare('SELECT idEnt FROM entreprises WHERE mailEnt=?');
-            $stmt->bind_param('i', $_POST['dest']);
+            $stmt->bind_param('s', $_POST['dest']);
             $stmt->execute();
             $stmt->bind_result($idEnt);
             $stmt->fetch();
