@@ -56,6 +56,7 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
             $stmt->bind_param('isssssi', $_SESSION['idEtud'], $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe, $idEnt);
             $stmt->execute();
             $stmt->close();
+            echo "lalalala :$idEnt";
             ?>
             <div class="row">
                 <div class="large-12 columns">
