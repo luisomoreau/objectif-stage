@@ -47,17 +47,17 @@ if (isset($_POST['email']) && isset($_POST['captcha'])) {
 } else {
     if (isset($_GET['clef']) && isset($_GET['id'])) {
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-        $stmt = $mysqli->prepare('SELECT idEnt, mailEnt, mdpEnt FROM entreprises WHERE idEnt=?');
+        $stmt = $mysqli->prepare('SELECT idEnt, mailEnt, mdpEnt, nomEnt FROM entreprises WHERE idEnt=?');
         $stmt->bind_param('s', $_GET['id']);
         $stmt->execute();
-        $stmt->bind_result($idEnt, $mailEnt, $mdpEnt);
+        $stmt->bind_result($idEnt, $mailEnt, $mdpEnt, $nom);
         $stmt->fetch();
         $stmt->close();
         $clef = hash('sha512', $mailEnt.$mdpEnt);
         $dayNumber = date("z");
         if ($_GET['clef'] == $clef.$dayNumber) {
             $_SESSION['identifiant'] = $nom;
-            $_SESSION['id'] = $id;
+            $_SESSION['id'] = $idEnt;
             $_SESSION["connected"] = "ent";
             header('location: ./');
             die();
