@@ -58,7 +58,7 @@ if ($stmt->num_rows > 0) {
                 <?php
                 while ($stmt->fetch()) {
                     echo '<tr onclick="document.location.href=\'listemails?id=' . $idMail . '\'"> ';
-                    echo '<td>' . $expediteurMail . '</td><td>' . $destinataireMail . '</td><td>' . $sujetMail . '</td>';
+                    echo '<td>' . $prenomEnt.' '. $nomEtud . '</td><td>' . $nomEnt . '</td><td>' . $sujetMail . '</td>';
                     echo '<td>' . strftime("%#d %B %Y à %Hh%M", strtotime($dateEnvoiMail)) . '</td>';
                     echo '</tr>';
                 }
