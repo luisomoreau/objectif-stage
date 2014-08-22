@@ -105,7 +105,6 @@ $stmt->close();
                 <div class="large-9 columns">
                     <select name="filiereStage" required>
                         <option value="" disabled selected>Filières</option>
-                        <option value="1000000">Toute filière</option>
                         <?php
                         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
                         if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1'))) {
@@ -117,7 +116,7 @@ $stmt->close();
                         $stmt->bind_result($diplome_sise, $diplome_nom);
                         $stmt->store_result();
                         while ($stmt->fetch()) {
-                            echo ' <option value="' . $diplome_sise . '">' . $diplome_nom . '</option>';
+                            echo ' <option value="' . $diplome_sise . '">' . utf8_encode($diplome_nom) . '</option>';
                         }
                         $stmt->close();
                         ?>
