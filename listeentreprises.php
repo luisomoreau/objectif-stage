@@ -24,11 +24,11 @@ $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 
 if (isset($_GET['champ_rech'])) {
     $query = "SELECT * FROM entreprises WHERE (nomEnt LIKE '%" . $_GET['champ_rech'] . "%'";
-    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt=1 AND (nomEnt LIKE ? OR telEnt LIKE ? OR adresseEnt LIKE ?)'))) {
+    if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt=1 AND (nomEnt LIKE ? OR telEnt LIKE ? OR adresseEnt LIKE ? OR detailsEnt=?)'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $search = '%' . $_GET['champ_rech'] . '%';
-    $stmt->bind_param('sss', $search, $search, $search);
+    $stmt->bind_param('ssss', $search, $search, $search, $search);
 } else {
     if (!($stmt = $mysqli->prepare('SELECT idEnt, nomEnt, telEnt, adresseEnt FROM entreprises WHERE valideEnt=1'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
