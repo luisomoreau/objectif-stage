@@ -124,12 +124,8 @@ $user = getInfos();
                                         <option selected="selected" disabled="disabled" value="">Filière</option>
                                         <?php
                                         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-                                        if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1'))) {
-                                            echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-                                        }
-                                        if (!($stmt->execute())) {
-                                            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
-                                        }
+                                        $stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1');
+                                        $stmt->execute();
                                         $stmt->bind_result($diplome_sise, $diplome_nom);
                                         $stmt->store_result();
                                         while ($stmt->fetch()) {
@@ -137,7 +133,7 @@ $user = getInfos();
                                             if ((isset($_GET['filiere']) && $_GET['filiere'] == $diplome_sise) || (isset($user->filiere) && $user->filiere == $diplome_sise)) {
                                                 echo ' selected';
                                             }
-                                            echo '>' . $diplome_nom . '</option>';
+                                            echo '>' . utf8_encode($diplome_nom) . '</option>';
                                         }
                                         $stmt->close();
                                         ?>
