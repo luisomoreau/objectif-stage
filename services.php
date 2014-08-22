@@ -11,6 +11,11 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listeentreprises" class="large button expand">Liste des entreprises</a>
         </div>
     </section>
+    <section class="row">
+        <div class="large-6 column">
+            <a href="https://ent.univ-nc.nc/etudiant" class="large button expand">Entreprises partenaires au format excel</a>
+        </div>
+    </section>
 <?php
 } else if ($_SESSION['connected'] === "ent") {
     ?>
@@ -33,6 +38,9 @@ if ($_SESSION['connected'] === "etud") {
     <div class="row">
         <div class="large-6 columns">
             <a href="./listeetudiants.php" class="large button expand">Liste des étudiants</a>
+        </div>
+        <div class="large-6 columns">
+            <a href="http://www.univ-nc.nc/formation/catalogue-des-formations" class="large button expand">Catalogue des formations</a>
         </div>
     </div>
 <?php
@@ -57,15 +65,12 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./mail" class="large button expand">Envoyer un mail</a>
         </div>
         <div class="large-4 columns">
-            <a href="./pma" class="large button expand">phpMyAdmin</a>
+            <a href="./statistiques" class="large button expand">Statistiques</a>
         </div>
     </div>
     <div class="row">
         <div class="large-4 columns">
             <a href="./validerent" class="large button expand">Valider une entreprise</a>
-        </div>
-        <div class="large-4 columns">
-            <a href="./statistiques" class="large button expand">Statistiques</a>
         </div>
     </div>
 <?php

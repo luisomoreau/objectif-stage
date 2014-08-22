@@ -50,6 +50,10 @@ if (strlen($_POST['adresseEnt']) > 255) {
     header('Location: ./');
     die();
 }
+if (strlen($_POST['details']) > 1000) {
+    header('Location: ./');
+    die();
+}
 
 
 if (strlen($_POST['telEnt']) != 6) {
@@ -96,15 +100,15 @@ if ($_FILES['profilpic']['error'] <= 0) {
 }
 
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('INSERT INTO entreprises (nomEnt, mailEnt, mdpEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'))
+if (!($stmt = $mysqli->prepare('INSERT INTO entreprises (nomEnt, mailEnt, mdpEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt, detailsEnt)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'))
 ) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
 $nomFormat = ucfirst(mb_strtolower($_POST['nomContactEnt'], 'UTF-8'));
 $prenomFormat = ucfirst(mb_strtolower($_POST['prenomContactEnt'], 'UTF-8'));
-$stmt->bind_param('ssssssssss', $_POST['nomEnt'], $_POST['mailEnt'], $_POST['mdpEnt'], $nomFormat, $prenomFormat
-    , $_POST['telEnt'], $_POST['telSecEnt'], $_POST['adresseEnt'], $_POST['latEnt'], $_POST['lngEnt']);
+$stmt->bind_param('sssssssssss', $_POST['nomEnt'], $_POST['mailEnt'], $_POST['mdpEnt'], $nomFormat, $prenomFormat
+    , $_POST['telEnt'], $_POST['telSecEnt'], $_POST['adresseEnt'], $_POST['latEnt'], $_POST['lngEnt'], $_POST['details']);
 if (!($stmt->execute())) {
     ?>
     <div class="row">

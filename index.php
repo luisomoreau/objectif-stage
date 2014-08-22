@@ -46,7 +46,7 @@ if (!(isset($_SESSION['connected']))) {
     </div>
     <div class="row">
         <div class="large- columns">
-            <h3>Vous êtes une entreprise</h3>
+            <h3>Vous êtes une entreprise :</h3>
             <p>
                 Vous recherchez des compétences adaptées à vos besoins ? N’hésitez pas à déposer vos offres de stages directement en ligne à destination des étudiants de l'Université de la
                 Nouvelle-Calédonie.

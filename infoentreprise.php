@@ -6,7 +6,7 @@ if (!isset($_GET['id'])) {
     die();
 }
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, prenomContactEnt, nomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt, valideEnt
+if (!($stmt = $mysqli->prepare('SELECT nomEnt, mailEnt, prenomContactEnt, nomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt, valideEnt, detailsEnt
                                 FROM entreprises WHERE idEnt=?'))
 ) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -15,7 +15,7 @@ $stmt->bind_param('i', $_GET['id']);
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
-$stmt->bind_result($nomEnt, $mailEnt, $prenomContactEnt, $nomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $valideEnt);
+$stmt->bind_result($nomEnt, $mailEnt, $prenomContactEnt, $nomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $valideEnt, $detailsEnt);
 $stmt->fetch();
 $stmt->close();
 ?>
@@ -47,6 +47,10 @@ $stmt->close();
                 <h4>Adresse</h4>
 
                 <p><?php echo nl2br($adresseEnt); ?></p>
+
+                <h4>Informations complémentaires</h4>
+
+                <p><?php echo nl2br($detailsEnt); ?></p>
             </div>
             <div class="large-2 columns">
                 <?php

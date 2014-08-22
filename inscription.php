@@ -109,6 +109,12 @@ include('all.header.php');
                         <textarea placeholder="Adresse" name="adresseEnt" id="adresseEnt" maxlength="255" required="required"></textarea>
                     </div>
                 </div>
+                <br>
+                <div class="row">
+                    <div class="small-12 columns">
+                        <textarea placeholder="Informations complémentaires" name="details" id="details" maxlength="1000"></textarea>
+                    </div>
+                </div>
 
             </div>
         </div>

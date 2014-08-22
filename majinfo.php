@@ -204,18 +204,18 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
         // Requète SQL
         if ($_SESSION['connected'] === "admin") {
-            $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
+            $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt, detailsEnt
                                         FROM entreprises
                                         WHERE idEnt=?');
             $stmt->bind_param('i', $_GET['idEnt']);
         } else {
-            $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt
+            $stmt = $mysqli->prepare('SELECT idEnt, nomEnt, mailEnt, nomContactEnt, prenomContactEnt, telEnt, telSecEnt, adresseEnt, latEnt, lngEnt, detailsEnt
                                         FROM entreprises
                                         WHERE idEnt=?');
             $stmt->bind_param('i', $_SESSION['id']);
         }
         $stmt->execute();
-        $stmt->bind_result($idEnt, $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt);
+        $stmt->bind_result($idEnt, $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $detailsEnt);
         $stmt->fetch();
         $stmt->close();
         ?>
@@ -312,6 +312,12 @@ if ($_SESSION['connected'] === "etud" || (isset($_GET['idEtud']) && $_SESSION['c
                 <div class="large-12 columns">
                     <label for="adresseEnt">Adresse</label>
                     <textarea name="adresseEnt" id="adresseEnt" maxlength="255" required><?php echo $adresseEnt; ?></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <label for="adresseEnt">Informations complémentaires</label>
+                    <textarea name="details" id="details" maxlength="1000"><?php if ($detailsEnt !== 'NULL') echo $detailsEnt; ?></textarea>
                 </div>
             </div>
             <div class="row">

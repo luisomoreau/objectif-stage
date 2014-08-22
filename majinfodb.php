@@ -155,6 +155,10 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         header('Location: ./');
         die();
     }
+    if (strlen($_POST['details']) > 1000) {
+        header('Location: ./');
+        die();
+    }
     if (strlen($telEnt) != 6) {
         include('all.footer.php');
         ?>
@@ -222,29 +226,29 @@ if ($_SESSION['connected'] == "etud" || ($_SESSION['connected'] === "admin" && i
         if ($_SESSION['connected'] === "admin") {
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
-                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?
+                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, detailsEnt=?
                                         WHERE idEnt=?');
-            $stmt->bind_param('ssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_POST['idEnt']);
+            $stmt->bind_param('sssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_POST['details'], $_POST['idEnt']);
         } else {
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
-                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?
+                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, detailsEnt=?
                                         WHERE idEnt=?');
-            $stmt->bind_param('sssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_SESSION['id']);
+            $stmt->bind_param('ssssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $_POST['details'], $_SESSION['id']);
         }
     } else {
         if ($_SESSION['connected'] === "admin") {
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
-                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, mdpEnt=?
+                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, mdpEnt=?, detailsEnt=?
                                         WHERE idEnt=?');
-            $stmt->bind_param('sssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $mdpEnt, $_POST['idEnt']);
+            $stmt->bind_param('ssssssssssss', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $mdpEnt, $_POST['details'], $_POST['idEnt']);
         } else {
             $stmt = $mysqli->prepare('UPDATE entreprises
                                         SET nomEnt = ?,mailEnt=?, nomContactEnt=?, prenomContactEnt=?,
-                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, mdpEnt=?
+                                            telEnt=?, telSecEnt=?, adresseEnt=?, latEnt=?, lngEnt=?, mdpEnt=?, detailsEnt=?
                                         WHERE idEnt=?');
-            $stmt->bind_param('ssssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $mdpEnt, $_SESSION['id']);
+            $stmt->bind_param('sssssssssssi', $nomEnt, $mailEnt, $nomContactEnt, $prenomContactEnt, $telEnt, $telSecEnt, $adresseEnt, $latEnt, $lngEnt, $mdpEnt, $_POST['details'], $_SESSION['id']);
         }
         if ($_SESSION['connected'] != "admin") $_SESSION['mdp'] = $mdpEnt;
     }

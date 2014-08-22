@@ -23,7 +23,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         header('location: ./');
         die();
     } else {
-        header('location: ./loginadmin');
+        header('location: ./admin');
     }
 } else {
     ?>
