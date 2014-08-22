@@ -110,6 +110,14 @@ if (isset($_GET['id'])) {
             </div>
             <div class="row collapse">
                 <div class="small-4 columns">
+                    <span class="prefix">A </span>
+                </div>
+                <div class="small-8 columns">
+                    <input type="text" value="<?php echo $destinataireMail; ?>" disabled>
+                </div>
+            </div>
+            <div class="row collapse">
+                <div class="small-4 columns">
                     <span class="prefix">Envoyé le </span>
                 </div>
                 <div class="small-8 columns">
