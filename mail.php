@@ -53,10 +53,12 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
             $stmt = $mysqli->prepare('INSERT INTO mail (idEtud, idEnt, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
                         VALUES (?,?,?,?,?,?,?)');
+            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
             $stmt->bind_param('iisssss', $_SESSION['idEtud'], $idEnt, $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe);
+            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
             $stmt->execute();
+            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
             $stmt->close();
-            echo "lalalala :$idEnt";
             ?>
             <div class="row">
                 <div class="large-12 columns">
