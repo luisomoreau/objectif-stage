@@ -29,16 +29,17 @@ if (isset($_GET['idMail'])) {
         </div>
     </div>
 <?php
-$stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail FROM mail WHERE destinataireMail
-                                LIKE ?  OR sujetMail LIKE ? OR messageMail LIKE ? OR expediteurMail LIKE ? ORDER BY dateEnvoiMail DESC');
+$stmt = $mysqli->prepare('SELECT idMail, destinataireMail, sujetMail, dateEnvoiMail, messageMail FROM mail as M, etudiants as Etud, entreprises as Ent
+                            WHERE  M.idEnt=Ent.idEnt AND M.userEtud=Etud.userEtud AND (destinataireMail
+                                LIKE ?  OR sujetMail LIKE ? OR messageMail LIKE ? OR prenomEtud LIKE ? OR nomEtud LIKE ?) ORDER BY dateEnvoiMail DESC');
 if (isset($_GET['champ_rech'])) {
     $search = "%" . $_GET['champ_rech'] . "%";
 } else {
     $search = "%%";
 }
-$stmt->bind_param('ssss', $search, $search, $search, $search);
+$stmt->bind_param('sssss', $search, $search, $search, $search, $search);
 $stmt->execute();
-$stmt->bind_result($idMail, $destinataireMail, $expediteurMail, $sujetMail, $dateEnvoiMail, $messageMail);
+$stmt->bind_result($idMail, $destinataireMail, $sujetMail, $dateEnvoiMail, $messageMail, $nomEnt, $prenomEnt, $nomEtud);
 $stmt->store_result();
 if ($stmt->num_rows > 0) {
     ?>
@@ -78,10 +79,12 @@ if ($stmt->num_rows > 0) {
 <?php
 }
 if (isset($_GET['id'])) {
-    $stmt = $mysqli->prepare('SELECT idMail, destinataireMail, expediteurMail, sujetMail, dateEnvoiMail, messageMail, cvMail, idEtud FROM mail WHERE idMail=?');
+    $stmt = $mysqli->prepare('SELECT idMail, destinataireMail, sujetMail, dateEnvoiMail, messageMail, cvMail, idEtud, nomEnt, prenomEtud, nomEtud FROM mail as M, etudiants as Etud, entreprises as Ent
+                            WHERE  M.idEnt=Ent.idEnt AND M.userEtud=Etud.userEtud
+                            AND idMail=?');
     $stmt->bind_param('i', $_GET['id']);
     $stmt->execute();
-    $stmt->bind_result($idMail, $destinataireMail, $expediteurMail, $sujetMail, $dateEnvoiMail, $messageMail, $cvMail, $idEtud);
+    $stmt->bind_result($idMail, $destinataireMail, $sujetMail, $dateEnvoiMail, $messageMail, $cvMail, $idEtud, $nomEnt, $prenomEnt, $nomEtud);
     $stmt->fetch();
     ?>
     <div class="row">
@@ -101,7 +104,7 @@ if (isset($_GET['id'])) {
                     <span class="prefix">Mail de </span>
                 </div>
                 <div class="small-8 columns">
-                    <input type="text" value="<?php echo $expediteurMail; ?>" disabled>
+                    <input type="text" value="<?php echo $prenomEnt.' '.$nomEtud; ?>" disabled>
                 </div>
             </div>
             <div class="row collapse">

@@ -51,13 +51,10 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     }
     if (!is_null($idEnt)) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
-            $stmt = $mysqli->prepare('INSERT INTO mail (userEtud, idEnt, destinataireMail, sujetMail, messageMail, expediteurMail, cvMail)
+            $stmt = $mysqli->prepare('INSERT INTO mail (userEtud, idEnt, destinataireMail, sujetMail, messageMail, cvMail)
                         VALUES (?,?,?,?,?,?,?)');
-            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
-            $stmt->bind_param('sisssss', $_SESSION['identifiant'], $idEnt, $destinataire, $sujet, $message, $nom_expediteur, $piece_jointe);
-            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+            $stmt->bind_param('sisssss', $_SESSION['identifiant'], $idEnt, $destinataire, $sujet, $message, $piece_jointe);
             $stmt->execute();
-            echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
             $stmt->close();
             ?>
             <div class="row">
