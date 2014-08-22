@@ -62,6 +62,7 @@ $stmt->close();
                         onclick="return confirm(\'Êtes-vous sur de vouloir supprimer définitivement cette entreprise?\');">Supprimer l\'entreprise</a>';
                         }
                         echo '<a href="majinfo?idEnt='.$_GET['id'] .'"class="button">Modifier l\'entreprise</a>';
+                        echo '<a href="mailadmin?dest='.$mailEnt.'"class="button">Envoyer un mail</a>';
                     }
                 ?>
             </div>
