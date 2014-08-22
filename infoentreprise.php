@@ -35,7 +35,7 @@ $stmt->close();
 
                 <p><strong>Téléphone</strong>:
                     <?php echo $telEnt;
-                    if ($telSecEnt != NULL) {
+                    if ($telSecEnt != 'NULL') {
                         echo " - " . $telSecEnt;
                     }
                     ?></p>
@@ -46,7 +46,7 @@ $stmt->close();
                     } ?>
                 <h4>Informations complémentaires</h4>
 
-                <p><?php if ($detailsEnt !== 'NULL') echo nl2br($detailsEnt); else echo "Aucune." ?></p>
+                <p><?php if ($detailsEnt != 'NULL') echo nl2br($detailsEnt); else echo "Aucune." ?></p>
 
                 <h4>Adresse</h4>
 
