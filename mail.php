@@ -49,8 +49,11 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
             $stmt->close();
         }
     }
+    echo "CHECK NULL IDENT";
     if (!is_null($idEnt)) {//si le mail existe et correspon bien à la cible demandée (stage : réponse à une offre, ent : proposition volontaire)
+        echo "AWA PAS NULLL";
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
+            echo "ON PREPZREZ";
             $stmt = $mysqli->prepare('INSERT INTO mail (userEtud, idEnt, destinataireMail, sujetMail, messageMail, cvMail)
                         VALUES (?,?,?,?,?,?)');
             echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
