@@ -36,7 +36,7 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
     //check si le mail existe
     $exist = 0;
     if ($_POST['cible'] == 'stage') {
-        $stmt = $mysqli->prepare('SELECT E.idEnt FROM stages,entreprises as E WHERE stages.idEnt=entreprises.idEnt AND mailContactStage=?');
+        $stmt = $mysqli->prepare('SELECT E.idEnt FROM stages,entreprises as E WHERE stages.idEnt=E.idEnt AND mailContactStage=?');
         $stmt->bind_param('s', $_POST['dest']);
         $stmt->execute();
         $stmt->bind_result($idEnt);
