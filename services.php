@@ -40,7 +40,7 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listeetudiants.php" class="large button expand">Liste des étudiants</a>
         </div>
         <div class="large-6 columns">
-            <a href="http://www.univ-nc.nc/formation/catalogue-des-formations" class="large button expand">Catalogue des formations</a>
+            <a href="http://www.univ-nc.nc/formation/catalogue-des-formations" target="_blank" class="large button expand">Catalogue des formations</a>
         </div>
     </div>
 <?php
