@@ -53,7 +53,7 @@ if (isset($_POST['cv']) && isset($_POST['dest']) && isset($_POST['cible']) && is
         if (email($mail_account, $mail_pwd, $destinataire, $sujet, $message, $expediteur, $nom_expediteur, $piece_jointe)) {
             $stmt = $mysqli->prepare('INSERT INTO mail (userEtud, idEnt, destinataireMail, sujetMail, messageMail, cvMail)
                         VALUES (?,?,?,?,?,?,?)');
-            $stmt->bind_param('sisssss', $_SESSION['identifiant'], $idEnt, $destinataire, $sujet, $message, $piece_jointe);
+            $stmt->bind_param('sissss', $_SESSION['identifiant'], $idEnt, $destinataire, $sujet, $message, $piece_jointe);
             $stmt->execute();
             $stmt->close();
             ?>
