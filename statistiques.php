@@ -62,7 +62,7 @@ if ($_SESSION['connected'] !== "admin") {
                                 while ($stmt->fetch()) {
                                     echo ' <option value="' . $diplome_sise . '"';
                                     if (isset($_GET['filiere']) && $_GET['filiere'] == $diplome_sise) echo "selected";
-                                    echo '>' . $diplome_nom . '</option>';
+                                    echo '>' . utf8_encode($diplome_nom) . '</option>';
                                 }
                                 $stmt->close();
                                 ?>
