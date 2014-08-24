@@ -8,6 +8,15 @@ if (!isset($_POST['nomEnt']) or !isset($_POST['mailEnt']) or !isset($_POST['mdpE
     header('Location: ./');
     die();
 }
+if (!(isset($_SESSION['captcha']) && $_POST['captcha'] == $_SESSION['captcha'])) {
+    ?>
+    <script>
+        alert('Captcha non valide');
+        history.back();
+    </script>
+    <?php
+    die();
+}
 if (strlen($_POST['nomEnt']) > 100) {
     header('Location: ./');
     die();

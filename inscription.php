@@ -1,5 +1,9 @@
 <?php
 include('all.header.php');
+$nb1 = mt_rand(1, 10);
+$nb2 = mt_rand(1, 10);
+$rep = $nb1 + $nb2;
+$_SESSION['captcha'] = $rep;
 ?>
     <form method="POST" action="./inscriptiondb" enctype="multipart/form-data" onsubmit="return (checkPatern('#mdpEnt') && checkPass('#mdpEnt','#mdpEnt2'))">
         <section class="row">
@@ -138,7 +142,19 @@ include('all.header.php');
             </div>
         </div>
         <br/>
-
+        <div class="row">
+            <div class="small-12 large-6 large-centered columns">
+                <div class="row collapse">
+                    <div class="small-6 columns">
+                        <span class="prefix"><?php echo "$nb1 + $nb2 ="; ?></span>
+                    </div>
+                    <div class="small-6 columns">
+                        <input placeholder="Réponse" type="tel" maxlength="2" name="captcha" id="captcha"
+                               onkeyup="verif_nombre(this)" required/>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="small-12 large-6 large-centered columns">
                 <input class="large button expand" id="envoyer" name="submit" type="submit" value="S'inscrire"/>
