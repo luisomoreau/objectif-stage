@@ -48,7 +48,6 @@ if ($_SESSION['connected'] !== "admin") {
                     <div class="large-9 columns">
                         <form method="GET">
                             <select name="filiere" onchange="this.form.submit()">
-                                <option value="1000000">Toute filière</option>
                                 <?php
                                 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
                                 if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom FROM diplomes WHERE diplome_active=1'))) {
