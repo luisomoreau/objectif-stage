@@ -26,7 +26,6 @@ if ((strlen($_POST['mailEnt']) > 100)) {
     die();
 }
 if (!(filter_var($_POST['mailEnt'], FILTER_VALIDATE_EMAIL))) {
-    include('all.footer.php');
     ?>
     <script>
         alert('Email non valide');
