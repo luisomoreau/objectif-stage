@@ -6,7 +6,7 @@ fonctions.php
 logincheck.php
 /CAS/certificate.pem
 config.php
-users/
+users/*
 
 # Ignore files that may contain personal information
 fichiers/*
