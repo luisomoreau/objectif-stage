@@ -6,7 +6,7 @@ require_once('fonctions.php');
 <!doctype html>
 <html lang="fr">
 <head>
-    <title>Objectif Stage</title>
+    <title>Objectif Stage | BETA</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="Description" content="Plateforme de gestion des stages de l'UNC."/>
     <meta charset="utf-8"/>
@@ -20,10 +20,10 @@ require_once('fonctions.php');
     <script src="js/vendor/custom.modernizr.js"></script>
     <script src="js/foundation-datepicker.js"></script>
     <link rel="shortcut icon" href="/css/favicon.ico" type="image/x-icon" />
-</head>
-<body>
-<!--.page -->
-<div role="document" class="page">
+    </head>
+    <body>
+    <!--.page -->
+    <div role="document" class="page">
     <!--.l-header region -->
     <header role="banner" class="l-header">
 
