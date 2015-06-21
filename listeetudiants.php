@@ -1,7 +1,7 @@
 <?php
 include('all.header.php');
 include('logincheck.php');
-if ($_SESSION['connected'] !== "admin" && $_SESSION['connected'] !== "ent") {
+if ($_SESSION['connected'] !== "admin" && $_SESSION['connected'] !== "ent" && $_SESSION['statut'] !== "personnel") {
     header('Location : /');
     die();
 }

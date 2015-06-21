@@ -11,11 +11,25 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listeentreprises" class="large button expand">Liste des entreprises</a>
         </div>
     </section>
-    <section class="row">
-        <div class="large-6 column">
-            <a href="https://ent.univ-nc.nc/etudiant" class="large button expand">Entreprises partenaires au format excel</a>
+    <?php
+    if ($_SESSION['statut'] === "personnel") {
+    ?>
+    <div class="row">
+        <div class="large-6 columns">
+            <a href="./listeetudiants" class="large button expand">Liste des étudiants</a>
         </div>
-    </section>
+        <div class="large-6 columns">
+            <a href="./validerstage" class="large button expand">Valider un stage</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-6 columns">
+            <a href="./rp" class="large button expand">Ma formation</a>
+        </div>
+    </div>
+    <?php
+    }
+    ?>
 <?php
 } else if ($_SESSION['connected'] === "ent") {
     ?>

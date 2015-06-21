@@ -53,8 +53,10 @@ require_once('fonctions.php');
                             echo '
                                     <li class="expanded color-2" title=""><a href="./services" title="" class="has-icon"><i class="fi-address-book"></i>Services</a></li>
                                     <li class="leaf color-3"><a href="https://ent.univ-nc.nc/content/baip" class="has-icon"><i class="fi-page"></i>documents</a></li>
-                                    <li class="last leaf color-4"><a href="./compte" class="has-icon"><i class="fi-torso"></i>Mon compte</a></li></ul>
                                 ';
+                            if ($_SESSION['statut'] != "personnel") {
+                                echo '<li class="last leaf color-4"><a href="./compte" class="has-icon"><i class="fi-torso"></i>Mon compte</a></li></ul>';
+                            }
                         }
                         ?>
                 </section>

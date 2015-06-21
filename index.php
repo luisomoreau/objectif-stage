@@ -28,12 +28,13 @@ if (!(isset($_SESSION['connected']))) {
 
     <div class="row">
         <div class="large-6 column">
-            <a href="./loginetud" class="large button expand">Vous êtes un étudiant</a>
+            <a href="./loginetud" class="large button expand">Vous êtes un étudiant ou enseignant</a>
         </div>
         <div class="large-6 column">
             <a href="./entreprises" class="large button expand">Vous êtes une entreprise</a>
         </div>
     </div>
+    <br>
     <div class="row">
         <div class="large-12 columns">
             <h3>Vous êtes un étudiant :</h3>
@@ -41,6 +42,15 @@ if (!(isset($_SESSION['connected']))) {
             <p>
                 En vous inscrivant, vous aurez accès en ligne à l'ensemble des offres de stage proposées par les entreprises. Vous pourrez y répondre directement et être accompagnés dans vos démarches
                 par le bureau d’aide à l’insertion professionnelle (BAIP).
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <h3>Vous êtes un enseignant :</h3>
+
+            <p>
+                Vous avez ici accès à l'ensemble des offres de stage proposées par les entreprises. Si vous êtes un responsable pédagogique, vous pouvez également modifier la description de votre formation.
             </p>
         </div>
     </div>

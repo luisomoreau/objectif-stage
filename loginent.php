@@ -22,6 +22,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
             $_SESSION['identifiant'] = $nom;
             $_SESSION['id'] = $id;
             $_SESSION["connected"] = "ent";
+            $_SESSION["statut"] = "ent";
             header('location: ./');
             die();
         }

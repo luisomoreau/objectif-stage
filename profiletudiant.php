@@ -1,7 +1,7 @@
 <?php
 include('all.header.php');
 include('logincheck.php');
-if (($_SESSION['connected'] == 'ent' || $_SESSION['connected'] == 'admin') && isset($_GET['id'])) {
+if (($_SESSION['connected'] == 'ent' || $_SESSION['connected'] == 'admin' || $_SESSION['statut'] == 'personnel') && isset($_GET['id'])) {
     $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 
     if (!($stmt = $mysqli->prepare('SELECT mailEtud, mailPersoEtud, nomEtud, prenomEtud, trouveStageEtud, anneeEtud, diplome_nom, civiliteEtud, naissanceEtud, telEtud, telSecEtud, userEtud
