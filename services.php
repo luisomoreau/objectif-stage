@@ -19,13 +19,17 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listeetudiants" class="large button expand">Liste des étudiants</a>
         </div>
         <div class="large-6 columns">
-            <a href="./validerstage" class="large button expand">Valider un stage</a>
+            <a href="./listeformations" class="large button expand">Liste des formations</a>
         </div>
     </div>
     <div class="row">
         <div class="large-6 columns">
+            <a href="./validerstage" class="large button expand">Valider un stage</a>
+        </div>
+        <div class="large-6 columns">
             <a href="./rp" class="large button expand">Ma formation</a>
         </div>
+
     </div>
     <?php
     }
@@ -76,13 +80,16 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listemails" class="large button expand">Liste des emails</a>
         </div>
         <div class="large-4 columns">
-            <a href="./mailadmin" class="large button expand">Envoyer un mail</a>
+            <a href="./listeformations" class="large button expand">Liste des formations</a>
         </div>
         <div class="large-4 columns">
-            <a href="./statistiques" class="large button expand">Statistiques</a>
+            <a href="./mailadmin" class="large button expand">Envoyer un mail</a>
         </div>
     </div>
     <div class="row">
+        <div class="large-4 columns">
+            <a href="./statistiques" class="large button expand">Statistiques</a>
+        </div>
         <div class="large-4 columns">
             <a href="./validerent" class="large button expand">Valider une entreprise</a>
         </div>

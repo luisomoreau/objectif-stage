@@ -20,6 +20,7 @@ if (isset($_POST['identifiant']) && isset($_POST['mdp'])) {
         $_SESSION['id'] = $id;
         $_SESSION['mail'] = $mailAdmin;
         $_SESSION["connected"] = "admin";
+        $_SESSION["statut"] = "admin";
         header('location: ./');
         die();
     } else {
