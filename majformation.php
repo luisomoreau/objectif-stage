@@ -91,7 +91,7 @@ if ($formationActive == "1") {
                     </p>
 
                     <h4>Détail de la formation (Lien vers le site de l'UNC ou un PDF)</h4>
-                    <p><input type="text" name="lien" id="lien" maxlength="100" placeholder="Lien vers le descriptif de la formation sur le site de l'UNC. (http://...)" value="<?php echo $formationLien; ?>"/></p>
+                    <p><input type="text" name="lien" id="lien" maxlength="200" placeholder="Lien vers le descriptif de la formation sur le site de l'UNC. (http://...)" value="<?php echo $formationLien; ?>"/></p>
 
                     <h4>Descritif des stages demandés</h4>
                     <p>Renseigner les détails rélatifs aux stages qui devrons être proposés<br>
