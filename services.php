@@ -12,7 +12,6 @@ if ($_SESSION['connected'] === "etud") {
         </div>
     </section>
     <?php
-    var_dump($_SESSION['identifiant']);
     if ($_SESSION['statut'] === "personnel") {
         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
         $stmt = $mysqli->prepare('select sise from infosformation, personnels where responsablePedagogique = idPersonnel and userPersonnel = ? limit 1');
