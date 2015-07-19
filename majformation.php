@@ -68,7 +68,7 @@ if ($formationActive == "1") {
                     <h4>Responsable de la formation</h4>
                     <p>
                         <select name="rp">
-                            <option>Selectionner le responsable pédagogique...</option>
+                            <option value="">Selectionner le responsable pédagogique...</option>
                             <?php
                             $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
                             if (!($stmt = $mysqli->prepare('select idPersonnel, civilitePersonnel, nomPersonnel, prenomPersonnel from personnels order by nomPersonnel asc'))) {
