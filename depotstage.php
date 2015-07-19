@@ -18,6 +18,14 @@ $stmt->fetch();
 $stmt->close();
 
 ?>
+    <script>
+        function changeUrl()
+        {
+            var select = document.getElementById("filiereSelect");
+            var lien = document.getElementById("lienformation");
+            lien.href = "./formation?sise="+select.value;
+        }
+    </script>
     <div class="row">
         <div class="large-12 columns">
             <h1>Déposer un stage</h1>
@@ -99,11 +107,11 @@ $stmt->close();
     <div class="row">
         <div class="large-9 columns">
             <div class="row collapse">
-                <div class="large-3 columns">
+                <div class="large-2 columns">
                     <span class="prefix">Filière</span>
                 </div>
-                <div class="large-9 columns">
-                    <select name="filiereStage" required>
+                <div class="large-8 columns">
+                    <select name="filiereStage" onchange="changeUrl()" id="filiereSelect" required>
                         <option value="" disabled selected>Choisir une filière</option>
                         <?php
                         $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
@@ -122,8 +130,10 @@ $stmt->close();
                         ?>
                     </select>
                 </div>
+                <div class="large-2 columns">
+                    <a href="http://www.univ-nc.nc/formation/catalogue-des-formations" target="_blank" id="lienformation" class="button postfix">Détails</a>
+                </div>
             </div>
-            <br/>
 
             <div class="row">
 
