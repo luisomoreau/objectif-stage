@@ -63,12 +63,12 @@ if (isset($_GET['champ_rech'])) {
 
 if (isset($_GET['trouveStage']) && $_GET['trouveStage'] == 1) {
     $trouveStage = 0;
-    if (!($stmt = $mysqli->prepare('SELECT idEtud, nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise'))) {
+    if (!($stmt = $mysqli->prepare('SELECT idEtud, nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND trouveStageEtud = ? AND filiereEtud = diplome_sise LIMIT 50'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('sssi', $search, $search, $search, $trouveStage);
 } else {
-    if (!($stmt = $mysqli->prepare('SELECT idEtud, nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND filiereEtud = diplome_sise'))) {
+    if (!($stmt = $mysqli->prepare('SELECT idEtud, nomEtud, prenomEtud, diplome_nom, nbCandEtud, anneeEtud FROM etudiants, diplomes WHERE (nomEtud LIKE ? OR prenomEtud LIKE ? OR anneeEtud LIKE ?) AND filiereEtud = diplome_sise LIMIT 50'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('sss', $search, $search, $search);

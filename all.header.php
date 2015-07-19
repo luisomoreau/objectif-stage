@@ -139,6 +139,15 @@ require_once('fonctions.php');
                         case "rstpwd":
                             $page = "Réinitialisation du mot de passe";
                             break;
+                        case "listeformations":
+                            $page = "Liste des formations";
+                            break;
+                        case "formation":
+                            $page = "Détails de la formation";
+                            break;
+                        case "majformation":
+                            $page = "Modification de la formation";
+                            break;
                     }
                     echo $page;
                     ?>

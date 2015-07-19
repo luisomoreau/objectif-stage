@@ -66,12 +66,12 @@ if (isset($_GET['champ_rech'])) {
 
 if (isset($_GET['active']) && $_GET['active'] == 1) {
     $formationActive = $_GET['active'];
-    if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom, diplome_active, COUNT(idEtud) FROM diplomes LEFT JOIN etudiants ON (filiereEtud = diplome_sise) WHERE (diplome_sise LIKE ? OR diplome_nom LIKE ?) AND diplome_active = ? GROUP BY diplome_sise LIMIT 30'))) {
+    if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom, diplome_active, COUNT(idEtud) FROM diplomes LEFT JOIN etudiants ON (filiereEtud = diplome_sise) WHERE (diplome_sise LIKE ? OR diplome_nom LIKE ?) AND diplome_active = ? AND diplome_sise <> 1000000 GROUP BY diplome_sise LIMIT 50'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('ssi', $search, $search, $formationActive);
 } else {
-    if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom, diplome_active, COUNT(idEtud) FROM diplomes LEFT JOIN etudiants ON (filiereEtud = diplome_sise) WHERE (diplome_sise LIKE ? OR diplome_nom LIKE ?) GROUP BY diplome_sise LIMIT 30'))) {
+    if (!($stmt = $mysqli->prepare('SELECT diplome_sise, diplome_nom, diplome_active, COUNT(idEtud) FROM diplomes LEFT JOIN etudiants ON (filiereEtud = diplome_sise) WHERE (diplome_sise LIKE ? OR diplome_nom LIKE ?) AND diplome_sise <> 1000000 GROUP BY diplome_sise LIMIT 50'))) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
     $stmt->bind_param('ss', $search, $search);

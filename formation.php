@@ -11,10 +11,11 @@ if (!isset($_GET['sise'])) {
 }
 
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
-if (!($stmt = $mysqli->prepare('select diplome_sise, diplome_nom, diplome_active, description, lien, userPersonnel, mailPersonnel, civilitePersonnel, nomPersonnel, prenomPersonnel, telPersonnel
+if (!($stmt = $mysqli->prepare('select diplome_sise, diplome_nom, diplome_active, description, lien, userPersonnel, mailPersonnel, civilitePersonnel, nomPersonnel, prenomPersonnel, telPersonnel, count(idEtud)
                               from diplomes
                               left join infosformation on diplome_sise = sise
                               left join personnels on responsablePedagogique = idPersonnel
+                              left join etudiants on filiereEtud = diplome_sise
                               where diplome_sise=?'))
 ) {
     echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -23,7 +24,7 @@ $stmt->bind_param('s', $_GET['sise']);
 if (!($stmt->execute())) {
     echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
-$stmt->bind_result($formationSise, $formationNom, $formationActive, $formationDescription, $formationLien, $rpuser, $rpmail, $rpcivilite, $rpnom, $rpprenom, $rptel);
+$stmt->bind_result($formationSise, $formationNom, $formationActive, $formationDescription, $formationLien, $rpuser, $rpmail, $rpcivilite, $rpnom, $rpprenom, $rptel, $nbetud);
 $stmt->fetch();
 $stmt->close();
 if ($formationActive == "1") {
@@ -56,7 +57,8 @@ if ($formationActive == "1") {
             <div class="large-2 columns">
                 <h4>Informations</h4>
                 <p><strong>Numéro SISE</strong>: <?php echo $formationSise; ?><br>
-                <strong>Formation active</strong>: <?php echo $formationActive; ?></p>
+                <strong>Formation active</strong>: <?php echo $formationActive; ?><br>
+                <strong>Nombre d'étudiants:</strong> <?php echo $nbetud; ?></p>
                 <?php
                 if ($_SESSION['connected'] == "admin" || $_SESSION['identifiant'] == $rpuser) {
                     echo '<a href="majformation?sise='.$_GET['sise'] .'"class="button">Modifier la formation</a>';
