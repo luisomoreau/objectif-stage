@@ -8,12 +8,12 @@ if ($_SESSION['connected'] !== "ent" && $_SESSION['connected'] !== "admin") {
 
 $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 $stmt = $mysqli->prepare('SELECT idEnt, nomStage, prenomContactStage, nomContactStage, lieuStage, latStage, lngStage,
-                            dateDebutStage, dateFinStage, dateLimiteStage, sujetStage, detailsStage, mailContactStage,lieuStage, idStage, filiereStage, l1Stage, l2Stage, l3Stage, remuStage
+                            dateDebutStage, dateFinStage, dateLimiteStage, sujetStage, detailsStage, mailContactStage,lieuStage, idStage, filiereStage, l1Stage, l2Stage, l3Stage, remuStage, valideStage
                             FROM stages WHERE idStage=?');
 $stmt->bind_param('i', $_GET['id']);
 $stmt->execute();
 $stmt->bind_result($idEnt, $nomStage, $prenomContactStage, $nomContactStage, $lieuStage, $latStage, $lngStage,
-    $dateDebutStage, $dateFinStage, $dateLimiteStage, $sujetStage, $detailsStage, $mailContactStage, $lieuStage, $idStage, $filiereStage, $l1Stage, $l2Stage, $l3Stage, $remuStage);
+    $dateDebutStage, $dateFinStage, $dateLimiteStage, $sujetStage, $detailsStage, $mailContactStage, $lieuStage, $idStage, $filiereStage, $l1Stage, $l2Stage, $l3Stage, $remuStage, $valideStage);
 $stmt->fetch();
 $stmt->close();
 
@@ -189,18 +189,38 @@ if ($idEnt !== $_SESSION['id'] && $_SESSION['connected'] !== "admin" || $idStage
                 </div>
             </div>
         </div>
-
-        <div class="row collapse">
-            <div class="small-8 columns">
-                <span class="prefix">Stage rémunéré</span>
+        <div class="row">
+            <div class="large-6 columns">
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        <span class="prefix">Stage rémunéré</span>
+                    </div>
+                    <div class="small-4 columns">
+                        <div class="switch">
+                            <input id="remStage" name="remStage" type="radio" value="0" <?php if ($remuStage == 0) echo 'checked'; ?>>
+                            <label for="remStage" onclick="" class="text-center">Non</label>
+                            <input id="remStage" name="remStage" type="radio" value="1" <?php if ($remuStage == 1) echo 'checked'; ?>>
+                            <label for="remStage" onclick="" class="text-center">Oui</label>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="small-4 columns">
-                <div class="switch">
-                    <input id="remStage" name="remStage" type="radio" value="0" <?php if ($remuStage == 0) echo 'checked'; ?>>
-                    <label for="remStage" onclick="" class="text-center">Non</label>
-                    <input id="remStage" name="remStage" type="radio" value="1" <?php if ($remuStage == 1) echo 'checked'; ?>>
-                    <label for="remStage" onclick="" class="text-center">Oui</label>
-                    <span></span>
+
+            <div class="large-6 columns">
+                <div class="row collapse">
+                    <div class="small-8 columns">
+                        <span class="prefix">Stage validé</span>
+                    </div>
+                    <div class="small-4 columns">
+                        <div class="switch">
+                            <input id="valideStage" name="valideStage" type="radio" value="0" <?php if ($valideStage == 0) echo 'checked'; ?>>
+                            <label for="valideStage" onclick="" class="text-center">Non</label>
+                            <input id="valideStage" name="valideStage" type="radio" value="1" <?php if ($valideStage == 1) echo 'checked'; ?>>
+                            <label for="valideStage" onclick="" class="text-center">Oui</label>
+                            <span></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

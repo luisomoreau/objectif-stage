@@ -58,6 +58,12 @@ if ($_POST['remStage'] == 1 || $_POST['remStage'] == 0) {
     realDie();
 }
 
+if ($_POST['valideStage'] == 1 || $_POST['valideStage'] == 0) {
+    $valideStage = $_POST['valideStage'];
+} else {
+    realDie();
+}
+
 if ($_POST['stageL1'] == 1 || $_POST['stageL1'] == 0) {
     $stageL1 = $_POST['stageL1'];
 } else {
@@ -144,12 +150,12 @@ $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
 if ($_SESSION['connected'] == 'admin') {
     if (!($stmt = $mysqli->prepare("UPDATE stages SET nomStage=?, nomContactStage=?, prenomContactStage=?, mailContactStage=?, lieuStage=?, latStage=?,
                                 lngStage=?, dateDebutStage=STR_TO_DATE(?, '%d/%m/%Y'), dateFinStage=STR_TO_DATE(?, '%d/%m/%Y'), dateLimiteStage=STR_TO_DATE(?, '%d/%m/%Y'), dureeStage=?,
-                                sujetStage=?, detailsStage=?, l1Stage=?, l2Stage=?, l3Stage=?, filiereStage=?, remuStage=? WHERE idStage=?"))
+                                sujetStage=?, detailsStage=?, l1Stage=?, l2Stage=?, l3Stage=?, filiereStage=?, remuStage=?, valideStage=? WHERE idStage=?"))
     ) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    $stmt->bind_param('ssssssssssissiiissi', $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage, $lngStage, $dateDebut, $dateFin, $dateLimite, $dureeStage, $sujetStage,
-        $detailsStage, $stageL1, $stageL2, $stageL3, $filiereStage, $remStage, $idStage);
+    $stmt->bind_param('ssssssssssissiiisssi', $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage, $lngStage, $dateDebut, $dateFin, $dateLimite, $dureeStage, $sujetStage,
+        $detailsStage, $stageL1, $stageL2, $stageL3, $filiereStage, $remStage, $valideStage, $idStage);
     if (!($stmt->execute())) {
         ?>
         <div class="row">
@@ -171,12 +177,12 @@ if ($_SESSION['connected'] == 'admin') {
 } else {
     if (!($stmt = $mysqli->prepare("UPDATE stages SET nomStage=?, nomContactStage=?, prenomContactStage=?, mailContactStage=?, lieuStage=?, latStage=?,
                                 lngStage=?, dateDebutStage=STR_TO_DATE(?, '%d/%m/%Y'), dateFinStage=STR_TO_DATE(?, '%d/%m/%Y'), dateLimiteStage=STR_TO_DATE(?, '%d/%m/%Y'), dureeStage=?,
-                                sujetStage=?, detailsStage=?, l1Stage=?, l2Stage=?, l3Stage=?, filiereStage=?, remuStage=? WHERE idStage=? AND idEnt=?"))
+                                sujetStage=?, detailsStage=?, l1Stage=?, l2Stage=?, l3Stage=?, filiereStage=?, remuStage=?, valideStage=? WHERE idStage=? AND idEnt=?"))
     ) {
         echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    $stmt->bind_param('ssssssssssissiiissii', $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage, $lngStage, $dateDebut, $dateFin, $dateLimite, $dureeStage, $sujetStage,
-        $detailsStage, $stageL1, $stageL2, $stageL3, $filiereStage, $remStage, $idStage, $_SESSION['id']);
+    $stmt->bind_param('ssssssssssissiiisssii', $nomStage, $nomContactStage, $prenomContactStage, $mailContactStage, $lieuStage, $latStage, $lngStage, $dateDebut, $dateFin, $dateLimite, $dureeStage, $sujetStage,
+        $detailsStage, $stageL1, $stageL2, $stageL3, $filiereStage, $remStage, $valideStage, $idStage, $_SESSION['id']);
     if (!($stmt->execute())) {
         ?>
         <div class="row">

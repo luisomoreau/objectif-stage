@@ -28,7 +28,7 @@ if ($_SESSION['connected'] === "ent" || $_SESSION['connected'] === "admin") {
 if (!($stmt = $mysqli->prepare('SELECT mailEnt, nomStage, sujetStage,  detailsStage,
                                        prenomContactStage, nomContactStage, mailContactStage, telEnt,
                                        telSecEnt, adresseEnt, dateDebutStage, dateFinStage, dateLimiteStage, lieuStage,
-                                       latStage, lngStage, dureeStage, diplome_nom, l1Stage, l2Stage, l3Stage
+                                       latStage, lngStage, dureeStage, diplome_nom, l1Stage, l2Stage, l3Stage, valideStage
                                 FROM stages,entreprises,diplomes
                                 WHERE stages.idEnt=entreprises.idEnt
                                 AND diplome_sise = filiereStage
@@ -43,7 +43,7 @@ if (!($stmt->execute())) {
 $stmt->bind_result($mailEnt, $nomStage, $sujetStage, $detailsStage,
     $prenomContactStage, $nomContactStage, $mailContactStage, $telEnt,
     $telSecEnt, $adresseEnt, $dateDebutStage, $dateFinStage, $dateLimiteStage, $lieuStage,
-    $latStage, $lngStage, $dureeStage, $filiereStage, $l1Stage, $l2Stage, $l3Stage);
+    $latStage, $lngStage, $dureeStage, $filiereStage, $l1Stage, $l2Stage, $l3Stage, $valideStage);
 $stmt->fetch();
 $stmt->close();
 $niveauStage = "";
@@ -76,22 +76,21 @@ if ($niveauStage=='') {
             </div>
             <div class="large-8 columns">
                 <h4>Nom</h4>
-
                 <p><em><?php echo $nomStage ?></em></p>
                 <h4>Sujet</h4>
-
                 <p><?php echo $sujetStage ?></p>
-
                 <div class="row">
                     <div class="small-6 columns">
                         <h4>Filière</h4>
-
                         <p><?php echo utf8_encode($filiereStage) ?></p>
                     </div>
-                    <div class="small-6 columns">
+                    <div class="small-3 columns">
                         <h4>Niveau</h4>
-
                         <p><?php echo $niveauStage ?></p>
+                    </div>
+                    <div class="small-3 columns">
+                        <h4>Validité</h4>
+                        <p><?php if($valideStage == "1") echo "Stage validé par le responsable de la formation"; else echo "Stage en attente de validation ou non validé."; ?></p>
                     </div>
                 </div>
             </div>

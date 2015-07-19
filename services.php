@@ -12,7 +12,15 @@ if ($_SESSION['connected'] === "etud") {
         </div>
     </section>
     <?php
+    var_dump($_SESSION['identifiant']);
     if ($_SESSION['statut'] === "personnel") {
+        $mysqli = new mysqli($sqlserver, $sqlid, $sqlpwd, $sqldb);
+        $stmt = $mysqli->prepare('select sise from infosformation, personnels where responsablePedagogique = idPersonnel and userPersonnel = ? limit 1');
+        $stmt->bind_param('s', $_SESSION['identifiant']);
+        $stmt->execute();
+        $stmt->bind_result($sise);
+        $stmt->fetch();
+        $stmt->close();
     ?>
     <div class="row">
         <div class="large-6 columns">
@@ -22,16 +30,19 @@ if ($_SESSION['connected'] === "etud") {
             <a href="./listeformations" class="large button expand">Liste des formations</a>
         </div>
     </div>
+        <?php
+        if ($sise != "" || $sise != null) {
+        ?>
     <div class="row">
         <div class="large-6 columns">
-            <a href="./validerstage" class="large button expand">Valider un stage</a>
+            <a href="./listestages?valideStage=0&filiere=<?php echo $sise; ?>" class="large button expand">Valider un stage</a>
         </div>
         <div class="large-6 columns">
-            <a href="./rp" class="large button expand">Ma formation</a>
+            <a href="./formation?sise=<?php echo $sise; ?>" class="large button expand">Ma formation</a>
         </div>
-
     </div>
     <?php
+        }
     }
     ?>
 <?php

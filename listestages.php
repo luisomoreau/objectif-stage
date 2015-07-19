@@ -11,7 +11,7 @@ $user = getInfos();
         </div>
         <form action="listestages" method="GET" id="recherche">
             <div class="row">
-                <div class="large-6 column">
+                <div class="large-5 column">
                     <input placeholder="Mots-clés" type="text" name="champ_rech" id="champ_rech" maxlength="100"
                            value="<?php if (isset($_GET['champ_rech'])) {
                                echo $_GET['champ_rech'];
@@ -39,12 +39,12 @@ $user = getInfos();
                         </div>
                     </div>
                 </div>
-                <div class="large-3 columns">
+                <div class="large-2 columns">
                     <div class="row collapse">
-                        <div class="small-8 columns">
-                            <span class="prefix">Rémunéré</span>
+                        <div class="small-7 columns">
+                            <span class="prefix">Rémunérés</span>
                         </div>
-                        <div class="small-4 columns">
+                        <div class="small-5 columns">
                             <div class="switch">
                                 <input id="remStage" name="remStage" type="radio"
                                        value="0" <?php if (!isset($_GET['remStage']) || $_GET['remStage'] == 0) {
@@ -53,6 +53,28 @@ $user = getInfos();
                                 <label for="remStage" onclick="" class="text-center">Non</label>
                                 <input id="remStage" name="remStage" type="radio"
                                        value="1" <?php if (isset($_GET['remStage']) && $_GET['remStage'] == 1) {
+                                    echo "checked";
+                                } ?>>
+                                <label for="remStage" onclick="" class="text-center">Oui</label>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="large-2 columns">
+                    <div class="row collapse">
+                        <div class="small-7 columns">
+                            <span class="prefix">Validés</span>
+                        </div>
+                        <div class="small-5 columns">
+                            <div class="switch">
+                                <input id="valideStage" name="valideStage" type="radio"
+                                       value="0" <?php if (!isset($_GET['valideStage']) || $_GET['valideStage'] == 0) {
+                                    echo "checked";
+                                } ?>>
+                                <label for="valideStage" onclick="" class="text-center">Non</label>
+                                <input id="valideStage" name="valideStage" type="radio"
+                                       value="1" <?php if (isset($_GET['valideStage']) && $_GET['valideStage'] == 1) {
                                     echo "checked";
                                 } ?>>
                                 <label for="remStage" onclick="" class="text-center">Oui</label>
@@ -202,6 +224,12 @@ $user = getInfos();
                         $baseQuery .= " AND l3Stage = 1";
                         break;
                 }
+            }
+            if (isset($_GET['valideStage']) && $_GET['valideStage'] == 1) {
+                $baseQuery .= " AND valideStage=1";
+            }
+            if (isset($_GET['valideStage']) && $_GET['valideStage'] == 0) {
+                $baseQuery .= " AND valideStage=0";
             }
             if (isset($_GET['filiere']) && $_GET['filiere']!=1000000) {
                 $baseQuery .= " AND filiereStage = \"" . $_GET['filiere'] . "\"";
