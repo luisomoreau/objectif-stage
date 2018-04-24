@@ -8,7 +8,7 @@
     <div class="row">
 
         <div class="copyright large-8 large-centered text-center columns">
-            &copy; 2014 &quot;Objectif stage&quot; All rights reserved. Developped by <?php if(mt_rand(0,1)) echo "Bruno CREMADES && Nicolas BRENGARD"; else echo "Nicolas BRENGARD && Bruno CREMADES";?>
+            &copy; 2014 &quot;Objectif stage&quot; All rights reserved. Developped by <?php if(mt_rand(0,1)) echo "Bruno C. && Nicolas B."; else echo "Nicolas B. && Bruno C.";?>
         </div>
     </div>
 </footer>
