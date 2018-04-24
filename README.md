@@ -5,4 +5,4 @@ PHP web app to manage internships and jobs requests/offers - Developped for the 
 
 ==============
 
-Project initiated by Bruno Cremades and Nicolas Brengard.
+Project initiated by Bruno C. and Nicolas B.
